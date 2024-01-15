@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:home_info/core/themes/app_theme.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const HomeInfoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class HomeInfoApp extends StatelessWidget {
+  const HomeInfoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'HomeInfo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme(),
+      darkTheme: AppTheme.darkTheme(),
       home: Container(color: Colors.red,),
     );
   }
