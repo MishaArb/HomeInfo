@@ -10,6 +10,22 @@ class AppTextTheme {
           color: AppColors.black00,
           fontFamily: AppFont.montserratBold700,
         ),
+    bodyLarge: TextStyle(
+      fontSize: 16,
+      fontFamily: AppFont.montserratBold700,
+      color: AppColors.black00,
+    ),
+
+      bodyMedium: TextStyle(
+      fontSize: 16,
+      fontFamily: AppFont.montserratMedium500,
+      color: AppColors.black00,
+    ),
+    bodySmall: TextStyle(
+      fontSize: 10,
+      fontFamily: AppFont.montserratMedium500,
+      color: AppColors.black00,
+    ),
       );
 
   static darkTextTheme() => const TextTheme(
@@ -18,5 +34,21 @@ class AppTextTheme {
           color: AppColors.whiteFF,
           fontFamily: AppFont.montserratBold700,
         ),
+      bodyLarge: TextStyle(
+        fontSize: 15,
+        fontFamily: AppFont.montserratBold700,
+        color: AppColors.whiteFF,
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 15,
+        fontFamily: AppFont.montserratMedium500,
+        color: AppColors.whiteFF,
+      ),
+    bodySmall: TextStyle(
+      fontSize: 10,
+      fontFamily: AppFont.montserratMedium500,
+      color: AppColors.whiteFF,
+    ),
+
       );
 }
