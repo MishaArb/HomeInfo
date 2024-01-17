@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:home_info/core/themes/app_theme.dart';
+import 'package:home_info/presentation/pages/settings/language/language_screen.dart';
+import 'package:home_info/presentation/pages/settings/reminder/reminders_screen.dart';
 import 'package:home_info/presentation/pages/settings/settings_screen.dart';
+import 'package:home_info/presentation/pages/settings/theme/theme_screen.dart';
 
 void main() {
   runApp(const HomeInfoApp());
@@ -16,7 +19,7 @@ class HomeInfoApp extends StatelessWidget {
       title: 'HomeInfo',
       theme: AppTheme.lightTheme(),
       darkTheme: AppTheme.darkTheme(),
-      home: SettingsScreen(),
+      home: LanguageScreen(),
     );
   }
 }
