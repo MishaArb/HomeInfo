@@ -71,18 +71,20 @@ class ThemeScreenView extends StatelessWidget {
       ),
     );
   }
-
-  Padding _buildInscriptionScreen(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(40.0),
-      child: Text(
-        'Pick the theme that resonates with your style and sets the mood for your app experience.',
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
-    );
-  }
 }
+
+
+Padding _buildInscriptionScreen(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.all(40.0),
+    child: Text(
+      'Pick the theme that resonates with your style and sets the mood for your app experience.',
+      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.titleMedium,
+    ),
+  );
+}
+
 
 Column _buildThemeItem({
     required BuildContext context,
