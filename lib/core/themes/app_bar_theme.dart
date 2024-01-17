@@ -20,6 +20,7 @@ class AppThemeAppBar {
           systemNavigationBarColor: AppColors.whiteF8,
           statusBarIconBrightness: Brightness.dark,
         ),
+       iconTheme: IconThemeData(color: AppColors.black00),
       );
 
   static darkTheme() => const AppBarTheme(
@@ -36,5 +37,6 @@ class AppThemeAppBar {
           systemNavigationBarColor: AppColors.darkBlue22,
           statusBarIconBrightness: Brightness.light,
         ),
+        iconTheme: IconThemeData(color: AppColors.whiteFE),
       );
 }

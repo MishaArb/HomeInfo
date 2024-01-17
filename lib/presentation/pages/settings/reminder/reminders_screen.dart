@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/themes/app_colors.dart';
+import '../../../widgets/app_bar/app_bar_with_arrow_back.dart';
 import 'new_reminder_bottom_sheet.dart';
 
 class Reminder {
@@ -29,7 +30,7 @@ class RemindersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Нагадування')),
+      appBar: buildAppBarWithArrowBack(title: 'Нагадування'),
       body: const RemindersScreenView(),
       floatingActionButton: _buildFloatingActionButton(context),
     );

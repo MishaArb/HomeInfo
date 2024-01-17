@@ -25,6 +25,9 @@ flutter:
 
   uses-material-design: true
 
+  assets:
+    - assets/images/theme_images/
+
 
   fonts:
     - family: Montserrat-Bold_700
