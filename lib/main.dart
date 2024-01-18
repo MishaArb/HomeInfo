@@ -6,15 +6,16 @@ import 'package:home_info/presentation/pages/settings/settings_screen.dart';
 import 'package:home_info/presentation/pages/settings/theme/theme_screen.dart';
 
 import 'core/router/router.dart';
+import 'injection_container.dart';
 
-void main() {
-  runApp(HomeInfoApp());
+Future<void> main()async {
+
+  await setupGetIt();
+  runApp(const HomeInfoApp());
 }
 
 class HomeInfoApp extends StatelessWidget {
-  HomeInfoApp({super.key});
-
-  final _appRouter = AppRouter();
+  const HomeInfoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class HomeInfoApp extends StatelessWidget {
       title: 'HomeInfo',
       theme: AppTheme.lightTheme(),
       darkTheme: AppTheme.darkTheme(),
-      routerConfig: _appRouter.config(),
+      routerConfig: getIt<AppRouter>().config(),
     );
   }
 }
