@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:auto_route/auto_route.dart';
 import '../../../widgets/app_bar/app_bar_with_arrow_back.dart';
 
+@RoutePage()
 class LanguageScreen extends StatelessWidget {
   const LanguageScreen({super.key});
 
@@ -17,7 +18,10 @@ class LanguageScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBarWithArrowBack(title: 'Мова'),
+      appBar: buildAppBarWithArrowBack(
+        title: 'Мова',
+        onPressedAction: () => context.router.back(),
+        ),
       body: Column(
         children: [
           _buildInscriptionScreen(context),

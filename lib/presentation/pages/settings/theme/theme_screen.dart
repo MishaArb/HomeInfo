@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-
-import '../../../../core/asset_image/asset_image.dart';
+import 'package:auto_route/auto_route.dart';
+import '../../../../core/constants/asset_image.dart';
 import '../../../../core/themes/app_colors.dart';
 import '../../../widgets/app_bar/app_bar_with_arrow_back.dart';
 
+@RoutePage()
 class ThemeScreen extends StatelessWidget {
   const ThemeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBarWithArrowBack(title: 'Тема'),
+      appBar: buildAppBarWithArrowBack(
+        title: 'Тема',
+        onPressedAction: () => context.router.back(),
+      ),
       body: const ThemeScreenView(),
     );
   }
@@ -43,21 +47,21 @@ class ThemeScreenView extends StatelessWidget {
                   children: [
                     _buildThemeItem(
                       context: context,
-                      themeImg: AssetImages.lightThemeImage,
+                      themeImg: AssetImagesConstant.lightThemeImage,
                       isThemeSelected: false,
                       title: 'Світла',
                       onTapAction: () {},
                     ),
                     _buildThemeItem(
                       context: context,
-                      themeImg: AssetImages.darkThemeImage,
+                      themeImg: AssetImagesConstant.darkThemeImage,
                       isThemeSelected: true,
                       title: 'Темна',
                       onTapAction: () {},
                     ),
                     _buildThemeItem(
                       context: context,
-                      themeImg: AssetImages.systemThemeImage,
+                      themeImg: AssetImagesConstant.systemThemeImage,
                       isThemeSelected: false,
                       title: 'Системна',
                       onTapAction: () {},

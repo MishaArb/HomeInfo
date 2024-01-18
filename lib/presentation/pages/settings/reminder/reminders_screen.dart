@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:auto_route/auto_route.dart';
 import '../../../../core/themes/app_colors.dart';
 import '../../../widgets/app_bar/app_bar_with_arrow_back.dart';
 import 'new_reminder_bottom_sheet.dart';
@@ -24,13 +24,17 @@ List<Reminder> reminderList = [
   Reminder('Water', '10.02.2022', 'You have to pay for water', true)
 ];
 
+@RoutePage()
 class RemindersScreen extends StatelessWidget {
   const RemindersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBarWithArrowBack(title: 'Нагадування'),
+      appBar: buildAppBarWithArrowBack(
+        title: 'Нагадування',
+        onPressedAction: () => context.router.back(),
+      ),
       body: const RemindersScreenView(),
       floatingActionButton: _buildFloatingActionButton(context),
     );
