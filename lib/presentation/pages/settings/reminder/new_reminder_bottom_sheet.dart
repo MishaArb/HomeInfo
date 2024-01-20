@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:home_info/core/themes/app_colors.dart';
 import '../../../widgets/elevated_button/elevated_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewReminderBottomSheet extends StatelessWidget {
   const NewReminderBottomSheet({super.key});
@@ -39,13 +40,16 @@ class NewReminderBottomSheetView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildTitle(context: context, title: 'Створити нагадування'),
+          _buildTitle(
+              context: context,
+              title:  AppLocalizations.of(context)!.create_reminder_screen_title,
+          ),
           _buildDatePicker(context),
-          _buildReminderCheckBox(),
-          _buildReminderNameTextForm(),
-          _buildReminderDescriptionTextForm(),
+          _buildReminderCheckBox(context),
+          _buildReminderNameTextForm(context),
+          _buildReminderDescriptionTextForm(context),
           buildElevationButton(
-              buttonText: 'Зберегти',
+              buttonText: AppLocalizations.of(context)!.save_button_inscription,
               buttonAction: () {
                 print('Зберегти');
               })
@@ -62,7 +66,7 @@ Text _buildTitle({required BuildContext context, required String title}) {
 Row _buildDatePicker(BuildContext context) {
   return Row(
     children: [
-      const Text('Виберіть дату'),
+      Text(AppLocalizations.of(context)!.pick_date_screen_inscription),
       const Spacer(),
       Text(
         '25.02.25',
@@ -74,10 +78,10 @@ Row _buildDatePicker(BuildContext context) {
   );
 }
 
-Row _buildReminderCheckBox() {
+Row _buildReminderCheckBox(BuildContext context) {
   return Row(
     children: [
-      const Text('Повторювати'),
+      Text((AppLocalizations.of(context)!.repeat_screen_inscription)),
       const Spacer(),
       Transform.scale(
         scale: 1.2,
@@ -87,22 +91,26 @@ Row _buildReminderCheckBox() {
   );
 }
 
-TextFormField _buildReminderNameTextForm() {
+TextFormField _buildReminderNameTextForm(BuildContext context) {
   return TextFormField(
     keyboardType: TextInputType.text,
     maxLines: 1,
     controller: TextEditingController(),
     onChanged: (value) {},
-    decoration: const InputDecoration(hintText: 'Назва'),
+    decoration: InputDecoration(
+        hintText:AppLocalizations.of(context)!.title_hint_text,
+    ),
   );
 }
 
-TextFormField _buildReminderDescriptionTextForm() {
+TextFormField _buildReminderDescriptionTextForm(BuildContext context) {
   return TextFormField(
     keyboardType: TextInputType.text,
     maxLines: 4,
     controller: TextEditingController(),
     onChanged: (value) {},
-    decoration: const InputDecoration(hintText: 'Опис'),
+    decoration: InputDecoration(
+        hintText: AppLocalizations.of(context)!.description_hint_text,
+  ),
   );
 }

@@ -3,7 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import '../../../../core/themes/app_colors.dart';
 import '../../../widgets/app_bar/app_bar_with_arrow_back.dart';
 import 'new_reminder_bottom_sheet.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Reminder {
   Reminder(this.name, this.date, this.description, this.isRepeat);
 
@@ -32,7 +32,7 @@ class RemindersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBarWithArrowBack(
-        title: 'Нагадування',
+        title:  AppLocalizations.of(context)!.reminders_app_bar_title,
         onPressedAction: () => context.router.back(),
       ),
       body: const RemindersScreenView(),

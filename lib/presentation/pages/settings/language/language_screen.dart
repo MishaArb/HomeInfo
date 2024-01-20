@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/settings_locale.dart';
+import '../../../bloc/locale/locale_bloc.dart';
 import '../../../widgets/app_bar/app_bar_with_arrow_back.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 @RoutePage()
 class LanguageScreen extends StatelessWidget {
   const LanguageScreen({super.key});
@@ -17,28 +20,37 @@ class LanguageScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBarWithArrowBack(
-        title: 'Мова',
-        onPressedAction: () => context.router.back(),
-        ),
-      body: Column(
-        children: [
-          _buildInscriptionScreen(context),
-          _buildCountryItem(
-            context: context,
-            countryCode: 'ua',
-            countryLanguage: 'Українська',
-            onChangedAction: (value) {},
+    return BlocBuilder<LocaleBloc, LocaleState>(
+      builder: (context, state) {
+        final localeBloc = BlocProvider.of<LocaleBloc>(context);
+        return Scaffold(
+          appBar: buildAppBarWithArrowBack(
+            title: AppLocalizations.of(context)!.language_app_bar_title,
+            onPressedAction: () => context.router.back(),
           ),
-          _buildCountryItem(
-            context: context,
-            countryCode: 'GB',
-            countryLanguage: 'English',
-            onChangedAction: (value) {},
+          body: Column(
+            children: [
+              _buildInscriptionScreen(context),
+              _buildCountryItem(
+                context: context,
+                countryCode: 'ua',
+                countryLanguage: 'Українська',
+                boxValue: state.isUkrainian,
+                onChangedAction: (value) =>
+                    localeBloc.add(LocaleChangeEvent(SettingsLocale.ukrainian)),
+              ),
+              _buildCountryItem(
+                context: context,
+                countryCode: 'GB',
+                countryLanguage: 'English',
+                boxValue: state.isEnglish,
+                onChangedAction: (value) =>
+                    localeBloc.add(LocaleChangeEvent(SettingsLocale.english)),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -47,7 +59,7 @@ Padding _buildInscriptionScreen(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.all(40.0),
     child: Text(
-      'Select your preferred language and make the app truly yours. Customize your experience by choosing the language that speaks to you',
+      AppLocalizations.of(context)!.language_screen_description,
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.titleMedium,
     ),
@@ -58,6 +70,7 @@ ListTile _buildCountryItem({
   required BuildContext context,
   required String countryCode,
   required String countryLanguage,
+  required bool boxValue,
   required void Function(bool value) onChangedAction,
 }) {
   return ListTile(
@@ -78,7 +91,7 @@ ListTile _buildCountryItem({
     ),
     trailing: Transform.scale(
       scale: 1.3,
-      child: Checkbox(value: true, onChanged: (value) => onChangedAction),
+      child: Checkbox(value: boxValue, onChanged: (value) => onChangedAction(value!)),
     ),
   );
 }

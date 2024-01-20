@@ -5,7 +5,7 @@ import 'package:home_info/presentation/bloc/theme/theme_bloc.dart';
 import '../../../../core/constants/asset_image.dart';
 import '../../../../core/themes/app_colors.dart';
 import '../../../widgets/app_bar/app_bar_with_arrow_back.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 @RoutePage()
 class ThemeScreen extends StatelessWidget {
   const ThemeScreen({super.key});
@@ -14,7 +14,7 @@ class ThemeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBarWithArrowBack(
-        title: 'Тема',
+        title: AppLocalizations.of(context)!.theme_app_bar_title,
         onPressedAction: () => context.router.back(),
       ),
       body: const ThemeScreenView(),
@@ -49,7 +49,7 @@ class ThemeScreenView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Режим',
+                      AppLocalizations.of(context)!.mode_screen_title,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     const SizedBox(height: 15),
@@ -60,21 +60,21 @@ class ThemeScreenView extends StatelessWidget {
                           context: context,
                           themeImg: AssetImagesConstant.lightThemeImage,
                           isThemeSelected: state.isLightTheme,
-                          title: 'Світла',
+                          title: AppLocalizations.of(context)!.light_button_inscription,
                           onTapAction: () => themeBloc.add(ThemeLightEvent()),
                         ),
                         _buildThemeItem(
                           context: context,
                           themeImg: AssetImagesConstant.darkThemeImage,
                           isThemeSelected: state.isDarkTheme,
-                          title: 'Темна',
+                          title: AppLocalizations.of(context)!.dark_button_inscription,
                           onTapAction: () => themeBloc.add(ThemeDarkEvent()),
                         ),
                         _buildThemeItem(
                           context: context,
                           themeImg: AssetImagesConstant.systemThemeImage,
                           isThemeSelected: state.isSystemTheme,
-                          title: 'Системна',
+                          title: AppLocalizations.of(context)!.system_button_inscription,
                           onTapAction: () => themeBloc.add(ThemeSystemEvent()),
                         ),
                       ],
@@ -94,7 +94,7 @@ Padding _buildInscriptionScreen(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.all(40.0),
     child: Text(
-      'Pick the theme that resonates with your style and sets the mood for your app experience.',
+      AppLocalizations.of(context)!.theme_screen_description,
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.titleMedium,
     ),
