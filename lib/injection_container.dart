@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:home_info/data/data_sources/shared_storage.service.dart';
+import 'package:home_info/presentation/bloc/locale/locale_bloc.dart';
 import 'package:home_info/presentation/bloc/theme/theme_bloc.dart';
 
 import 'core/router/router.dart';
@@ -14,8 +15,9 @@ Future<void> setupGetIt() async {
   ///SHARED
   getIt.registerSingleton<SharedStorageService>(SharedStorageService());
   getIt.registerSingleton<StorageRepository>(
-      StorageRepositoryImpl(getIt<SharedStorageService>()));
+      StorageRepositoryImpl(getIt()));
 
   ///BLOC
   getIt.registerFactory<ThemeBloc>(() => ThemeBloc(getIt()));
+  getIt.registerFactory<LocaleBloc>(() => LocaleBloc(getIt()));
 }

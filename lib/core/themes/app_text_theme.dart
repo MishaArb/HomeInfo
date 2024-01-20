@@ -41,7 +41,7 @@ class AppTextTheme {
         titleMedium: TextStyle(
           fontSize: 12,
           fontFamily: AppFont.montserratMedium500,
-          color: AppColors.greyE6,
+          color: AppColors.greyD9,
         ),
         bodyLarge: TextStyle(
           fontSize: 15,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:home_info/core/themes/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 @RoutePage()
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -9,7 +9,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Налаштування"),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.settings_app_bar_title),
       ),
       body: const SettingsScreenView(),
     );
@@ -41,34 +41,39 @@ _buildSettingsItemList(BuildContext context) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSettingsSectionTitle(title: 'Загальні', context: context),
+        _buildSettingsSectionTitle(
+            title: AppLocalizations.of(context)!.general_screen_title,
+            context: context),
         _buildSettingsItem(
           context: context,
           icon: Icons.notifications_active_outlined,
           iconColor: AppColors.orange1E,
-          title: 'Нагадування',
+          title: AppLocalizations.of(context)!.reminders_app_bar_title,
           onTapAction: () => context.router.pushNamed('/remindersScreen'),
         ),
         _buildSettingsItem(
           context: context,
           icon: Icons.dark_mode_outlined,
           iconColor: AppColors.blueF6,
-          title: 'Тема',
+          title: AppLocalizations.of(context)!.theme_app_bar_title,
           onTapAction: () => context.router.pushNamed('/themeScreen'),
         ),
         _buildSettingsItem(
           context: context,
           icon: Icons.language,
           iconColor: AppColors.brown31,
-          title: 'Мова',
+          title: AppLocalizations.of(context)!.language_app_bar_title,
           onTapAction: () => context.router.pushNamed('/languageScreen'),
         ),
-        _buildSettingsSectionTitle(title: 'Резервне копіювання', context: context),
+        _buildSettingsSectionTitle(
+            title: AppLocalizations.of(context)!.backup_screen_title,
+            context: context
+        ),
         _buildSettingsItem(
           context: context,
           icon: Icons.file_upload_outlined,
           iconColor: AppColors.purple7D,
-          title: 'Експорт',
+          title: AppLocalizations.of(context)!.export_button_inscription,
           onTapAction: () {
             print('Експорт');
           },
@@ -77,17 +82,20 @@ _buildSettingsItemList(BuildContext context) {
           context: context,
           icon: Icons.file_download_outlined,
           iconColor: AppColors.pinkAF,
-          title: 'Імпорт',
+          title: AppLocalizations.of(context)!.import_button_inscription,
           onTapAction: () {
             print('Імпорт');
           },
         ),
-        _buildSettingsSectionTitle(title: 'Про нас', context: context),
+        _buildSettingsSectionTitle(
+           title: AppLocalizations.of(context)!.about_us_screen_title,
+            context: context
+        ),
         _buildSettingsItem(
           context: context,
           icon: Icons.share,
           iconColor: AppColors.green07,
-          title: 'Поділитись',
+          title: AppLocalizations.of(context)!.share_button_inscription,
           onTapAction: () {
             print('Поділитись');
           },
@@ -96,7 +104,7 @@ _buildSettingsItemList(BuildContext context) {
           context: context,
           icon: Icons.star_border,
           iconColor: AppColors.yellow46,
-          title: 'Оцініть нас',
+          title: AppLocalizations.of(context)!.rate_us_button_inscription,
           onTapAction: () {
             print('Оцініть нас');
           },
@@ -105,7 +113,7 @@ _buildSettingsItemList(BuildContext context) {
           context: context,
           icon: Icons.email_outlined,
           iconColor: AppColors.blueD7,
-          title: 'Зворотній звязок',
+          title: AppLocalizations.of(context)!.feedback_button_inscription,
           onTapAction: () {
             print('Зворотній звязок');
           },
@@ -147,6 +155,7 @@ ListTile _buildSettingsItem({
     trailing: const Icon(
       Icons.arrow_forward_ios,
       size: 20,
+      color: AppColors.grey82,
     ),
   );
 }
@@ -159,7 +168,7 @@ Center _buildAppVersion({
     child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: Text(
-          "Версія додатку: $version",
+          "${AppLocalizations.of(context)!.app_version_screen_inscription}: $version",
           style: Theme.of(context).textTheme.bodySmall,
           textAlign: TextAlign.center,
         )),
