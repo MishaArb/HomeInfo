@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:home_info/presentation/bloc/theme/theme_bloc.dart';
 import '../../../../core/constants/asset_image.dart';
 import '../../../../core/themes/app_colors.dart';
 import '../../../widgets/app_bar/app_bar_with_arrow_back.dart';
@@ -27,56 +29,66 @@ class ThemeScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          _buildInscriptionScreen(context),
-          Container(
-            padding: const EdgeInsets.all(15),
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                color: AppColors.whiteFF,
-                borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Режим', style: Theme.of(context).textTheme.bodyMedium,),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, state) {
+        final themeBloc = BlocProvider.of<ThemeBloc>(context);
+        final bgrColor = state.currentTheme == ThemeMode.light
+            ? AppColors.whiteFF
+            : AppColors.darkBlue2A;
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildInscriptionScreen(context),
+              Container(
+                padding: const EdgeInsets.all(15),
+                margin: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: bgrColor, borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildThemeItem(
-                      context: context,
-                      themeImg: AssetImagesConstant.lightThemeImage,
-                      isThemeSelected: false,
-                      title: 'Світла',
-                      onTapAction: () {},
+                    Text(
+                      'Режим',
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    _buildThemeItem(
-                      context: context,
-                      themeImg: AssetImagesConstant.darkThemeImage,
-                      isThemeSelected: true,
-                      title: 'Темна',
-                      onTapAction: () {},
-                    ),
-                    _buildThemeItem(
-                      context: context,
-                      themeImg: AssetImagesConstant.systemThemeImage,
-                      isThemeSelected: false,
-                      title: 'Системна',
-                      onTapAction: () {},
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _buildThemeItem(
+                          context: context,
+                          themeImg: AssetImagesConstant.lightThemeImage,
+                          isThemeSelected: state.isLightTheme,
+                          title: 'Світла',
+                          onTapAction: () => themeBloc.add(ThemeLightEvent()),
+                        ),
+                        _buildThemeItem(
+                          context: context,
+                          themeImg: AssetImagesConstant.darkThemeImage,
+                          isThemeSelected: state.isDarkTheme,
+                          title: 'Темна',
+                          onTapAction: () => themeBloc.add(ThemeDarkEvent()),
+                        ),
+                        _buildThemeItem(
+                          context: context,
+                          themeImg: AssetImagesConstant.systemThemeImage,
+                          isThemeSelected: state.isSystemTheme,
+                          title: 'Системна',
+                          onTapAction: () => themeBloc.add(ThemeSystemEvent()),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
-
 
 Padding _buildInscriptionScreen(BuildContext context) {
   return Padding(
@@ -89,14 +101,12 @@ Padding _buildInscriptionScreen(BuildContext context) {
   );
 }
 
-
-Column _buildThemeItem({
-    required BuildContext context,
+Column _buildThemeItem(
+    {required BuildContext context,
     required String themeImg,
     required bool isThemeSelected,
     required String title,
-    required void Function() onTapAction
-    }) {
+    required void Function() onTapAction}) {
   return Column(
     children: [
       GestureDetector(
@@ -129,7 +139,10 @@ Column _buildThemeItem({
         ),
       ),
       const SizedBox(height: 10),
-      Text(title,  style: Theme.of(context).textTheme.bodyMedium,)
+      Text(
+        title,
+        style: Theme.of(context).textTheme.bodyMedium,
+      )
     ],
   );
 }
