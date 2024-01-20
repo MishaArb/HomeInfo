@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_info/core/themes/app_theme.dart';
-import 'package:home_info/presentation/pages/settings/language/language_screen.dart';
-import 'package:home_info/presentation/pages/settings/reminder/reminders_screen.dart';
-import 'package:home_info/presentation/pages/settings/settings_screen.dart';
-import 'package:home_info/presentation/pages/settings/theme/theme_screen.dart';
+import 'package:home_info/presentation/bloc/theme/theme_bloc.dart';
 
-void main() {
+import 'core/router/router.dart';
+import 'injection_container.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupGetIt();
   runApp(const HomeInfoApp());
 }
 
@@ -14,12 +17,20 @@ class HomeInfoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'HomeInfo',
-      theme: AppTheme.lightTheme(),
-      darkTheme: AppTheme.darkTheme(),
-      home: LanguageScreen(),
+    return BlocProvider<ThemeBloc>(
+      create: (context) => getIt()..add(ThemeInitEvent()),
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            title: 'HomeInfo',
+            theme: AppTheme.lightTheme(),
+            darkTheme: AppTheme.darkTheme(),
+            themeMode: state.currentTheme,
+            routerConfig: getIt<AppRouter>().config(),
+          );
+        },
+      ),
     );
   }
 }

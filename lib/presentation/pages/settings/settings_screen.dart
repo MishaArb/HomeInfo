@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:home_info/core/themes/app_colors.dart';
+import 'package:auto_route/auto_route.dart';
 
+@RoutePage()
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -45,27 +47,21 @@ _buildSettingsItemList(BuildContext context) {
           icon: Icons.notifications_active_outlined,
           iconColor: AppColors.orange1E,
           title: 'Нагадування',
-          onTapAction: () {
-            print('Нагадування');
-          },
+          onTapAction: () => context.router.pushNamed('/remindersScreen'),
         ),
         _buildSettingsItem(
           context: context,
           icon: Icons.dark_mode_outlined,
           iconColor: AppColors.blueF6,
           title: 'Тема',
-          onTapAction: () {
-            print('Тема');
-          },
+          onTapAction: () => context.router.pushNamed('/themeScreen'),
         ),
         _buildSettingsItem(
           context: context,
           icon: Icons.language,
           iconColor: AppColors.brown31,
           title: 'Мова',
-          onTapAction: () {
-            print('Мова');
-          },
+          onTapAction: () => context.router.pushNamed('/languageScreen'),
         ),
         _buildSettingsSectionTitle(title: 'Резервне копіювання', context: context),
         _buildSettingsItem(
