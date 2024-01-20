@@ -155,6 +155,7 @@ ListTile _buildSettingsItem({
     trailing: const Icon(
       Icons.arrow_forward_ios,
       size: 20,
+      color: AppColors.grey82,
     ),
   );
 }

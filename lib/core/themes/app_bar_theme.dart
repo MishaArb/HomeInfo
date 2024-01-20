@@ -37,6 +37,6 @@ class AppThemeAppBar {
           systemNavigationBarColor: AppColors.darkBlue22,
           statusBarIconBrightness: Brightness.light,
         ),
-        iconTheme: IconThemeData(color: AppColors.whiteFE),
+        iconTheme: IconThemeData(color: AppColors.whiteFF),
       );
 }

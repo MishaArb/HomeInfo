@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_info/core/themes/app_colors.dart';
+import '../../../bloc/theme/theme_bloc.dart';
 import '../../../widgets/elevated_button/elevated_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -19,42 +21,54 @@ class NewReminderBottomSheetView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 450,
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      decoration: const BoxDecoration(
-        color: AppColors.whiteF8,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(20),
-          topLeft: Radius.circular(20),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.greyE6,
-            spreadRadius: 10,
-            blurRadius: 10,
-            offset: Offset(0, 2),
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, state) {
+        final bgrColor = state.currentTheme == ThemeMode.light
+            ? AppColors.whiteFF
+            : AppColors.darkBlue2A;
+        final shadow = state.currentTheme == ThemeMode.light
+            ? AppColors.greyD9
+            : AppColors.greyD9.withOpacity(0);
+
+        return Container(
+          height: 450,
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: BoxDecoration(
+            color: bgrColor,
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: shadow,
+                spreadRadius: 10,
+                blurRadius: 10,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildTitle(
-              context: context,
-              title:  AppLocalizations.of(context)!.create_reminder_screen_title,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildTitle(
+                context: context,
+                title: AppLocalizations.of(context)!.create_reminder_screen_title,
+              ),
+              _buildDatePicker(context),
+              _buildReminderCheckBox(context),
+              _buildReminderNameTextForm(context),
+              _buildReminderDescriptionTextForm(context),
+              buildElevationButton(
+                  buttonText:
+                      AppLocalizations.of(context)!.save_button_inscription,
+                  buttonAction: () {
+                    print('Зберегти');
+                  })
+            ],
           ),
-          _buildDatePicker(context),
-          _buildReminderCheckBox(context),
-          _buildReminderNameTextForm(context),
-          _buildReminderDescriptionTextForm(context),
-          buildElevationButton(
-              buttonText: AppLocalizations.of(context)!.save_button_inscription,
-              buttonAction: () {
-                print('Зберегти');
-              })
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -98,7 +112,7 @@ TextFormField _buildReminderNameTextForm(BuildContext context) {
     controller: TextEditingController(),
     onChanged: (value) {},
     decoration: InputDecoration(
-        hintText:AppLocalizations.of(context)!.title_hint_text,
+      hintText: AppLocalizations.of(context)!.title_hint_text,
     ),
   );
 }
@@ -110,7 +124,7 @@ TextFormField _buildReminderDescriptionTextForm(BuildContext context) {
     controller: TextEditingController(),
     onChanged: (value) {},
     decoration: InputDecoration(
-        hintText: AppLocalizations.of(context)!.description_hint_text,
-  ),
+      hintText: AppLocalizations.of(context)!.description_hint_text,
+    ),
   );
 }
