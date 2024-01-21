@@ -1,5 +1,8 @@
 {
   "@@locale": "uk",
+
+  "app_name" : "ДімІнфо",
+
   "settings_app_bar_title" : "Налаштування",
   "reminders_app_bar_title": "Нагадування",
   "theme_app_bar_title": "Тема",
@@ -10,6 +13,8 @@
   "about_us_screen_title": "Про нас",
   "create_reminder_screen_title": "Створити нагадування",
   "mode_screen_title": "Режим",
+  "latest_readings_screen_title" : "Останні показникиs",
+  "latest_reminders_screen_title" : "Останні нагадування",
 
   "export_button_inscription" : "Експорт",
   "import_button_inscription" : "Імпорт",
@@ -20,10 +25,16 @@
   "light_button_inscription" : "Світла",
   "dark_button_inscription" : "Темна",
   "system_button_inscription" : "Системна",
+  "home_button_inscription" : "Головна",
+  "settings_button_inscription" : "Налаштування",
+  "months_button_inscription" : "Місяці",
+  "years_button_inscription" : "Роки",
 
   "app_version_screen_inscription" : "Версія додатку",
   "pick_date_screen_inscription" : "Виберіть дату",
   "repeat_screen_inscription" : "Повторювати",
+  "month_screen_inscription" : "Місяць",
+  "total_sum_inscription" : "Загальна сума",
 
   "title_hint_text" : "Назва",
   "description_hint_text" : "Опис",

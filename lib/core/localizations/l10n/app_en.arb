@@ -1,5 +1,8 @@
 {
   "@@locale": "en",
+
+  "app_name" : "HomeInfo",
+
   "settings_app_bar_title": "Settings",
   "reminders_app_bar_title": "Reminders",
   "theme_app_bar_title": "Theme",
@@ -10,6 +13,8 @@
   "about_us_screen_title": "About Us",
   "create_reminder_screen_title": "Create a reminder",
   "mode_screen_title": "Mode",
+  "latest_readings_screen_title" : "Latest readings",
+  "latest_reminders_screen_title" : "Latest reminders",
 
   "export_button_inscription" : "Export",
   "import_button_inscription" : "Import",
@@ -20,10 +25,16 @@
   "light_button_inscription" : "Light",
   "dark_button_inscription" : "Dark",
   "system_button_inscription" : "System",
+  "home_button_inscription" : "Home",
+  "settings_button_inscription" : "Settings",
+  "months_button_inscription" : "Months",
+  "years_button_inscription" : "Years",
 
   "app_version_screen_inscription" : "App version",
   "pick_date_screen_inscription" : "Pick a date",
   "repeat_screen_inscription" : "Repeat",
+  "month_screen_inscription" : "Мonth",
+  "total_sum_inscription" : "Total sum",
 
   "title_hint_text" : "Title",
   "description_hint_text" : "Description",

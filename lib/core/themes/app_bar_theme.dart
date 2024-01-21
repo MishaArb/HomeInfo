@@ -27,6 +27,7 @@ class AppThemeAppBar {
         centerTitle: true,
         backgroundColor: AppColors.darkBlue22,
         elevation: 0,
+        scrolledUnderElevation: 0,
         titleTextStyle: TextStyle(
           fontFamily: AppFont.montserratBold700,
           fontSize: 28,
