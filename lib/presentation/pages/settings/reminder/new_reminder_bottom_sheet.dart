@@ -108,6 +108,7 @@ Row _buildReminderCheckBox(BuildContext context) {
 TextFormField _buildReminderNameTextForm(BuildContext context) {
   return TextFormField(
     keyboardType: TextInputType.text,
+    textCapitalization: TextCapitalization.words,
     maxLines: 1,
     controller: TextEditingController(),
     onChanged: (value) {},
@@ -120,6 +121,7 @@ TextFormField _buildReminderNameTextForm(BuildContext context) {
 TextFormField _buildReminderDescriptionTextForm(BuildContext context) {
   return TextFormField(
     keyboardType: TextInputType.text,
+    textCapitalization: TextCapitalization.words,
     maxLines: 4,
     controller: TextEditingController(),
     onChanged: (value) {},
