@@ -39,7 +39,9 @@
 
   "title_hint_text" : "Title",
   "description_hint_text" : "Description",
-  "search_hint_text" : "Search (for example: 08.2024)",
+  "search_for_example_hint_text" : "Search (for example: 08.2024)",
+  "search_hint_text" : "Search",
+
 
   "language_screen_description" : "Select your preferred language and make the app truly yours. Customize your experience by choosing the language that speaks to you",
   "theme_screen_description" : "Pick the theme that resonates with your style and sets the mood for your app experience"

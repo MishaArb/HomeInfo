@@ -29,6 +29,9 @@ class ReadingsScreen extends StatelessWidget {
 
   _buildSearchField(BuildContext context) {
     return GestureDetector(
+      onTap: () =>
+        context.router.pushNamed('/searchReadingScreen'),
+
       child: Container(
         alignment: Alignment.centerLeft,
         margin: const EdgeInsets.all(10),
