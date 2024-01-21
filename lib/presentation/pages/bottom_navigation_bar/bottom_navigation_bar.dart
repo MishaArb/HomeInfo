@@ -5,19 +5,13 @@ import '../../../core/router/router.dart';
 import '../../../core/themes/app_colors.dart';
 
 @RoutePage()
-class BottomNavigationBarScreen extends StatefulWidget {
+class BottomNavigationBarScreen extends StatelessWidget {
   const BottomNavigationBarScreen({super.key});
 
   @override
-  State<BottomNavigationBarScreen> createState() =>
-      _BottomNavigationBarScreenState();
-}
-
-class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
-  @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(
-      routes: const [HomeRoute(), SettingsRoute()],
+      routes: const [HomeRoute(), ReadingsRoute(), SettingsRoute()],
       builder: (context, child) {
         final tabRouter = AutoTabsRouter.of(context);
         return Scaffold(
@@ -31,6 +25,10 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
               BottomNavigationBarItem(
                 icon: const Icon(Icons.home),
                 label: AppLocalizations.of(context)!.home_button_inscription,
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.list_alt),
+                label:AppLocalizations.of(context)!.readings_button_inscription,
               ),
               BottomNavigationBarItem(
                 icon: const Icon(Icons.settings),

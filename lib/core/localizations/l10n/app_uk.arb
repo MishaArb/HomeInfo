@@ -29,6 +29,7 @@
   "settings_button_inscription" : "Налаштування",
   "months_button_inscription" : "Місяці",
   "years_button_inscription" : "Роки",
+  "readings_button_inscription" : "Показники",
 
   "app_version_screen_inscription" : "Версія додатку",
   "pick_date_screen_inscription" : "Виберіть дату",
@@ -38,6 +39,7 @@
 
   "title_hint_text" : "Назва",
   "description_hint_text" : "Опис",
+  "search_hint_text" : "Пошук (наприклад: 08.2024)",
 
   "language_screen_description" : "Виберіть потрібну мову та зробіть програму справді вашою. Налаштуйте свій досвід, вибравши мову, яка розмовляє з вами",
   "theme_screen_description" : "Виберіть тему, яка відповідає вашому стилю та створює настрій для роботи з програмою"

@@ -54,7 +54,7 @@ SizedBox buildReadingsItem({
             ),
             subtitle: Text(
               '${readingsItem.total} грн',
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             trailing: Column(
               crossAxisAlignment: CrossAxisAlignment.end,

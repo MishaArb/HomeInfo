@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 
 import '../../presentation/pages/bottom_navigation_bar/bottom_navigation_bar.dart';
 import '../../presentation/pages/home/home_screen.dart';
+import '../../presentation/pages/readings/readings_screen.dart';
 import '../../presentation/pages/settings/language/language_screen.dart';
 import '../../presentation/pages/settings/reminder/reminders_screen.dart';
 import '../../presentation/pages/settings/settings_screen.dart';
@@ -19,6 +20,7 @@ class AppRouter extends _$AppRouter {
           children: [
             AutoRoute(page: HomeRoute.page),
             AutoRoute(page: SettingsRoute.page),
+            AutoRoute(page: ReadingsRoute.page),
           ],
         ),
         AutoRoute(page: RemindersRoute.page, path: '/remindersScreen'),
