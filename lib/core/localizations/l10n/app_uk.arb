@@ -1,0 +1,49 @@
+{
+  "@@locale": "uk",
+
+  "app_name" : "ДімІнфо",
+
+  "settings_app_bar_title" : "Налаштування",
+  "reminders_app_bar_title": "Нагадування",
+  "theme_app_bar_title": "Тема",
+  "language_app_bar_title": "Мова",
+
+  "general_screen_title": "Загальні",
+  "backup_screen_title": "Резервне копіювання",
+  "about_us_screen_title": "Про нас",
+  "create_reminder_screen_title": "Створити нагадування",
+  "mode_screen_title": "Режим",
+  "latest_readings_screen_title" : "Останні показникиs",
+  "latest_reminders_screen_title" : "Останні нагадування",
+
+  "export_button_inscription" : "Експорт",
+  "import_button_inscription" : "Імпорт",
+  "share_button_inscription" : "Поділитися",
+  "rate_us_button_inscription" : "Оцініть нас",
+  "feedback_button_inscription" : "Зворотній зв'язок",
+  "save_button_inscription" : "Зберегти",
+  "light_button_inscription" : "Світла",
+  "dark_button_inscription" : "Темна",
+  "system_button_inscription" : "Системна",
+  "home_button_inscription" : "Головна",
+  "settings_button_inscription" : "Налаштування",
+  "months_button_inscription" : "Місяці",
+  "years_button_inscription" : "Роки",
+  "readings_button_inscription" : "Показники",
+
+  "app_version_screen_inscription" : "Версія додатку",
+  "pick_date_screen_inscription" : "Виберіть дату",
+  "repeat_screen_inscription" : "Повторювати",
+  "month_screen_inscription" : "Місяць",
+  "total_sum_inscription" : "Загальна сума",
+
+  "title_hint_text" : "Назва",
+  "description_hint_text" : "Опис",
+  "search_for_example_hint_text"  : "Пошук (наприклад: 08.2024)",
+  "search_hint_text" : "Пошук",
+
+  "language_screen_description" : "Виберіть потрібну мову та зробіть програму справді вашою. Налаштуйте свій досвід, вибравши мову, яка розмовляє з вами",
+  "theme_screen_description" : "Виберіть тему, яка відповідає вашому стилю та створює настрій для роботи з програмою"
+
+
+}
