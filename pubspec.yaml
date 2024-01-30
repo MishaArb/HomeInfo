@@ -38,6 +38,7 @@ flutter:
 
   assets:
     - assets/images/theme_images/
+    - assets/images/services_images/
 
 
   fonts:
