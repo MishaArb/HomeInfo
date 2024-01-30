@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 
 import '../../presentation/pages/bottom_navigation_bar/bottom_navigation_bar.dart';
 import '../../presentation/pages/create_or_edit_reading/create_or_edit_reading_screen.dart';
+import '../../presentation/pages/create_or_edit_reading/services/services_screen.dart';
 import '../../presentation/pages/home/home_screen.dart';
 import '../../presentation/pages/readings/readings_screen.dart';
 import '../../presentation/pages/readings/search_reading_screen.dart';
@@ -30,5 +31,6 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: LanguageRoute.page, path: '/languageScreen'),
         AutoRoute(page: SearchReadingRoute.page, path: '/searchReadingScreen'),
         AutoRoute(page: CreateOrEditReadingsRoute.page, path: '/createOrEditReadingsScreen'),
+        AutoRoute(page: ServicesRoute.page, path: '/servicesScreen'),
       ];
 }

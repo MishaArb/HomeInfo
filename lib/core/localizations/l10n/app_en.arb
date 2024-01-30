@@ -8,6 +8,7 @@
   "theme_app_bar_title": "Theme",
   "language_app_bar_title": "Language",
   "new_record_app_bar_title": "New record",
+  "services_record_app_bar_title": "Services",
 
   "general_screen_title": "General",
   "backup_screen_title": "Backup",
@@ -33,6 +34,7 @@
   "readings_button_inscription" : "Readings",
   "choose_measurement_button_inscription" : "Choose measurement",
   "choose_unit_button_inscription" : "Choose unit",
+  "add_service_button_inscription" : "Add a service",
 
   "app_version_screen_inscription" : "App version",
   "pick_date_screen_inscription" : "Pick a date",

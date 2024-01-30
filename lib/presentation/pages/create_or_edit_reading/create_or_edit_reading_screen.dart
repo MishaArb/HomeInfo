@@ -190,47 +190,80 @@ _buildServicesList() {
       final bgrColor = state.currentTheme == ThemeMode.light
           ? AppColors.whiteFF
           : AppColors.darkBlue2A;
-    return SizedBox(
-    height: 70,
-    child: ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: serviceList.length,
-      itemBuilder: (context, index) {
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: bgrColor,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(5),
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                    color: serviceList[index].iconColor,
-                    borderRadius: BorderRadius.circular(50)),
-                child: Image(
-                  image: AssetImage(serviceList[index].img),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Text(
-                serviceList[index].name,
-                style: Theme.of(context).textTheme.titleMedium,
-                overflow: TextOverflow.ellipsis,
-              )
-            ],
-          ),
-        );
-      },
-    ),
+      return SizedBox(
+        height: 70,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: serviceList.length + 1,
+          itemBuilder: (context, index) {
+            final serviceIndex = index - 1;
+            if (index == 0) {
+              return buildServiceItem(
+                  onTapAction: () =>
+                      context.router.pushNamed('/servicesScreen'));
+            } else {
+              return buildServiceItem(
+                index: serviceIndex,
+                onTapAction: () {
+                  print(serviceIndex);
+                },
+              );
+            }
+          },
+        ),
+      );
+    },
   );
-  },
-);
+}
+
+buildServiceItem({int? index, required Function() onTapAction}) {
+  return BlocBuilder<ThemeBloc, ThemeState>(
+    builder: (context, state) {
+      final bgrColor = state.currentTheme == ThemeMode.light
+          ? AppColors.whiteFF
+          : AppColors.darkBlue2A;
+      return GestureDetector(
+          onTap: () => onTapAction(),
+          child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: bgrColor,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: index == null
+                          ? AppColors.blueE
+                          : serviceList[index].iconColor,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: index == null
+                        ? const Icon(
+                            Icons.add_circle_outline,
+                            color: AppColors.whiteFF)
+                        : Image(image: AssetImage(serviceList[index].img)),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                index == null
+                    ? AppLocalizations.of(context)!.add_service_button_inscription
+                    : serviceList[index].name,
+                style: Theme.of(context).textTheme.titleMedium,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
+              ),
+          ),
+      );
+    },
+  );
 }
 
 _buildTypeAndUnitPicker() {

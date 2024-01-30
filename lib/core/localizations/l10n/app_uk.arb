@@ -8,6 +8,7 @@
   "theme_app_bar_title": "Тема",
   "language_app_bar_title": "Мова",
   "new_record_app_bar_title": "Новий запис",
+  "services_record_app_bar_title": "Послуги",
 
   "general_screen_title": "Загальні",
   "backup_screen_title": "Резервне копіювання",
@@ -33,6 +34,7 @@
   "readings_button_inscription" : "Показники",
   "choose_measurement_button_inscription" : "Оберіть тип",
   "choose_unit_button_inscription" : "Оберіть одиницю",
+  "add_service_button_inscription" : "Додати послугу",
 
   "app_version_screen_inscription" : "Версія додатку",
   "pick_date_screen_inscription" : "Виберіть дату",
