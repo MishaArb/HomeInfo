@@ -7,7 +7,7 @@ class AppInputDecorationTheme {
       InputDecorationTheme(
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: AppColors.red01),
+          borderSide: const BorderSide(color: AppColors.red02),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -24,7 +24,7 @@ class AppInputDecorationTheme {
       InputDecorationTheme(
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: AppColors.red01),
+          borderSide: const BorderSide(color: AppColors.red02),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
