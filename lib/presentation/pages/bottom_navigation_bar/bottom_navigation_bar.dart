@@ -36,9 +36,10 @@ class BottomNavigationBarScreen extends StatelessWidget {
               ),
             ],
           ),
-          floatingActionButton: tabRouter.activeIndex == 0
-              ? _buildFloatingActionButton(context)
-              : const SizedBox(),
+          floatingActionButton:
+              tabRouter.activeIndex == 0 || tabRouter.activeIndex == 1
+                  ? _buildFloatingActionButton(context)
+                  : const SizedBox(),
         );
       },
     );
@@ -47,7 +48,9 @@ class BottomNavigationBarScreen extends StatelessWidget {
 
 FloatingActionButton _buildFloatingActionButton(BuildContext context) {
   return FloatingActionButton(
-    onPressed: () {},
+    onPressed: () {
+      context.router.pushNamed('/createOrEditReadingsScreen');
+    },
     backgroundColor: AppColors.blueE,
     child: const Icon(
       Icons.add,
