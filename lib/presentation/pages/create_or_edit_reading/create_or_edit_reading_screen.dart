@@ -3,7 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:home_info/presentation/pages/create_or_edit_reading/readings_type/three_zone_meter_type.dart';
+import 'package:home_info/presentation/pages/create_or_edit_reading/readings_type/area_type.dart';
 import '../../../core/constants/asset_image.dart';
 import '../../../core/themes/app_colors.dart';
 import '../../bloc/theme/theme_bloc.dart';
@@ -97,27 +97,27 @@ _buildAppBar(BuildContext context) {
         final bgrColor = state.currentTheme == ThemeMode.light
             ? AppColors.whiteFF
             : AppColors.darkBlue2A;
+        final textColor = state.currentTheme == ThemeMode.light
+            ? AppColors.darkBlue2A
+            : AppColors.whiteFF;
         return Column(
           children: [
             AppBar(
               leading: IconButton(
                 onPressed: () => context.router.pop(),
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back_ios,
-                  color: AppColors.whiteFF,
+                  color: textColor,
                 ),
               ),
-              backgroundColor: AppColors.blue8F,
               systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: AppColors.blue8F,
                 systemNavigationBarColor: bgrColor,
-                statusBarIconBrightness: Brightness.light,
               ),
               title: Text(
                 AppLocalizations.of(context)!.new_record_app_bar_title,
                 style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                       fontSize: 25,
-                      color: AppColors.whiteFF,
+                      color: textColor,
                     ),
               ),
               actions: [
@@ -126,13 +126,15 @@ _buildAppBar(BuildContext context) {
                   child: Text(
                     '25.01.25',
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: AppColors.whiteFF,
+                          color: textColor,
                         ),
                   ),
                 ),
               ],
             ),
-            _buildServicesListAndTypePicker(context),
+            _buildServicesList(),
+            const SizedBox(height: 10),
+            _buildTypeAndUnitPicker(),
           ],
         );
       },
@@ -150,38 +152,12 @@ class CreateOrEditReadingsScreenWidget extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          buildThreeZoneMeterType(),
+          buildAreaType(),
           const SizedBox(height: 100),
         ],
       ),
     );
   }
-}
-
-_buildServicesListAndTypePicker(BuildContext context) {
-  return SizedBox(
-    height: 200,
-    child: Stack(
-      children: [
-        Container(
-          height: 140,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topLeft,
-              colors: <Color>[AppColors.blue8F, AppColors.blue8F],
-            ),
-          ),
-        ),
-        _buildServicesList(),
-        _buildTypeAndUnitPicker(),
-      ],
-    ),
-  );
 }
 
 _buildServicesList() {
@@ -276,14 +252,6 @@ _buildTypeAndUnitPicker() {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: bgrColor,
-            boxShadow: [
-              BoxShadow(
-                color: shadow,
-                spreadRadius: 2,
-                blurRadius: 2,
-                offset: const Offset(0, 2),
-              ),
-            ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -332,7 +300,6 @@ _buildDropdownItem(
                 textAlign: TextAlign.center),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              // width: 150,
               height: 40,
               child: Center(
                 child: DropdownButtonFormField(
@@ -349,17 +316,17 @@ _buildDropdownItem(
                     contentPadding: const EdgeInsets.only(left: 15),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                          const BorderSide(color: AppColors.blue8F, width: 1),
+                          const BorderSide(color: AppColors.blueE, width: 1),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide:
-                          const BorderSide(color: AppColors.blue8F, width: 1),
+                          const BorderSide(color: AppColors.blueE, width: 1),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     disabledBorder: OutlineInputBorder(
                       borderSide:
-                          const BorderSide(color: AppColors.blue8F, width: 1),
+                          const BorderSide(color: AppColors.blueE, width: 1),
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),

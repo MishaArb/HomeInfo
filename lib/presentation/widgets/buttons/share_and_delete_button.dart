@@ -15,7 +15,7 @@ buildShareAndDeleteButton() {
             borderRadius: BorderRadius.circular(40),
             border: Border.all(
               width: 1,
-              color: AppColors.blueF6,
+              color: AppColors.blueE,
             ),
           ),
           child: IconButton(
@@ -23,7 +23,7 @@ buildShareAndDeleteButton() {
             onPressed: () {},
             icon: const Icon(
               Icons.share,
-              color: AppColors.blueF6,
+              color: AppColors.blueE,
             ),
           ),
         ),
