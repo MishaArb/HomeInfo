@@ -68,7 +68,7 @@ List serviceList = [
     ),
   ServiceReading(
       date: '25.01.25',
-      iconColor: AppColors.red01,
+      iconColor: AppColors.red02,
       img: AssetImagesConstant.servicesImg[6],
       name: 'Інтернет'
     ),
@@ -185,11 +185,6 @@ _buildServicesListAndTypePicker(BuildContext context) {
 }
 
 _buildServicesList() {
-  return BlocBuilder<ThemeBloc, ThemeState>(
-    builder: (context, state) {
-      final bgrColor = state.currentTheme == ThemeMode.light
-          ? AppColors.whiteFF
-          : AppColors.darkBlue2A;
       return SizedBox(
         height: 70,
         child: ListView.builder(
@@ -198,11 +193,11 @@ _buildServicesList() {
           itemBuilder: (context, index) {
             final serviceIndex = index - 1;
             if (index == 0) {
-              return buildServiceItem(
+              return _buildServiceItem(
                   onTapAction: () =>
                       context.router.pushNamed('/servicesScreen'));
             } else {
-              return buildServiceItem(
+              return _buildServiceItem(
                 index: serviceIndex,
                 onTapAction: () {
                   print(serviceIndex);
@@ -212,11 +207,9 @@ _buildServicesList() {
           },
         ),
       );
-    },
-  );
-}
+  }
 
-buildServiceItem({int? index, required Function() onTapAction}) {
+_buildServiceItem({int? index, required Function() onTapAction}) {
   return BlocBuilder<ThemeBloc, ThemeState>(
     builder: (context, state) {
       final bgrColor = state.currentTheme == ThemeMode.light

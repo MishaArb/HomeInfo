@@ -17,6 +17,7 @@
   "mode_screen_title": "Режим",
   "latest_readings_screen_title" : "Останні показникиs",
   "latest_reminders_screen_title" : "Останні нагадування",
+  "new_service_screen_title" : "Нова послуга",
 
   "export_button_inscription" : "Експорт",
   "import_button_inscription" : "Імпорт",
@@ -50,6 +51,8 @@
   "day_inscription" : "День",
   "night_inscription" : "Ніч",
   "half_peak_inscription" : "Напівпік",
+  "select_icon_inscription" : "Оберіть іконку",
+  "select_color_inscription" : "Оберіть колір",
 
   "title_hint_text" : "Назва",
   "description_hint_text" : "Опис",

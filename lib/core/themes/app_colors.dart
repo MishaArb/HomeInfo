@@ -20,5 +20,20 @@ class AppColors {
   static const Color pinkAF = Color(0xFFF765AF);
   static const Color green07 = Color(0xFF007C01);
   static const Color yellow46 = Color(0xFFFFF346);
-  static const Color red01 = Color(0xFFA60101);
+  static const Color red02 = Color(0xFFF60002);
+
+  static const List<Color> servicesColors = [
+    Color(0xFFF08E1E),
+    Color(0xFF0000F6),
+    Color(0xFF593E31),
+    Color(0xFF7D007D),
+    Color(0xFFF765AF),
+    Color(0xFF007C01),
+    Color(0xFFFFF346),
+    Color(0xFFF60002),
+    Color(0xFF04B4D7),
+    Color(0xFF000000),
+    Color(0xFF417CED)
+  ];
+
 }

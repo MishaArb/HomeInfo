@@ -17,6 +17,7 @@
   "mode_screen_title": "Mode",
   "latest_readings_screen_title" : "Latest readings",
   "latest_reminders_screen_title" : "Latest reminders",
+  "new_service_screen_title" : "New Service",
 
   "export_button_inscription" : "Export",
   "import_button_inscription" : "Import",
@@ -50,7 +51,8 @@
   "day_inscription" : "Day",
   "night_inscription" : "Night",
   "half_peak_inscription" : "Half peak",
-
+  "select_icon_inscription" : "Select icon",
+  "select_color_inscription" : "Select color",
 
   "title_hint_text" : "Title",
   "description_hint_text" : "Description",

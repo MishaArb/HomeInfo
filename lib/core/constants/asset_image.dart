@@ -10,7 +10,7 @@ class AssetImagesConstant{
     'assets/images/services_images/rubbish_icon.png',
     'assets/images/services_images/water.png',
     'assets/images/services_images/web_icon.png',
-
+    'assets/images/services_images/youtube_icon.png',
   ];
 
 }
