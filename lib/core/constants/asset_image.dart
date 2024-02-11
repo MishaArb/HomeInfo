@@ -13,4 +13,6 @@ class AssetImagesConstant{
     'assets/images/services_images/youtube_icon.png',
   ];
 
+  static const String emptyRemindersIcon = 'assets/images/other_images/reminders_icon.png';
+
 }
