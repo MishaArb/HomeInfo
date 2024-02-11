@@ -36,6 +36,9 @@
   "choose_measurement_button_inscription" : "Choose measurement",
   "choose_unit_button_inscription" : "Choose unit",
   "add_service_button_inscription" : "Add a service",
+  "delete_button_inscription" : "Delete",
+  "yes_button_inscription" : "Yes",
+  "no_button_inscription" : "No",
 
   "app_version_screen_inscription" : "App version",
   "pick_date_screen_inscription" : "Pick a date",
@@ -53,6 +56,7 @@
   "half_peak_inscription" : "Half peak",
   "select_icon_inscription" : "Select icon",
   "select_color_inscription" : "Select color",
+  "you_want_delete_inscription" : "Are you sure you want to delete?",
 
   "title_hint_text" : "Title",
   "description_hint_text" : "Description",
@@ -65,6 +69,8 @@
   "area_hint_text" : "Area",
   "price_hint_text" : "Price",
   "zonal_coefficient_hint_text" : "Zonal coefficient",
+
+  "field_cant_be_empty_error_text" : "The field cannot be empty",
 
   "language_screen_description" : "Select your preferred language and make the app truly yours. Customize your experience by choosing the language that speaks to you",
   "theme_screen_description" : "Pick the theme that resonates with your style and sets the mood for your app experience"
