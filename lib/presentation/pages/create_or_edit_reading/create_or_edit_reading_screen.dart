@@ -243,9 +243,6 @@ _buildTypeAndUnitPicker() {
         final bgrColor = state.currentTheme == ThemeMode.light
             ? AppColors.whiteFF
             : AppColors.darkBlue2A;
-        final shadow = state.currentTheme == ThemeMode.light
-            ? AppColors.grey82.withOpacity(0.2)
-            : AppColors.black00.withOpacity(0.2);
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 10),
           height: 110,

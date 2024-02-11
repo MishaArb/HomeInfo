@@ -1,32 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/asset_image.dart';
 import '../../../../core/themes/app_colors.dart';
-import '../../../bloc/theme/theme_bloc.dart';
+import '../../../bloc/reminder/reminders/reminders_bloc.dart';
+import '../../../widgets/alert_dialog/delete_alert_dialog.dart';
 import '../../../widgets/app_bar/app_bar_with_arrow_back.dart';
 import '../../../widgets/reminder_item/reminder_item.dart';
 import 'new_reminder_bottom_sheet.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-class Reminder {
-  Reminder(this.name, this.date, this.description, this.isRepeat);
-
-  final String name;
-  final String description;
-  final String date;
-  final bool isRepeat;
-}
-
-List<Reminder> reminderList = [
-  Reminder(
-    'Rent',
-    '25.02.2022',
-    'You have to pay the rent',
-    true,
-  ),
-  Reminder('Internet', '15.02.2022', 'You need to pay for the Internet', false),
-  Reminder('Water', '10.02.2022', 'You have to pay for water', true)
-];
 
 @RoutePage()
 class RemindersScreen extends StatelessWidget {
@@ -39,29 +21,52 @@ class RemindersScreen extends StatelessWidget {
         title: AppLocalizations.of(context)!.reminders_app_bar_title,
         onPressedAction: () => context.router.back(),
       ),
-      body: BlocBuilder<ThemeBloc, ThemeState>(
-        builder: (context, state) {
-          return _buildReminderItemListView();
-        },
-      ),
+      body: _buildReminderItemListView(),
       floatingActionButton: _buildFloatingActionButton(context),
     );
   }
 }
 
-ListView _buildReminderItemListView() {
-  return ListView.builder(
-    itemCount: reminderList.length,
-    itemBuilder: (BuildContext context, int index) {
-      return buildReminderItem(
-        context: context,
-        reminderItem: reminderList[index],
-      );
+_buildReminderItemListView() {
+  return BlocBuilder<RemindersBloc, RemindersState>(
+    builder: (context, state) {
+      if (state is RemindersSuccessState) {
+        return state.reminders.isEmpty
+            ? const Center(
+                child: Image(
+                  width: 100,
+                  height: 100,
+                  image: AssetImage(AssetImagesConstant.emptyRemindersIcon),
+                ),
+              )
+            : ListView.builder(
+                itemCount: state.reminders.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return buildReminderItem(
+                    context: context,
+                    reminderItem: state.reminders[index],
+                    onPressed: (cxt) => buildDeleteAlertDialog(
+                      context,
+                      () {
+                        BlocProvider.of<RemindersBloc>(context).add(
+                          RemindersDeleteEvent(
+                            state.reminders[index].id,
+                            context,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
+      } else {
+        return const SizedBox();
+      }
     },
   );
 }
 
-FloatingActionButton _buildFloatingActionButton(BuildContext context) {
+_buildFloatingActionButton(BuildContext context) {
   return FloatingActionButton(
     onPressed: () {
       _showSelectIconBottomSheet(context);
@@ -89,3 +94,5 @@ _showSelectIconBottomSheet(BuildContext context) {
     },
   );
 }
+
+

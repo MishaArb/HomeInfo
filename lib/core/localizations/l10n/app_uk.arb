@@ -15,7 +15,7 @@
   "about_us_screen_title": "Про нас",
   "create_reminder_screen_title": "Створити нагадування",
   "mode_screen_title": "Режим",
-  "latest_readings_screen_title" : "Останні показникиs",
+  "latest_readings_screen_title" : "Останні показники",
   "latest_reminders_screen_title" : "Останні нагадування",
   "new_service_screen_title" : "Нова послуга",
 
@@ -36,6 +36,9 @@
   "choose_measurement_button_inscription" : "Оберіть тип",
   "choose_unit_button_inscription" : "Оберіть одиницю",
   "add_service_button_inscription" : "Додати послугу",
+  "delete_button_inscription" : "Видалити",
+  "yes_button_inscription" : "Так",
+  "no_button_inscription" : "Ні",
 
   "app_version_screen_inscription" : "Версія додатку",
   "pick_date_screen_inscription" : "Виберіть дату",
@@ -53,6 +56,7 @@
   "half_peak_inscription" : "Напівпік",
   "select_icon_inscription" : "Оберіть іконку",
   "select_color_inscription" : "Оберіть колір",
+  "you_want_delete_inscription" : "Ви впевнені що хочете видалити?",
 
   "title_hint_text" : "Назва",
   "description_hint_text" : "Опис",
@@ -66,6 +70,7 @@
   "price_hint_text" : "Ціна",
   "zonal_coefficient_hint_text" : "Зонний коефіцієнт",
 
+  "field_cant_be_empty_error_text" : "Поле не може бути пустим",
 
   "language_screen_description" : "Виберіть потрібну мову та зробіть програму справді вашою. Налаштуйте свій досвід, вибравши мову, яка розмовляє з вами",
   "theme_screen_description" : "Виберіть тему, яка відповідає вашому стилю та створює настрій для роботи з програмою"

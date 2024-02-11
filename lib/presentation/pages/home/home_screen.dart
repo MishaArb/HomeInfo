@@ -3,11 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../core/constants/asset_image.dart';
 import '../../../core/themes/app_colors.dart';
+import '../../bloc/reminder/reminders/reminders_bloc.dart';
 import '../../bloc/theme/theme_bloc.dart';
+import '../../widgets/alert_dialog/delete_alert_dialog.dart';
 import '../../widgets/readings_item/readings_item.dart';
 import '../../widgets/reminder_item/reminder_item.dart';
-import '../settings/reminder/reminders_screen.dart';
+
 
 class Readings {
   Readings(
@@ -39,19 +42,19 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)!.app_name,
-        ),
-      ),
-      body: Column(
-        children: [
-          _buildChart(),
-          _buildPeriodSwitcher(context),
-          buildReadingsAndRemindersList(context)
-        ],
-      ),
-    );
+            appBar: AppBar(
+              title: Text(
+                AppLocalizations.of(context)!.app_name,
+              ),
+            ),
+            body: Column(
+              children: [
+                _buildChart(),
+                _buildPeriodSwitcher(context),
+                _buildReadingsAndRemindersList(context)
+              ],
+            ),
+          );
   }
 }
 
@@ -97,40 +100,73 @@ SizedBox _buildPeriodSwitcher(BuildContext context) {
   );
 }
 
-Expanded buildReadingsAndRemindersList(BuildContext context) {
-  return Expanded(
-    child: Container(
-      padding: const EdgeInsets.all(10),
-      child: ListView(
-        children: [
-          Text(
-            AppLocalizations.of(context)!.latest_readings_screen_title,
-            style: Theme.of(context).textTheme.bodyLarge,
+_buildReadingsAndRemindersList(BuildContext context) {
+  return  Expanded(
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          child: ListView(
+            children: [
+              Text(
+                AppLocalizations.of(context)!.latest_readings_screen_title,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              buildReadingsItem(
+                context: context,
+                readingsItem: readingsList[0],
+              ),
+              buildReadingsItem(
+                context: context,
+                readingsItem: readingsList[1],
+              ),
+              const SizedBox(height: 10),
+              Text(
+                AppLocalizations.of(context)!.latest_reminders_screen_title,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              _buildLatestReminders(context)
+            ],
           ),
-          buildReadingsItem(
-            context: context,
-            readingsItem: readingsList[0],
-          ),
-          buildReadingsItem(
-            context: context,
-            readingsItem: readingsList[1],
-          ),
-          const SizedBox(height: 10),
-          Text(
-            AppLocalizations.of(context)!.latest_reminders_screen_title,
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-          buildReminderItem(
-            context: context,
-            reminderItem: reminderList[0],
-          ),
-          buildReminderItem(
-            context: context,
-            reminderItem: reminderList[1],
-          ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 }
 
+_buildLatestReminders(BuildContext context) {
+  return BlocBuilder<RemindersBloc, RemindersState>(
+    builder: (context, state) {
+      if (state is RemindersSuccessState) {
+        return state.reminders.isEmpty
+            ? const Padding(
+                padding: EdgeInsets.only(top: 20.0),
+                child: Image(
+                  width: 70,
+                  height: 80,
+                  image: AssetImage(AssetImagesConstant.emptyRemindersIcon),
+                ),
+              )
+            : Column(
+                children: [
+                  for (var i = 0; i < state.reminders.length && i < 2; i++)
+                    buildReminderItem(
+                      context: context,
+                      reminderItem: state.reminders[i],
+                      onPressed: (cxt) => buildDeleteAlertDialog(context, () {
+                        BlocProvider.of<RemindersBloc>(context).add(
+                          RemindersDeleteEvent(
+                            state.reminders[i].id,
+                            context,
+                          ),
+                        );
+                      }),
+                    ),
+                ],
+              );
+      } else {
+        return const SizedBox(
+          height: 50,
+          width: 50,
+          child: CircularProgressIndicator(),
+        );
+      }
+    },
+  );
+}
