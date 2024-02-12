@@ -18,6 +18,7 @@ class SQfliteDBServices {
         await db.execute(
           'CREATE TABLE $reminderTable('
           'id TEXT PRIMARY KEY,'
+          'notificationId INTEGER,'
           'date TEXT,'
           'isRepeat INTEGER,'
           'title TEXT,'

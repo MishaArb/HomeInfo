@@ -50,8 +50,9 @@ _buildReminderItemListView() {
                       () {
                         BlocProvider.of<RemindersBloc>(context).add(
                           RemindersDeleteEvent(
-                            state.reminders[index].id,
-                            context,
+                           id: state.reminders[index].id,
+                           notificationId: state.reminders[index].notificationId,
+                           context: context,
                           ),
                         );
                       },
