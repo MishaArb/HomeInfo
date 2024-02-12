@@ -152,9 +152,11 @@ _buildLatestReminders(BuildContext context) {
                       onPressed: (cxt) => buildDeleteAlertDialog(context, () {
                         BlocProvider.of<RemindersBloc>(context).add(
                           RemindersDeleteEvent(
-                            state.reminders[i].id,
-                            context,
+                            id:  state.reminders[i].id,
+                            notificationId:state.reminders[i].notificationId,
+                            context: context,
                           ),
+
                         );
                       }),
                     ),

@@ -1,6 +1,6 @@
-import '../../../../core/request_result/request_result.dart';
-import '../../../../core/usecase/usecase.dart';
-import '../../../repository/reminder_db_repository.dart';
+import '../../core/request_result/request_result.dart';
+import '../../core/usecase/usecase.dart';
+import '../repository/reminder_db_repository.dart';
 
 class DeleteRemindersUseCase
     implements UseCase<RequestResult<String>, String> {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/themes/app_colors.dart';
 
@@ -61,7 +62,7 @@ buildReminderItem({
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        reminderItem.date,
+                        DateFormat('dd-MM-yyyy').format(DateTime.parse(reminderItem.date)),
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ],

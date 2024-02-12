@@ -4,13 +4,14 @@ import 'package:home_info/core/themes/app_theme.dart';
 import 'package:home_info/presentation/bloc/locale/locale_bloc.dart';
 import 'package:home_info/presentation/bloc/reminder/reminders/reminders_bloc.dart';
 import 'package:home_info/presentation/bloc/theme/theme_bloc.dart';
-
 import 'core/router/router.dart';
 import 'injection_container.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  tz.initializeTimeZones();
   await setupGetIt();
   runApp(const HomeInfoApp());
 }

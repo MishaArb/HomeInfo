@@ -9,9 +9,14 @@ class RemindersFetchEvent extends RemindersEvent {
 }
 
 class RemindersDeleteEvent extends RemindersEvent {
-  RemindersDeleteEvent(this.id, this.context);
+  RemindersDeleteEvent({
+    required this.id,
+    required this.notificationId,
+    required this.context,
+  });
   final String id;
+  final int notificationId;
   final BuildContext context;
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [id, notificationId, context];
 }

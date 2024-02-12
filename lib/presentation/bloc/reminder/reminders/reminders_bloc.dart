@@ -5,15 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:home_info/core/request_result/request_result.dart';
 import 'package:home_info/domain/entities/reminder_entity.dart';
 import 'package:meta/meta.dart';
-import '../../../../domain/usecase/reminder/reminders/delete_reminder_usecase.dart';
-import '../../../../domain/usecase/reminder/reminders/fetch_reminders_usecase.dart';
+import '../../../../domain/usecase/delete_local_notification_usecase.dart';
+import '../../../../domain/usecase/delete_reminder_usecase.dart';
+import '../../../../domain/usecase/fetch_reminders_usecase.dart';
 
 part 'reminders_event.dart';
 
 part 'reminders_state.dart';
 
 class RemindersBloc extends Bloc<RemindersEvent, RemindersState> {
-  RemindersBloc(this._fetchRemindersUseCase, this._deleteRemindersUseCase)
+  RemindersBloc(this._fetchRemindersUseCase, this._deleteRemindersUseCase,
+      this._deleteLocalNotificationUseCase)
       : super(RemindersLoadingState()) {
     on<RemindersFetchEvent>(_fetchReminders);
     on<RemindersDeleteEvent>(_onDeleteReminder);
@@ -21,6 +23,7 @@ class RemindersBloc extends Bloc<RemindersEvent, RemindersState> {
 
   final FetchRemindersUseCase _fetchRemindersUseCase;
   final DeleteRemindersUseCase _deleteRemindersUseCase;
+  final DeleteLocalNotificationUseCase _deleteLocalNotificationUseCase;
 
   _fetchReminders(
       RemindersFetchEvent event, Emitter<RemindersState> emit) async {
@@ -39,6 +42,7 @@ class RemindersBloc extends Bloc<RemindersEvent, RemindersState> {
     final requestResult = await _deleteRemindersUseCase(params: event.id);
 
     if (requestResult is RequestSuccess) {
+      _deleteLocalNotificationUseCase(params: event.notificationId);
       add(RemindersFetchEvent());
       event.context.router.pop();
     } else if (requestResult is RequestError) {

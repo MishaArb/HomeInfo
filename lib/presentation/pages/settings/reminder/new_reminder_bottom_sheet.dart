@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_info/core/themes/app_colors.dart';
 import 'package:home_info/injection_container.dart';
 import 'package:home_info/presentation/bloc/reminder/reminders/reminders_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../bloc/reminder/new_reminder/new_reminder_bloc.dart';
 import '../../../bloc/theme/theme_bloc.dart';
 import '../../../widgets/buttons/elevated_button.dart';
@@ -109,7 +110,7 @@ class _NewReminderBottomSheetViewState
               BlocProvider.of<NewReminderBloc>(context).add(NewReminderPickDateEvent(context));
               },
               child: Text(
-                state.date,
+                DateFormat('dd-MM-yyyy').format(DateTime.parse(state.date)),
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       color: AppColors.blueE,
                     ),

@@ -6,7 +6,6 @@ import 'app_bottom_navigation_bar_theme.dart';
 import 'app_check_box_theme.dart';
 import 'app_colors.dart';
 import 'app_input_decoration_theme.dart';
-import 'color_scheme.dart';
 
 class AppTheme {
   static lightTheme() => ThemeData(
@@ -25,12 +24,6 @@ class AppTheme {
         textSelectionTheme:
             const TextSelectionThemeData(cursorColor: AppColors.black00),
         bottomNavigationBarTheme: AppBottomNavigationBarTheme.lightTheme(),
-        colorScheme: ColorSchemeTheme.lightColorScheme(),
-    textButtonTheme: TextButtonThemeData(
-  style: TextButton.styleFrom(
-  foregroundColor: AppColors.blueE, // button text color
-  ),
-    )
       );
 
   static darkTheme() => ThemeData(
@@ -49,11 +42,5 @@ class AppTheme {
         textSelectionTheme:
             const TextSelectionThemeData(cursorColor: AppColors.whiteF8),
         bottomNavigationBarTheme: AppBottomNavigationBarTheme.darkTheme(),
-       colorScheme: ColorSchemeTheme.darkColorScheme(),
-    textButtonTheme: TextButtonThemeData(
-  style: TextButton.styleFrom(
-  foregroundColor: AppColors.blueE, // button text color
-  ),
-    )
       );
 }
