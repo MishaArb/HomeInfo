@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../core/router/router.dart';
-import '../../../core/themes/app_colors.dart';
+import '../../../core/constants/app_colors.dart';
 
 @RoutePage()
 class BottomNavigationBarScreen extends StatelessWidget {
@@ -46,7 +46,7 @@ class BottomNavigationBarScreen extends StatelessWidget {
   }
 }
 
-FloatingActionButton _buildFloatingActionButton(BuildContext context) {
+_buildFloatingActionButton(BuildContext context) {
   return FloatingActionButton(
     onPressed: () {
       context.router.pushNamed('/createOrEditReadingsScreen');

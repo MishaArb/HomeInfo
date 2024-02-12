@@ -5,7 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/themes/app_colors.dart';
+import '../../../core/constants/app_colors.dart';
 
 import '../../../domain/entities/reminder_entity.dart';
 import '../../bloc/theme/theme_bloc.dart';

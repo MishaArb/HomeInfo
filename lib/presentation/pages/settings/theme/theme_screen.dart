@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:home_info/core/constants/app_property.dart';
 import 'package:home_info/presentation/bloc/theme/theme_bloc.dart';
 import '../../../../core/constants/asset_image.dart';
-import '../../../../core/themes/app_colors.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../../../widgets/app_bar/app_bar_with_arrow_back.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 @RoutePage()
@@ -43,7 +44,8 @@ class ThemeScreenView extends StatelessWidget {
                 padding: const EdgeInsets.all(15),
                 margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                    color: bgrColor, borderRadius: BorderRadius.circular(10),
+                    color: bgrColor,
+                    borderRadius: AppProperty.allBorderRadiusSmall,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,7 +116,7 @@ Column _buildThemeItem(
         child: Container(
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: AppProperty.allBorderRadiusMedium,
             border: Border.all(
               width: 3,
               color: isThemeSelected ? AppColors.blueE : Colors.transparent,
@@ -133,7 +135,7 @@ Column _buildThemeItem(
                 fit: BoxFit.fill,
               ),
               //
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: AppProperty.allBorderRadiusSmall,
             ),
           ),
         ),

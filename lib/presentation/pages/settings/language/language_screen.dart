@@ -55,7 +55,7 @@ class LanguageScreenView extends StatelessWidget {
   }
 }
 
-Padding _buildInscriptionScreen(BuildContext context) {
+_buildInscriptionScreen(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.all(40.0),
     child: Text(
@@ -66,7 +66,7 @@ Padding _buildInscriptionScreen(BuildContext context) {
   );
 }
 
-ListTile _buildCountryItem({
+_buildCountryItem({
   required BuildContext context,
   required String countryCode,
   required String countryLanguage,

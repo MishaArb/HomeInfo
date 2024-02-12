@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../../../core/themes/app_colors.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_property.dart';
 import '../../../bloc/theme/theme_bloc.dart';
 import '../../../widgets/buttons/share_and_delete_button.dart';
 import '../../../widgets/text/result_inscription.dart';
@@ -17,7 +18,7 @@ buildTwoZoneMeterType() {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: AppProperty.allBorderRadiusMedium,
             color: bgrColor,
           ),
           child: Column(

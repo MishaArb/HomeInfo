@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'app_colors.dart';
-import 'app_font.dart';
+import '../constants/app_colors.dart';
+import '../constants/app_font.dart';
 
 class AppThemeAppBar {
   static lightTheme() => const AppBarTheme(

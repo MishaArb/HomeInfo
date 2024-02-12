@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../../../core/themes/app_colors.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_property.dart';
 import '../../../widgets/app_bar/app_bar_with_arrow_back.dart';
 import '../create_or_edit_reading_screen.dart';
 import 'new_service_bottom_sheet.dart';
@@ -29,7 +30,7 @@ class ServicesScreen extends StatelessWidget {
                 height: 40,
                 decoration: BoxDecoration(
                   color: serviceList[index].iconColor,
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: AppProperty.allBorderRadiusExtraLarge,
                 ),
                 child: Image(image: AssetImage(serviceList[index].img)),
               ),

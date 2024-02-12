@@ -3,7 +3,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:home_info/presentation/widgets/readings_item/readings_item.dart';
 
-import '../../../core/themes/app_colors.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_property.dart';
 import '../home/home_screen.dart';
 
 @RoutePage()
@@ -39,7 +40,7 @@ class ReadingsScreen extends StatelessWidget {
         height: 50,
         width: double.infinity,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: AppProperty.allBorderRadiusMediumSmall,
           border:
               Border.all(width: 1, color: AppColors.grey82.withOpacity(0.4)),
         ),
