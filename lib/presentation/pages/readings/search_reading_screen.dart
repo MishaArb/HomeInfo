@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/themes/app_colors.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_property.dart';
 
 @RoutePage()
 class SearchReadingScreen extends StatelessWidget {
@@ -36,11 +37,11 @@ _buildReminderNameTextForm(BuildContext context) {
       onChanged: (value) {},
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: AppProperty.allBorderRadiusMedium,
           borderSide: const BorderSide(color: AppColors.blueE),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: AppProperty.allBorderRadiusMedium,
           borderSide: BorderSide(color: AppColors.grey82.withOpacity(0.4)),
         ),
         hintText: AppLocalizations.of(context)!.search_for_example_hint_text,

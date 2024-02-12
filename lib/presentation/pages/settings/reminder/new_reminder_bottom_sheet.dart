@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_info/core/themes/app_colors.dart';
+import 'package:home_info/core/constants/app_colors.dart';
 import 'package:home_info/injection_container.dart';
 import 'package:home_info/presentation/bloc/reminder/reminders/reminders_bloc.dart';
 import 'package:intl/intl.dart';
+import '../../../../core/constants/app_property.dart';
 import '../../../bloc/reminder/new_reminder/new_reminder_bloc.dart';
 import '../../../bloc/theme/theme_bloc.dart';
 import '../../../widgets/buttons/elevated_button.dart';
@@ -61,10 +62,7 @@ class _NewReminderBottomSheetViewState
               padding: const EdgeInsets.symmetric(horizontal: 15),
               decoration: BoxDecoration(
                 color: bgrColor,
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(20),
-                  topLeft: Radius.circular(20),
-                ),
+                borderRadius: AppProperty.topRightTopLeftBorderRadiusMedium,
                 boxShadow: [
                   BoxShadow(
                     color: shadow,

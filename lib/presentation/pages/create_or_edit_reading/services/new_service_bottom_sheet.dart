@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_info/core/themes/app_colors.dart';
+import 'package:home_info/core/constants/app_colors.dart';
+import '../../../../core/constants/app_property.dart';
 import '../../../../core/constants/asset_image.dart';
 import '../../../bloc/theme/theme_bloc.dart';
 import '../../../widgets/buttons/elevated_button.dart';
@@ -35,10 +36,7 @@ class NewServiceBottomSheetWidget extends StatelessWidget {
           height: 450,
           decoration: BoxDecoration(
             color: bgrColor,
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(20),
-              topLeft: Radius.circular(20),
-            ),
+            borderRadius: AppProperty.topRightTopLeftBorderRadiusMedium,
             boxShadow: [
               BoxShadow(
                 color: shadow,
@@ -112,7 +110,7 @@ _buildSelectIconLisView() {
             width: 72,
             height: 72,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(70),
+              borderRadius: AppProperty.allBorderRadiusExtraExtraLarge,
               border: Border.all(width: 2, color: AppColors.blueE),
             ),
             child: Container(
@@ -121,7 +119,7 @@ _buildSelectIconLisView() {
               height: 70,
               decoration: BoxDecoration(
                 color: AppColors.blue8F,
-                borderRadius: BorderRadius.circular(70),
+                borderRadius: AppProperty.allBorderRadiusExtraExtraLarge,
                 border: Border.all(width: 1, color: AppColors.grey82),
               ),
               child: Image(
@@ -153,7 +151,7 @@ _buildSelectColorLisView() {
             width: 72,
             height: 72,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(70),
+              borderRadius: AppProperty.allBorderRadiusExtraExtraLarge,
               border: Border.all(width: 2, color: AppColors.blueE),
             ),
             child: Container(
@@ -162,7 +160,7 @@ _buildSelectColorLisView() {
               height: 70,
               decoration: BoxDecoration(
                 color: AppColors.servicesColors[index],
-                borderRadius: BorderRadius.circular(70),
+                borderRadius: AppProperty.allBorderRadiusExtraExtraLarge,
                 border: Border.all(width: 1, color: AppColors.grey82),
               ),
             ),

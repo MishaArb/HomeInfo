@@ -4,8 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:home_info/presentation/pages/create_or_edit_reading/readings_type/area_type.dart';
+import '../../../core/constants/app_property.dart';
 import '../../../core/constants/asset_image.dart';
-import '../../../core/themes/app_colors.dart';
+import '../../../core/constants/app_colors.dart';
 import '../../bloc/theme/theme_bloc.dart';
 import '../../widgets/buttons/elevated_button.dart';
 
@@ -197,7 +198,7 @@ _buildServiceItem({int? index, required Function() onTapAction}) {
               margin: const EdgeInsets.symmetric(horizontal: 10),
               padding: const EdgeInsets.symmetric(horizontal: 15),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: AppProperty.allBorderRadiusMediumSmall,
                 color: bgrColor,
               ),
               child: Row(
@@ -211,7 +212,7 @@ _buildServiceItem({int? index, required Function() onTapAction}) {
                       color: index == null
                           ? AppColors.blueE
                           : serviceList[index].iconColor,
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: AppProperty.allBorderRadiusExtraLarge,
                     ),
                     child: index == null
                         ? const Icon(
@@ -247,7 +248,7 @@ _buildTypeAndUnitPicker() {
           margin: const EdgeInsets.symmetric(horizontal: 10),
           height: 110,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: AppProperty.allBorderRadiusMedium,
             color: bgrColor,
           ),
           child: Row(
@@ -314,17 +315,17 @@ _buildDropdownItem(
                     focusedBorder: OutlineInputBorder(
                       borderSide:
                           const BorderSide(color: AppColors.blueE, width: 1),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: AppProperty.allBorderRadiusMediumSmall,
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide:
                           const BorderSide(color: AppColors.blueE, width: 1),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: AppProperty.allBorderRadiusMediumSmall,
                     ),
                     disabledBorder: OutlineInputBorder(
                       borderSide:
                           const BorderSide(color: AppColors.blueE, width: 1),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: AppProperty.allBorderRadiusMediumSmall,
                     ),
                   ),
                   onChanged: (String? newValue) {

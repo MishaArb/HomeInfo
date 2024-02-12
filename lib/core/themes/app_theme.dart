@@ -4,7 +4,7 @@ import 'package:home_info/core/themes/app_text_theme.dart';
 import 'app_bar_theme.dart';
 import 'app_bottom_navigation_bar_theme.dart';
 import 'app_check_box_theme.dart';
-import 'app_colors.dart';
+import '../constants/app_colors.dart';
 import 'app_input_decoration_theme.dart';
 
 class AppTheme {

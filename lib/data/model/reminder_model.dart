@@ -22,7 +22,7 @@ class ReminderModel extends ReminderEntity {
         'date': date,
         'isRepeat': isRepeat ? 1 : 0,
         'title': title,
-        'description': description ?? ''
+        'description': description
       };
 
   factory ReminderModel.fromJson(Map<String, dynamic> json) => ReminderModel(

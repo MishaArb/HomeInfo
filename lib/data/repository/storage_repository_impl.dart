@@ -1,6 +1,5 @@
 import 'package:home_info/data/data_sources/shared_storage.service.dart';
 import 'package:home_info/domain/repository/storage_repository.dart';
-import 'package:home_info/injection_container.dart';
 
 class StorageRepositoryImpl implements StorageRepository {
   StorageRepositoryImpl(this.storageService);

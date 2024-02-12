@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/asset_image.dart';
-import '../../../../core/themes/app_colors.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../../../bloc/reminder/reminders/reminders_bloc.dart';
 import '../../../widgets/alert_dialog/delete_alert_dialog.dart';
 import '../../../widgets/app_bar/app_bar_with_arrow_back.dart';

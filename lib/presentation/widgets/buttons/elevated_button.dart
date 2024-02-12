@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/themes/app_colors.dart';
-import '../../../core/themes/app_font.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_font.dart';
 
 Row buildElevationButton({
   required String buttonText,

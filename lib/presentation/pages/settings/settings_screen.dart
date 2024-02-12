@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_info/core/themes/app_colors.dart';
+import 'package:home_info/core/constants/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 @RoutePage()
@@ -137,7 +137,7 @@ _buildSettingsSectionTitle({
   );
 }
 
-ListTile _buildSettingsItem({
+_buildSettingsItem({
   required BuildContext context,
   required IconData icon,
   required Color iconColor,
@@ -160,7 +160,7 @@ ListTile _buildSettingsItem({
   );
 }
 
-Center _buildAppVersion({
+_buildAppVersion({
   required BuildContext context,
   required String version,
 }) {
