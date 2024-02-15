@@ -1,9 +1,9 @@
 import '../../core/usecase/usecase.dart';
-import '../../data/repository/local_notification_repository_imp.dart';
+import '../repository/local_notification_repository.dart';
 
 class DeleteLocalNotificationUseCase implements UseCase<void, int> {
   DeleteLocalNotificationUseCase(this._localNotification);
-  final LocalNotificationRepositoryImpl  _localNotification;
+  final LocalNotificationRepository  _localNotification;
 
 
   @override

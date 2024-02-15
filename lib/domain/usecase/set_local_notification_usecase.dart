@@ -1,11 +1,11 @@
 
 import '../../core/usecase/usecase.dart';
 import '../../data/model/local_notification_model.dart';
-import '../../data/repository/local_notification_repository_imp.dart';
+import '../repository/local_notification_repository.dart';
 
 class SetLocalNotificationUseCase implements UseCase<void, LocalNotificationModel> {
   SetLocalNotificationUseCase(this._localNotification);
-  final LocalNotificationRepositoryImpl  _localNotification;
+  final LocalNotificationRepository  _localNotification;
 
 
   @override

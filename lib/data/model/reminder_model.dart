@@ -14,7 +14,8 @@ class ReminderModel extends ReminderEntity {
             date: date,
             isRepeat: isRepeat,
             title: title,
-            description: description);
+            description: description,
+  );
 
   Map<String, dynamic> toJson() => {
         'id': id,

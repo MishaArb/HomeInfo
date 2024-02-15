@@ -20,7 +20,7 @@ part 'new_reminder_event.dart';
 part 'new_reminder_state.dart';
 
 class NewReminderBloc extends Bloc<NewReminderEvent, NewReminderState> {
-  NewReminderBloc(this._saveRemindersUseCase, this._setLocalNotificationUseCase)
+  NewReminderBloc(this._saveReminderUseCase, this._setLocalNotificationUseCase)
       : super(NewReminderState(
             date: DateFormat('yyyy-MM-dd')
                 .format(DateTime.now().add(const Duration(days: 1))))) {
@@ -29,7 +29,7 @@ class NewReminderBloc extends Bloc<NewReminderEvent, NewReminderState> {
     on<NewReminderSaveEvent>(_onSave);
   }
 
-  final SaveRemindersUseCase _saveRemindersUseCase;
+  final SaveReminderUseCase _saveReminderUseCase;
   final SetLocalNotificationUseCase _setLocalNotificationUseCase;
 
   _onPickDate(
@@ -62,7 +62,7 @@ class NewReminderBloc extends Bloc<NewReminderEvent, NewReminderState> {
       isRepeat: state.isRepeat,
     );
 
-    final requestResult = await _saveRemindersUseCase(params: reminder);
+    final requestResult = await _saveReminderUseCase(params: reminder);
 
     if (requestResult is RequestSuccess) {
       _setLocalNotificationUseCase(params: localNotification);
