@@ -74,18 +74,14 @@ _buildSettingsItemList(BuildContext context) {
           icon: Icons.file_upload_outlined,
           iconColor: AppColors.purple7D,
           title: AppLocalizations.of(context)!.export_button_inscription,
-          onTapAction: () {
-            print('Експорт');
-          },
+          onTapAction: () {},
         ),
         _buildSettingsItem(
           context: context,
           icon: Icons.file_download_outlined,
           iconColor: AppColors.pinkAF,
           title: AppLocalizations.of(context)!.import_button_inscription,
-          onTapAction: () {
-            print('Імпорт');
-          },
+          onTapAction: () {},
         ),
         _buildSettingsSectionTitle(
            title: AppLocalizations.of(context)!.about_us_screen_title,

@@ -14,5 +14,6 @@ class AssetImagesConstant{
   ];
 
   static const String emptyRemindersIcon = 'assets/images/other_images/reminders_icon.png';
+  static const String emptyReadingsIcon = 'assets/images/other_images/readings_icon.png';
 
 }

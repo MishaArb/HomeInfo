@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_info/core/themes/app_theme.dart';
 import 'package:home_info/presentation/bloc/locale/locale_bloc.dart';
+import 'package:home_info/presentation/bloc/reading/new_reading/new_reading_bloc.dart';
+import 'package:home_info/presentation/bloc/reading/readings/readings_bloc.dart';
 import 'package:home_info/presentation/bloc/reminder/reminders/reminders_bloc.dart';
 import 'package:home_info/presentation/bloc/theme/theme_bloc.dart';
 import 'core/router/router.dart';
@@ -16,7 +18,6 @@ Future<void> main() async {
   runApp(const HomeInfoApp());
 }
 
-
 class HomeInfoApp extends StatelessWidget {
   const HomeInfoApp({super.key});
 
@@ -30,8 +31,14 @@ class HomeInfoApp extends StatelessWidget {
         BlocProvider<LocaleBloc>(
           create: (context) => getIt()..add(LocaleInitEvent()),
         ),
-        BlocProvider(
+        BlocProvider<RemindersBloc>(
           create: (context) => getIt<RemindersBloc>()..add(RemindersFetchEvent()),
+        ),
+        BlocProvider<ReadingsBloc>(
+          create: (context) => getIt<ReadingsBloc>()..add(ReadingsFetchEvent()),
+        ),
+        BlocProvider<NewReadingBloc>(
+          create: (context) => getIt<NewReadingBloc>(),
         ),
       ],
       child: Builder(

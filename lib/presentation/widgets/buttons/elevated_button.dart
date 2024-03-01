@@ -10,7 +10,7 @@ Row buildElevationButton({
   return Row(
     children: [
       Expanded(
-        child: Container(
+        child: SizedBox(
           height: 50,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(

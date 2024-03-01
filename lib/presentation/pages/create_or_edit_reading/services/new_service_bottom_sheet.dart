@@ -31,12 +31,12 @@ class NewServiceBottomSheetWidget extends StatefulWidget {
 
 class _NewServiceBottomSheetWidgetState
     extends State<NewServiceBottomSheetWidget> {
-  final TextEditingController _titleEditingController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
   final textFieldKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    _titleEditingController.dispose();
+    _titleController.dispose();
     super.dispose();
   }
 
@@ -47,7 +47,8 @@ class _NewServiceBottomSheetWidgetState
       child: BlocListener<NewHomeServiceBloc, NewHomeServiceState>(
         listenWhen: (previous, current) => current is NewHomeServiceSaveState,
         listener: (context, state) {
-          BlocProvider.of<HomeServicesBloc>(context).add(HomeServicesFetchEvent());
+          BlocProvider.of<HomeServicesBloc>(context)
+              .add(HomeServicesFetchEvent());
         },
         child: BlocBuilder<ThemeBloc, ThemeState>(
           builder: (context, state) {
@@ -118,7 +119,7 @@ class _NewServiceBottomSheetWidgetState
         keyboardType: TextInputType.text,
         textCapitalization: TextCapitalization.words,
         maxLines: 1,
-        controller: _titleEditingController,
+        controller: _titleController,
         validator: (text) {
           if (text!.trim().isEmpty) {
             return AppLocalizations.of(context)!.field_cant_be_empty_error_text;
@@ -232,7 +233,7 @@ class _NewServiceBottomSheetWidgetState
         buttonAction: () {
           if (textFieldKey.currentState!.validate()) {
             BlocProvider.of<NewHomeServiceBloc>(context).add(
-              ServiceSaveEvent(_titleEditingController.text, context),
+              ServiceSaveEvent(_titleController.text, context),
             );
           }
         },

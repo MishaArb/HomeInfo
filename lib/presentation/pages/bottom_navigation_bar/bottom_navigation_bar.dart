@@ -1,8 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../core/enum/reading_enum.dart';
 import '../../../core/router/router.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../bloc/reading/new_reading/new_reading_bloc.dart';
 
 @RoutePage()
 class BottomNavigationBarScreen extends StatelessWidget {
@@ -28,11 +31,13 @@ class BottomNavigationBarScreen extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: const Icon(Icons.list_alt),
-                label:AppLocalizations.of(context)!.readings_button_inscription,
+                label:
+                    AppLocalizations.of(context)!.readings_button_inscription,
               ),
               BottomNavigationBarItem(
                 icon: const Icon(Icons.settings),
-                label:AppLocalizations.of(context)!.settings_button_inscription,
+                label:
+                    AppLocalizations.of(context)!.settings_button_inscription,
               ),
             ],
           ),
@@ -47,14 +52,22 @@ class BottomNavigationBarScreen extends StatelessWidget {
 }
 
 _buildFloatingActionButton(BuildContext context) {
-  return FloatingActionButton(
-    onPressed: () {
-      context.router.pushNamed('/createOrEditReadingsScreen');
+  return BlocBuilder<NewReadingBloc, NewReadingCreateState>(
+    builder: (context, state) {
+      return FloatingActionButton(
+        onPressed: () => BlocProvider.of<NewReadingBloc>(context).add(
+          NewReadingInitEvent(
+            context: context,
+            readingActionType: ReadingActionType.newReading,
+            readingIndex: 0,
+          ),
+        ),
+        backgroundColor: AppColors.blueE,
+        child: const Icon(
+          Icons.add,
+          color: AppColors.whiteFF,
+        ),
+      );
     },
-    backgroundColor: AppColors.blueE,
-    child: const Icon(
-      Icons.add,
-      color: AppColors.whiteFF,
-    ),
   );
 }

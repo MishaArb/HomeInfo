@@ -8,6 +8,7 @@
   "theme_app_bar_title": "Theme",
   "language_app_bar_title": "Language",
   "new_record_app_bar_title": "New record",
+  "edit_record_app_bar_title": "Edit record",
   "services_record_app_bar_title": "Services",
 
   "general_screen_title": "General",
@@ -47,8 +48,9 @@
   "total_sum_inscription" : "Total sum",
   "type_measurement_inscription" : "Type of\nmeasurement",
   "units_measurement_inscription" : "Unit of\nmeasurement",
-  "used_day_inscription" : "Used day:",
-  "used_night_inscription" : "Used night:",
+  "used_day_inscription" : "Used (day):",
+  "used_night_inscription" : "Used (night):",
+  "used_half_peak_inscription" : "Used (half peak):",
   "used_inscription" : "Used:",
   "sum_inscription" : "Sum:",
   "day_inscription" : "Day",
@@ -73,9 +75,23 @@
   "field_cant_be_empty_error_text" : "The field cannot be empty",
 
   "language_screen_description" : "Select your preferred language and make the app truly yours. Customize your experience by choosing the language that speaks to you",
-  "theme_screen_description" : "Pick the theme that resonates with your style and sets the mood for your app experience"
+  "theme_screen_description" : "Pick the theme that resonates with your style and sets the mood for your app experience",
 
+  "select_measurement_type_dropdown" : "-Select measurement type-",
+  "select_measurement_unit_dropdown" : "-Select measurement unit-",
+  "by_area_dropdown" : "By area",
+  "fixed_dropdown" : "Fixed",
+  "single_zone_meter_dropdown" : "Single-zone meter",
+  "two_zone_meter_dropdown" : "Two-zone meter",
+  "three_zone_meter_dropdown" : "Three-zone meter",
+  "kW_dropdown" : "kW",
+  "m2_dropdown" : "m²",
+  "m3_dropdown" : "m³",
+  "gcal_dropdown" : "Gcal",
 
+  "current_indicators_day_share" : "Current readings (day)",
+  "current_indicators_half_pick_share" : "Current readings (half peak)",
+  "current_indicators_night_share" : "Current readings (night)"
 
 
 }

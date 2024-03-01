@@ -4,17 +4,17 @@ import 'package:home_info/data/model/reminder_model.dart';
 
 import '../../domain/entities/reminder_entity.dart';
 import '../../domain/repository/reminder_db_repository.dart';
-import '../data_sources/sqflite_db_service.dart';
+import '../data_sources/sqflite_db.dart';
 
 class ReminderDBRepositoryImpl implements ReminderDBRepository {
-  ReminderDBRepositoryImpl(this.dbServices);
+  ReminderDBRepositoryImpl(this.db);
 
-  final SQfliteDBServices dbServices;
+  final SQfliteDB db;
 
   @override
-  Future<RequestResult<List<ReminderModel>>> fetchNotification() async {
+  Future<RequestResult<List<ReminderModel>>> fetchReminders() async {
     try {
-      final allReminders = await dbServices.getAllReminders();
+      final allReminders = await db.getAllReminders();
       return RequestSuccess(allReminders);
     } catch (e) {
       return RequestError(e.toString());
@@ -22,10 +22,10 @@ class ReminderDBRepositoryImpl implements ReminderDBRepository {
   }
 
   @override
-  Future<RequestResult<ReminderEntity>> createNotification(
+  Future<RequestResult<ReminderEntity>> createNewReminder(
       ReminderEntity reminder) async {
     try {
-      await dbServices.createNewReminder(ReminderModel.fromEntity(reminder) );
+      await db.createNewReminder(ReminderModel.fromEntity(reminder) );
       return RequestSuccess(reminder);
     } catch (e) {
       return RequestError(e.toString());
@@ -35,7 +35,7 @@ class ReminderDBRepositoryImpl implements ReminderDBRepository {
   @override
   Future<RequestResult<String>> deleteReminder(String id) async {
     try {
-      await dbServices.deleteReminder(id);
+      await db.deleteReminder(id);
       return RequestSuccess(id);
     } catch (e) {
       return RequestError(e.toString());

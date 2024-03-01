@@ -3,77 +3,34 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:home_info/presentation/pages/create_or_edit_reading/readings_type/area_type.dart';
+import 'package:home_info/presentation/bloc/reading/new_reading/new_reading_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../core/constants/app_property.dart';
 import '../../../core/constants/asset_image.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/reading.dart';
+import '../../../core/enum/reading_enum.dart';
+import '../../../core/router/router.dart';
+import '../../../data/model/reading_model.dart';
+import '../../bloc/reading/readings/readings_bloc.dart';
 import '../../bloc/theme/theme_bloc.dart';
 import '../../widgets/buttons/elevated_button.dart';
+import '../../widgets/buttons/share_and_delete_button.dart';
+import '../../widgets/text/result_inscription.dart';
+import '../../widgets/text_field/description_text_form.dart';
+import '../../widgets/text_field/simple_text_field.dart';
+import 'package:share_plus/share_plus.dart';
+part 'readings_type/single_zone_meter_type.dart';
 
+part 'readings_type/fixed_type.dart';
 
+part 'readings_type/area_type.dart';
 
-class ServiceReading{
-  ServiceReading({required this.date, required this.img, required this.name, required this.iconColor});
-  final String date;
-  final Color iconColor;
-  final String img;
-  final String name;
-}
+part 'readings_type/three_zone_meter_type.dart';
 
-const List<String> typeDropList = <String>[
-  'Однозонний лічильник',
-  'За площу',
-  'Фіксовано',
-  'Двозонний лічильник',
-  'Тризонний лічильник'
-];
-const List<String> utilDropList = <String>['кВт', 'м2', 'м3', 'Гкал'];
-String? dropdownValue = typeDropList.first;
+part 'readings_type/two_zone_meter_type.dart';
 
-List serviceList = [
-  ServiceReading(
-      date: '25.01.25',
-      iconColor: AppColors.orange1E,
-      img: AssetImagesConstant.servicesImg[0],
-      name: 'Електроенергія'
-    ),
-  ServiceReading(
-      date: '25.01.25',
-      iconColor: AppColors.blueE,
-      img: AssetImagesConstant.servicesImg[1],
-      name: 'Опалення'
-    ),
-  ServiceReading(
-      date: '25.01.25',
-      iconColor: AppColors.blueD7,
-      img: AssetImagesConstant.servicesImg[2],
-      name: 'Оренда'
-    ),
-  ServiceReading(
-      date: '25.01.25',
-      iconColor: AppColors.purple7D,
-      img: AssetImagesConstant.servicesImg[3],
-      name: 'Звязок'
-    ),
-  ServiceReading(
-      date: '25.01.25',
-      iconColor: AppColors.pinkAF,
-      img: AssetImagesConstant.servicesImg[4],
-      name: 'Вивіз сміття'
-    ),
-  ServiceReading(
-      date: '25.01.25',
-      iconColor: AppColors.yellow46,
-      img: AssetImagesConstant.servicesImg[5],
-      name: 'Вода'
-    ),
-  ServiceReading(
-      date: '25.01.25',
-      iconColor: AppColors.red02,
-      img: AssetImagesConstant.servicesImg[6],
-      name: 'Інтернет'
-    ),
-];
+final textFieldKey = GlobalKey<FormState>();
 
 @RoutePage()
 class CreateOrEditReadingsScreen extends StatelessWidget {
@@ -83,7 +40,7 @@ class CreateOrEditReadingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: const CreateOrEditReadingsScreenWidget(),
+      body: _buildContentScreen(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: _buildSaveButton(context),
     );
@@ -92,145 +49,217 @@ class CreateOrEditReadingsScreen extends StatelessWidget {
 
 _buildAppBar(BuildContext context) {
   return PreferredSize(
-    preferredSize: const Size.fromHeight(256),
-    child: BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (context, state) {
-        final bgrColor = state.currentTheme == ThemeMode.light
-            ? AppColors.whiteFF
-            : AppColors.darkBlue2A;
-        final textColor = state.currentTheme == ThemeMode.light
-            ? AppColors.darkBlue2A
-            : AppColors.whiteFF;
-        return Column(
-          children: [
-            AppBar(
-              leading: IconButton(
-                onPressed: () => context.router.pop(),
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: textColor,
-                ),
-              ),
-              systemOverlayStyle: SystemUiOverlayStyle(
-                systemNavigationBarColor: bgrColor,
-              ),
-              title: Text(
-                AppLocalizations.of(context)!.new_record_app_bar_title,
-                style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                      fontSize: 25,
-                      color: textColor,
-                    ),
-              ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 15.0, left: 20),
-                  child: Text(
-                    '25.01.25',
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: textColor,
-                        ),
+    preferredSize: const Size.fromHeight(70),
+    child: BlocListener<NewReadingBloc, NewReadingCreateState>(
+      listenWhen: (previous, current) => current is NewReadingSuccessState,
+      listener: (context, state) {
+        BlocProvider.of<ReadingsBloc>(context).add(ReadingsFetchEvent());
+      },
+      child: Builder(
+        builder: (context) {
+          final readingState =
+              context.select((NewReadingBloc bloc) => bloc.state);
+          final themeState = context.select((ThemeBloc bloc) => bloc.state);
+          final bgrColor = themeState.currentTheme == ThemeMode.light
+              ? AppColors.whiteFF
+              : AppColors.darkBlue2A;
+          final textColor = themeState.currentTheme == ThemeMode.light
+              ? AppColors.darkBlue2A
+              : AppColors.whiteFF;
+          final date = DateFormat('dd-MM-yy').format(
+            DateTime.parse(readingState.date),
+          );
+          final title =
+              readingState.readingActionType == ReadingActionType.editReading
+                  ? AppLocalizations.of(context)!.edit_record_app_bar_title
+                  : AppLocalizations.of(context)!.new_record_app_bar_title;
+          return Column(
+            children: [
+              AppBar(
+                leading: IconButton(
+                  onPressed: () => context.router.pop(),
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: textColor,
                   ),
                 ),
-              ],
-            ),
-            _buildServicesList(),
-            const SizedBox(height: 10),
-            _buildTypeAndUnitPicker(),
-          ],
-        );
-      },
+                systemOverlayStyle: SystemUiOverlayStyle(
+                  systemNavigationBarColor: bgrColor,
+                ),
+                centerTitle: true,
+                title: Text(
+                  title,
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                        fontSize: 20,
+                        color: textColor,
+                      ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => BlocProvider.of<NewReadingBloc>(context)
+                        .add(NewReadingPickDateEvent(context)),
+                    child: Text(
+                      date,
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: AppColors.blueE,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
     ),
   );
 }
 
-class CreateOrEditReadingsScreenWidget extends StatelessWidget {
-  const CreateOrEditReadingsScreenWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
+_buildContentScreen() {
+  return BlocBuilder<NewReadingBloc, NewReadingCreateState>(
+    builder: (context, state) {
+      return Column(
         children: [
-          buildAreaType(),
-          const SizedBox(height: 100),
+          _buildServicesList(),
+          state.readingItems.isEmpty
+              ? const SizedBox()
+              : _buildTypeAndUnitPicker(),
+          state.readingItems.isNotEmpty
+              ? Expanded(
+            child: SingleChildScrollView(
+              child: Column(children: [
+                state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.undetectableType
+                    ? const SizedBox()
+                    : state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.areaType
+                    ? AreaType(reading:state.readingItems[state.indexService])
+                    : state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.fixedType
+                    ? FixedType(reading: state.readingItems[state.indexService])
+                    : state.readingItems[state.indexService].typeMeasure ==ReadingTypeMeasure.singleZoneMeterType
+                    ? SingleZoneMeterType(reading: state.readingItems[state.indexService])
+                    : state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.twoZoneMeterType
+                    ? TwoZoneMeterType(reading: state.readingItems[state.indexService])
+                    : state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.threeZoneMeterType
+                    ? ThreeZoneMeterType(reading: state.readingItems[state.indexService])
+                    : const SizedBox(),
+                const SizedBox(height: 100)
+                      ],
+                    ),
+                  ),
+                )
+              : const SizedBox(),
         ],
-      ),
-    );
-  }
+      );
+    },
+  );
 }
 
 _buildServicesList() {
+  return BlocBuilder<NewReadingBloc, NewReadingCreateState>(
+    builder: (context, state) {
       return SizedBox(
-        height: 70,
+        height: 60,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: serviceList.length + 1,
+          itemCount: state.readingItems.length + 1,
           itemBuilder: (context, index) {
             final serviceIndex = index - 1;
             if (index == 0) {
               return _buildServiceItem(
-                  onTapAction: () =>
-                      context.router.pushNamed('/servicesScreen'));
+                onTapAction: () {
+                  if (state.readingItems.isNotEmpty) {
+                    if (textFieldKey.currentState == null) {
+                      print("formKey.currentState is null!");
+                    } else if (textFieldKey.currentState!.validate()) {
+                      context.router.push(
+                        ServicesRoute(blocContext: context),
+                      );
+                    }
+                  } else {
+                    context.router.push(
+                      ServicesRoute(blocContext: context),
+                    );
+                  }
+                },
+              );
             } else {
               return _buildServiceItem(
+                service: state.readingItems[serviceIndex],
                 index: serviceIndex,
                 onTapAction: () {
-                  print(serviceIndex);
+                  if (textFieldKey.currentState == null) {
+                    print("formKey.currentState is null!");
+                  } else if (textFieldKey.currentState!.validate()) {
+                    BlocProvider.of<NewReadingBloc>(context).add(
+                      NewReadingChangeServiceEvent(serviceIndex),
+                    );
+                  }
                 },
               );
             }
           },
         ),
       );
-  }
+    },
+  );
+}
 
-_buildServiceItem({int? index, required Function() onTapAction}) {
-  return BlocBuilder<ThemeBloc, ThemeState>(
-    builder: (context, state) {
-      final bgrColor = state.currentTheme == ThemeMode.light
+_buildServiceItem(
+    {int? index, ReadingItem? service, required Function() onTapAction}) {
+  return Builder(
+    builder: (context) {
+      final readingState = context.select((NewReadingBloc bloc) => bloc.state);
+      final themeState = context.select((ThemeBloc bloc) => bloc.state);
+      final bgrColor = themeState.currentTheme == ThemeMode.light
           ? AppColors.whiteFF
           : AppColors.darkBlue2A;
       return GestureDetector(
-          onTap: () => onTapAction(),
-          child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              decoration: BoxDecoration(
-                borderRadius: AppProperty.allBorderRadiusMediumSmall,
-                color: bgrColor,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: index == null
-                          ? AppColors.blueE
-                          : serviceList[index].iconColor,
-                      borderRadius: AppProperty.allBorderRadiusExtraLarge,
-                    ),
-                    child: index == null
-                        ? const Icon(
-                            Icons.add_circle_outline,
-                            color: AppColors.whiteFF)
-                        : Image(image: AssetImage(serviceList[index].img)),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                index == null
-                    ? AppLocalizations.of(context)!.add_service_button_inscription
-                    : serviceList[index].name,
-                style: Theme.of(context).textTheme.titleMedium,
-                    overflow: TextOverflow.ellipsis,
-                  )
-                ],
-              ),
+        onTap: () => onTapAction(),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: BoxDecoration(
+            borderRadius: AppProperty.allBorderRadiusMediumSmall,
+            color: bgrColor,
+            border: readingState.indexService == index
+                ? Border.all(width: 2, color: AppColors.blueE)
+                : null,
           ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(5),
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: index == null
+                      ? AppColors.blueE
+                      : AppColors.servicesColors[service!.iconColor],
+                  borderRadius: AppProperty.allBorderRadiusExtraLarge,
+                ),
+                child: index == null
+                    ? const Icon(
+                        Icons.add_circle_outline,
+                        color: AppColors.whiteFF,
+                      )
+                    : Image(
+                        image: AssetImage(
+                          AssetImagesConstant.servicesImg[service!.icon],
+                        ),
+                      ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                index == null
+                    ? AppLocalizations.of(context)!
+                        .add_service_button_inscription
+                    : service!.title,
+                style: Theme.of(context).textTheme.titleMedium,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],
+          ),
+        ),
       );
     },
   );
@@ -239,13 +268,16 @@ _buildServiceItem({int? index, required Function() onTapAction}) {
 _buildTypeAndUnitPicker() {
   return Align(
     alignment: const Alignment(0, 0.8),
-    child: BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (context, state) {
-        final bgrColor = state.currentTheme == ThemeMode.light
+    child: Builder(
+      builder: (context) {
+        final readingState =
+            context.select((NewReadingBloc bloc) => bloc.state);
+        final themeState = context.select((ThemeBloc bloc) => bloc.state);
+        final bgrColor = themeState.currentTheme == ThemeMode.light
             ? AppColors.whiteFF
             : AppColors.darkBlue2A;
         return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           height: 110,
           decoration: BoxDecoration(
             borderRadius: AppProperty.allBorderRadiusMedium,
@@ -256,21 +288,34 @@ _buildTypeAndUnitPicker() {
             children: [
               _buildDropdownItem(
                 context: context,
-                inscription:
-                    AppLocalizations.of(context)!.type_measurement_inscription.toUpperCase(),
+                dropdownValue: readingState
+                    .readingItems[readingState.indexService].typeMeasure,
+                inscription: AppLocalizations.of(context)!
+                    .type_measurement_inscription
+                    .toUpperCase(),
                 hintText: AppLocalizations.of(context)!
                     .choose_measurement_button_inscription,
-                valueList: typeDropList,
+                valueList: ReadingTypeMeasure.dropdownTypeMeasure,
+                onChanged: (String value) =>
+                    BlocProvider.of<NewReadingBloc>(context).add(
+                  NewReadingPickTypeMeasureEvent(value),
+                ),
               ),
               _buildDropdownItem(
+                dropdownValue: readingState
+                    .readingItems[readingState.indexService].unitMeasure,
                 context: context,
-                inscription:
-                    AppLocalizations.of(context)!.units_measurement_inscription.toUpperCase(),
+                inscription: AppLocalizations.of(context)!
+                    .units_measurement_inscription
+                    .toUpperCase(),
                 hintText: AppLocalizations.of(context)!
                     .choose_unit_button_inscription,
-                valueList: utilDropList,
+                valueList: ReadingUnitsMeasure.dropdownUnitsMeasure,
+                onChanged: (String value) =>
+                    BlocProvider.of<NewReadingBloc>(context).add(
+                  NewReadingPickUnitMeasureEvent(value),
+                ),
               ),
-
             ],
           ),
         );
@@ -279,11 +324,14 @@ _buildTypeAndUnitPicker() {
   );
 }
 
-_buildDropdownItem(
-    {required BuildContext context,
-    required String inscription,
-    required String hintText,
-    required List<String> valueList}) {
+_buildDropdownItem({
+  required BuildContext context,
+  required String inscription,
+  required String hintText,
+  required String dropdownValue,
+  required List<String> valueList,
+  required Function(String) onChanged,
+}) {
   return Expanded(
     child: BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, state) {
@@ -304,11 +352,8 @@ _buildDropdownItem(
                   isExpanded: true,
                   isDense: false,
                   itemHeight: 50,
+                  value: dropdownValue,
                   style: Theme.of(context).textTheme.titleMedium,
-                  hint: Text(
-                    hintText,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
                   dropdownColor: bgrColor,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(left: 15),
@@ -330,12 +375,13 @@ _buildDropdownItem(
                   ),
                   onChanged: (String? newValue) {
                     dropdownValue = newValue!;
+                    onChanged(newValue);
                   },
                   items: valueList.map<DropdownMenuItem<String>>(
                     (String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(getMeasureDisplayName(value, context)),
                       );
                     },
                   ).toList(),
@@ -375,10 +421,46 @@ _buildSaveButton(BuildContext context) {
         child: buildElevationButton(
           buttonText: AppLocalizations.of(context)!.save_button_inscription,
           buttonAction: () {
-            print('Зберегти');
+            if (textFieldKey.currentState == null) {
+              print("formKey.currentState is null!");
+            } else if (textFieldKey.currentState!.validate()) {
+              BlocProvider.of<NewReadingBloc>(context).add(
+                NewReadingSaveEvent(context),
+              );
+            }
           },
         ),
       );
     },
   );
+}
+
+getMeasureDisplayName(String value, BuildContext ctx) {
+  switch (value) {
+    case ReadingTypeMeasure.undetectableType:
+      return AppLocalizations.of(ctx)!.select_measurement_type_dropdown;
+    case ReadingTypeMeasure.areaType:
+      return AppLocalizations.of(ctx)!.by_area_dropdown;
+    case ReadingTypeMeasure.fixedType:
+      return AppLocalizations.of(ctx)!.fixed_dropdown;
+    case ReadingTypeMeasure.singleZoneMeterType:
+      return AppLocalizations.of(ctx)!.single_zone_meter_dropdown;
+    case ReadingTypeMeasure.twoZoneMeterType:
+      return AppLocalizations.of(ctx)!.two_zone_meter_dropdown;
+    case ReadingTypeMeasure.threeZoneMeterType:
+      return AppLocalizations.of(ctx)!.three_zone_meter_dropdown;
+
+    case ReadingUnitsMeasure.undetectableUnits:
+      return AppLocalizations.of(ctx)!.select_measurement_unit_dropdown;
+    case ReadingUnitsMeasure.kWUnit:
+      return AppLocalizations.of(ctx)!.kW_dropdown;
+    case ReadingUnitsMeasure.m2Unit:
+      return AppLocalizations.of(ctx)!.m2_dropdown;
+    case ReadingUnitsMeasure.m3Unit:
+      return AppLocalizations.of(ctx)!.m3_dropdown;
+    case ReadingUnitsMeasure.gCalUnit:
+      return AppLocalizations.of(ctx)!.gcal_dropdown;
+    default:
+      return '';
+  }
 }

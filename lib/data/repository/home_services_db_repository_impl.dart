@@ -1,13 +1,13 @@
 import '../../core/request_result/request_result.dart';
 import '../../domain/entities/service_entity.dart';
 import '../../domain/repository/home_services_db_repository.dart';
-import '../data_sources/sqflite_db_service.dart';
+import '../data_sources/sqflite_db.dart';
 import '../model/home_service_model.dart';
 
 class HomeServicesDBRepositoryImpl implements HomeServicesDBRepository {
   HomeServicesDBRepositoryImpl(this.dbServices);
 
-  final SQfliteDBServices dbServices;
+  final SQfliteDB dbServices;
 
   @override
   Future<RequestResult<List<HomeServiceModel>>> fetchServices() async {

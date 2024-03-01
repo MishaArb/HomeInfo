@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_colors.dart';
 
-buildShareAndDeleteButton() {
+buildShareAndDeleteButton(
+    {required void Function() onShare, required void Function() onDelete}) {
   return Padding(
     padding: const EdgeInsets.all(10.0),
     child: Row(
@@ -20,7 +21,7 @@ buildShareAndDeleteButton() {
           ),
           child: IconButton(
             padding: EdgeInsets.zero,
-            onPressed: () {},
+            onPressed: () => onShare(),
             icon: const Icon(
               Icons.share,
               color: AppColors.blueE,
@@ -40,7 +41,7 @@ buildShareAndDeleteButton() {
           ),
           child: IconButton(
             padding: EdgeInsets.zero,
-            onPressed: () {},
+            onPressed: () => onDelete(),
             icon: const Icon(
               Icons.delete_forever,
               color: AppColors.red02,

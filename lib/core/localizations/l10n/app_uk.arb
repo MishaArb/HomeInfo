@@ -8,6 +8,7 @@
   "theme_app_bar_title": "Тема",
   "language_app_bar_title": "Мова",
   "new_record_app_bar_title": "Новий запис",
+  "edit_record_app_bar_title": "Редагувати запис",
   "services_record_app_bar_title": "Послуги",
 
   "general_screen_title": "Загальні",
@@ -48,8 +49,9 @@
   "type_measurement_inscription" : "Тип\nвимірювання",
   "units_measurement_inscription" : "Одиниця\nвимірювання",
   "used_inscription" : "Використано:",
-  "used_day_inscription" : "Використано день:",
-  "used_night_inscription" : "Використано ніч:",
+  "used_day_inscription" : "Використано (день):",
+  "used_night_inscription" : "Використано (ніч):",
+  "used_half_peak_inscription" : "Використано (напівпік):",
   "sum_inscription" : "Сума:",
   "day_inscription" : "День",
   "night_inscription" : "Ніч",
@@ -73,7 +75,21 @@
   "field_cant_be_empty_error_text" : "Поле не може бути пустим",
 
   "language_screen_description" : "Виберіть потрібну мову та зробіть програму справді вашою. Налаштуйте свій досвід, вибравши мову, яка розмовляє з вами",
-  "theme_screen_description" : "Виберіть тему, яка відповідає вашому стилю та створює настрій для роботи з програмою"
+  "theme_screen_description" : "Виберіть тему, яка відповідає вашому стилю та створює настрій для роботи з програмою",
 
+  "select_measurement_type_dropdown" : "-Оберіть тип вимірювання-",
+  "select_measurement_unit_dropdown" : "-Оберіть одиницю вимірювання-",
+  "by_area_dropdown" : "За площу",
+  "fixed_dropdown" : "Фіксовано",
+  "single_zone_meter_dropdown" : "Однозонний лічильни",
+  "two_zone_meter_dropdown" : "Двозонний лічильник",
+  "three_zone_meter_dropdown" : "Тризонний лічильник",
+  "kW_dropdown" : "кВт",
+  "m2_dropdown" : "м²",
+  "m3_dropdown" : "м³",
+  "gcal_dropdown" : "Гкал",
 
+  "current_indicators_day_share" : "Поточні показники (день)",
+  "current_indicators_half_pick_share" : "Поточні (напівпік)",
+  "current_indicators_night_share" : "Поточні показники (ніч)"
 }

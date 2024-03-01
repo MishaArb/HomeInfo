@@ -104,9 +104,9 @@ class _NewReminderBottomSheetViewState
             Text(AppLocalizations.of(context)!.pick_date_screen_inscription),
             const Spacer(),
             TextButton(
-              onPressed: () {
-              BlocProvider.of<NewReminderBloc>(context).add(NewReminderPickDateEvent(context));
-              },
+              onPressed: () => BlocProvider.of<NewReminderBloc>(context).add(
+                NewReminderPickDateEvent(context),
+              ),
               child: Text(
                 DateFormat('dd-MM-yyyy').format(DateTime.parse(state.date)),
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -123,7 +123,6 @@ class _NewReminderBottomSheetViewState
   _buildRepeatCheckBox() {
     return BlocBuilder<NewReminderBloc, NewReminderState>(
       builder: (context, state) {
-
         return Row(
           children: [
             Text((AppLocalizations.of(context)!.repeat_screen_inscription)),
@@ -133,9 +132,8 @@ class _NewReminderBottomSheetViewState
               child: Checkbox(
                   value: state.isRepeat,
                   onChanged: (value) =>
-                    BlocProvider.of<NewReminderBloc>(context)
-                        .add(NewReminderRepeatEvent(value!))
-                 ),
+                      BlocProvider.of<NewReminderBloc>(context)
+                          .add(NewReminderRepeatEvent(value!))),
             )
           ],
         );
@@ -197,4 +195,3 @@ class _NewReminderBottomSheetViewState
     );
   }
 }
-

@@ -11,6 +11,6 @@ class FetchRemindersUseCase
 
   @override
   Future<RequestResult<List<ReminderEntity>>> call({void params}) async {
-    return await reminderDBRepository.fetchNotification();
+    return await reminderDBRepository.fetchReminders();
   }
 }

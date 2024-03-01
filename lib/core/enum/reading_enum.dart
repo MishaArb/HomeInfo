@@ -1,0 +1,1 @@
+enum ReadingActionType {newReading, editReading}

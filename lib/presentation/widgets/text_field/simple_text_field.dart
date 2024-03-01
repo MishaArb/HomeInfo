@@ -4,6 +4,7 @@ buildSimpleTextForm({
   required BuildContext context,
   required String hintText,
   required Function(String) onChanged,
+  required Function(String?) validateAction,
   required TextEditingController controller,
   TextInputType typeKeyboard = TextInputType.number
 }) {
@@ -14,7 +15,8 @@ buildSimpleTextForm({
       textCapitalization: TextCapitalization.words,
       maxLines: 1,
       controller: controller,
-      onChanged: (value) => onChanged,
+      onChanged: (value) => onChanged(value),
+      validator: (value) => validateAction(value),
       decoration: InputDecoration(
         hintText: hintText,
       ),

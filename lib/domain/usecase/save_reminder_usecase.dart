@@ -11,6 +11,6 @@ class SaveReminderUseCase implements UseCase<RequestResult<ReminderEntity>, Remi
 
   @override
   Future<RequestResult<ReminderEntity>> call({ReminderEntity? params}) async {
-     return await reminderDBRepository.createNotification(params!);
+     return await reminderDBRepository.createNewReminder(params!);
   }
 }
