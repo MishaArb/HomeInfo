@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:home_info/data/data_sources/shared_storage.service.dart';
 import 'package:home_info/data/repository/home_services_db_repository_impl.dart';
+import 'package:home_info/presentation/bloc/chart/chart_bloc.dart';
 import 'package:home_info/presentation/bloc/home_service/home_services/home_services_bloc.dart';
 import 'package:home_info/presentation/bloc/home_service/new_home_service/new_home_service_bloc.dart';
 import 'package:home_info/presentation/bloc/locale/locale_bloc.dart';
@@ -77,4 +78,5 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<HomeServicesBloc>(() => HomeServicesBloc(getIt(),getIt()));
   getIt.registerFactory<NewReadingBloc>(() => NewReadingBloc(getIt(), getIt(), getIt()));
   getIt.registerFactory<ReadingsBloc>(() => ReadingsBloc(getIt(),getIt()));
+  getIt.registerFactory<ChartBloc>(() => ChartBloc(getIt(), getIt()));
 }

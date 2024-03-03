@@ -88,6 +88,7 @@
   "m2_dropdown" : "m²",
   "m3_dropdown" : "m³",
   "gcal_dropdown" : "Gcal",
+  "total_dropdown" : "Total",
 
   "current_indicators_day_share" : "Current readings (day)",
   "current_indicators_half_pick_share" : "Current readings (half peak)",

@@ -359,17 +359,17 @@ _buildDropdownItem({
                     contentPadding: const EdgeInsets.only(left: 15),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                          const BorderSide(color: AppColors.blueE, width: 1),
+                          const BorderSide(color: AppColors.greyD9, width: 1),
                       borderRadius: AppProperty.allBorderRadiusMediumSmall,
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide:
-                          const BorderSide(color: AppColors.blueE, width: 1),
+                          const BorderSide(color: AppColors.greyD9, width: 1),
                       borderRadius: AppProperty.allBorderRadiusMediumSmall,
                     ),
                     disabledBorder: OutlineInputBorder(
                       borderSide:
-                          const BorderSide(color: AppColors.blueE, width: 1),
+                          const BorderSide(color: AppColors.greyD9, width: 1),
                       borderRadius: AppProperty.allBorderRadiusMediumSmall,
                     ),
                   ),

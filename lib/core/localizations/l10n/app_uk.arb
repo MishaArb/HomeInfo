@@ -88,6 +88,7 @@
   "m2_dropdown" : "м²",
   "m3_dropdown" : "м³",
   "gcal_dropdown" : "Гкал",
+  "total_dropdown" : "Загальний",
 
   "current_indicators_day_share" : "Поточні показники (день)",
   "current_indicators_half_pick_share" : "Поточні (напівпік)",
