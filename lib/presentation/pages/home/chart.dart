@@ -51,7 +51,7 @@ class Chart extends StatelessWidget {
         isExpanded: true,
         isDense: false,
         itemHeight: 60,
-        value: DropDownValue.totalValue,
+        value: chartState.dropDownsValue,
         style: Theme.of(context).textTheme.titleMedium,
         dropdownColor: bgrColor,
         decoration: InputDecoration(
