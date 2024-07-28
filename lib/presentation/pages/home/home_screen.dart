@@ -11,6 +11,7 @@ import '../../../core/constants/asset_image.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/enum/reading_enum.dart';
 import '../../../injection_container.dart';
+import '../../bloc/backup_restore_db/backup_restore_db_bloc.dart';
 import '../../bloc/chart/chart_bloc.dart';
 import '../../bloc/reading/readings/readings_bloc.dart';
 import '../../bloc/reminder/reminders/reminders_bloc.dart';
@@ -18,6 +19,7 @@ import '../../bloc/theme/theme_bloc.dart';
 import '../../widgets/alert_dialog/delete_alert_dialog.dart';
 import '../../widgets/readings_item/readings_item.dart';
 import '../../widgets/reminder_item/reminder_item.dart';
+import '../../widgets/snack_bar/snack_bar.dart';
 
 part 'chart.dart';
 
@@ -29,11 +31,39 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<ChartBloc>(
       create: (context) => getIt()..add(ChartInitEvent()),
-      child: BlocListener<ReadingsBloc, ReadingsState>(
-        listenWhen: (previous, current) => current is ReadingsSuccessState,
-        listener: (context, state) {
-         BlocProvider.of<ChartBloc>(context).add(ChartInitEvent());
-        },
+      child:MultiBlocListener(
+        listeners: [
+          BlocListener<ReadingsBloc, ReadingsState>(
+            listenWhen: (previous, current) => current is ReadingsSuccessState,
+            listener: (context, state) {
+              BlocProvider.of<ChartBloc>(context).add(ChartInitEvent());
+            },
+          ),
+          BlocListener<BackupRestoreDbBloc, BackupRestoreDbState>(
+            //  listenWhen: (previous, current) => current is RestoreDbSuccessState,
+            listener: (context, state) {
+              if(state is RestoreDbSuccessState){
+                BlocProvider.of<ReadingsBloc>(context).add(ReadingsFetchEvent());
+                BlocProvider.of<RemindersBloc>(context).add(RemindersFetchEvent());
+                ScaffoldMessenger.of(context).showSnackBar(
+                  buildSnackBar(state.successMessage, AppColors.blueE),
+                );
+              } else if(state is BackupDbSuccessState){
+                ScaffoldMessenger.of(context).showSnackBar(
+                  buildSnackBar(state.successMessage, AppColors.blueE),
+                );
+              } else if (state is RestoreDbErrorState) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  buildSnackBar(state.errorMessage, AppColors.red02),
+                );
+              } else if (state is BackupDbErrorState) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  buildSnackBar(state.errorMessage, AppColors.red02),
+                );
+              }
+            },
+          ),
+        ],
         child: Scaffold(
           appBar: AppBar(
             title: Text(
@@ -70,6 +100,8 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
+
 }
 
 _buildPeriodSwitcher(BuildContext context) {
@@ -111,56 +143,56 @@ _buildLatestReadingsList(BuildContext context) {
       if (state is ReadingsSuccessState) {
         return state.readings.isEmpty
             ? const Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Image(
-                  width: 100,
-                  height: 100,
-                  image: AssetImage(AssetImagesConstant.emptyReadingsIcon),
-                ),
-              )
+          padding: EdgeInsets.all(20.0),
+          child: Image(
+            width: 100,
+            height: 100,
+            image: AssetImage(AssetImagesConstant.emptyReadingsIcon),
+          ),
+        )
             : Column(
-                children: [
-                  for (var i = 0; i < state.readings.length && i < 2; i++)
-                    buildReadingsItem(
-                      date: state.readings[i].date,
-                      totalSum: double.parse(
-                        state.readings[i].totalSum.toStringAsFixed(2),
+          children: [
+            for (var i = 0; i < state.readings.length && i < 2; i++)
+              buildReadingsItem(
+                date: state.readings[i].date,
+                totalSum: double.parse(
+                  state.readings[i].totalSum.toStringAsFixed(2),
+                ),
+                percentDifference: i == state.readings.length - 1
+                    ? 0.0
+                    : double.parse((((state.readings[i].totalSum -
+                    state.readings[i + 1].totalSum) /
+                    state.readings[i + 1].totalSum) *
+                    100)
+                    .toStringAsFixed(2)),
+                sumDifference: i == state.readings.length - 1
+                    ? 0
+                    : double.parse(
+                  (state.readings[i].totalSum -
+                      state.readings[i + 1].totalSum)
+                      .toStringAsFixed(2),
+                ),
+                onTap: () => BlocProvider.of<NewReadingBloc>(context).add(
+                  NewReadingInitEvent(
+                    context: context,
+                    readingActionType: ReadingActionType.editReading,
+                    readingIndex: i,
+                  ),
+                ),
+                onPressed: (cxt) => buildDeleteAlertDialog(
+                  context,
+                      () {
+                    BlocProvider.of<ReadingsBloc>(context).add(
+                      ReadingsDeleteEvent(
+                        id: state.readings[i].id,
+                        context: context,
                       ),
-                      percentDifference: i == state.readings.length - 1
-                          ? 0.0
-                          : double.parse((((state.readings[i].totalSum -
-                                          state.readings[i + 1].totalSum) /
-                                      state.readings[i + 1].totalSum) *
-                                  100)
-                              .toStringAsFixed(2)),
-                      sumDifference: i == state.readings.length - 1
-                          ? 0
-                          : double.parse(
-                              (state.readings[i].totalSum -
-                                      state.readings[i + 1].totalSum)
-                                  .toStringAsFixed(2),
-                            ),
-                      onTap: () => BlocProvider.of<NewReadingBloc>(context).add(
-                        NewReadingInitEvent(
-                          context: context,
-                          readingActionType: ReadingActionType.editReading,
-                          readingIndex: i,
-                        ),
-                      ),
-                      onPressed: (cxt) => buildDeleteAlertDialog(
-                        context,
-                        () {
-                          BlocProvider.of<ReadingsBloc>(context).add(
-                            ReadingsDeleteEvent(
-                              id: state.readings[i].id,
-                              context: context,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                ],
-              );
+                    );
+                  },
+                ),
+              ),
+          ],
+        );
       } else {
         return const SizedBox(
           height: 50,
@@ -178,31 +210,31 @@ _buildLatestReminders(BuildContext context) {
       if (state is RemindersSuccessState) {
         return state.reminders.isEmpty
             ? const Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Image(
-                  width: 100,
-                  height: 100,
-                  image: AssetImage(AssetImagesConstant.emptyRemindersIcon),
-                ),
-              )
+          padding: EdgeInsets.all(20.0),
+          child: Image(
+            width: 100,
+            height: 100,
+            image: AssetImage(AssetImagesConstant.emptyRemindersIcon),
+          ),
+        )
             : Column(
-                children: [
-                  for (var i = 0; i < state.reminders.length && i < 2; i++)
-                    buildReminderItem(
+          children: [
+            for (var i = 0; i < state.reminders.length && i < 2; i++)
+              buildReminderItem(
+                context: context,
+                reminderItem: state.reminders[i],
+                onPressed: (cxt) => buildDeleteAlertDialog(context, () {
+                  BlocProvider.of<RemindersBloc>(context).add(
+                    RemindersDeleteEvent(
+                      id: state.reminders[i].id,
+                      notificationId: state.reminders[i].notificationId,
                       context: context,
-                      reminderItem: state.reminders[i],
-                      onPressed: (cxt) => buildDeleteAlertDialog(context, () {
-                        BlocProvider.of<RemindersBloc>(context).add(
-                          RemindersDeleteEvent(
-                            id: state.reminders[i].id,
-                            notificationId: state.reminders[i].notificationId,
-                            context: context,
-                          ),
-                        );
-                      }),
                     ),
-                ],
-              );
+                  );
+                }),
+              ),
+          ],
+        );
       } else {
         return const SizedBox(
           height: 50,

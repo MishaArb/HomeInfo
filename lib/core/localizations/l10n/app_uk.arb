@@ -92,5 +92,10 @@
 
   "current_indicators_day_share" : "Поточні показники (день)",
   "current_indicators_half_pick_share" : "Поточні (напівпік)",
-  "current_indicators_night_share" : "Поточні показники (ніч)"
+  "current_indicators_night_share" : "Поточні показники (ніч)",
+
+  "selected_file_is_not_database" : "Вибраний файл не є базою даних",
+  "db_has_been_restored" : "Базу даних відновлено",
+  "error_try_again_later" : "Сталась помилка. Спробуйте пізніше",
+  "db_saved" : "Базу даних збережено"
 }

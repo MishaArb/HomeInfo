@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_info/core/themes/app_theme.dart';
+import 'package:home_info/presentation/bloc/backup_restore_db/backup_restore_db_bloc.dart';
 import 'package:home_info/presentation/bloc/locale/locale_bloc.dart';
 import 'package:home_info/presentation/bloc/reading/new_reading/new_reading_bloc.dart';
 import 'package:home_info/presentation/bloc/reading/readings/readings_bloc.dart';
@@ -40,6 +41,9 @@ class HomeInfoApp extends StatelessWidget {
         BlocProvider<NewReadingBloc>(
           create: (context) => getIt<NewReadingBloc>(),
         ),
+        BlocProvider(
+          create: (context) => getIt<BackupRestoreDbBloc>(),
+        )
       ],
       child: Builder(
         builder: (context) {
