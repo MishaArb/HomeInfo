@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_info/core/constants/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../bloc/backup_restore_db/backup_restore_db_bloc.dart';
 @RoutePage()
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -9,7 +12,8 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.settings_app_bar_title),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.settings_app_bar_title),
       ),
       body: const SettingsScreenView(),
     );
@@ -32,11 +36,16 @@ class _SettingsItemsListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildSettingsItemList(context);
+    return BlocBuilder<BackupRestoreDbBloc, BackupRestoreDbState>(
+      builder: (context, state) {
+        final backupRestoreBloc = BlocProvider.of<BackupRestoreDbBloc>(context);
+        return _buildSettingsItemList(context, backupRestoreBloc);
+      },
+    );
   }
 }
 
-_buildSettingsItemList(BuildContext context) {
+_buildSettingsItemList(BuildContext context, var bloc) {
   return SingleChildScrollView(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,26 +76,28 @@ _buildSettingsItemList(BuildContext context) {
         ),
         _buildSettingsSectionTitle(
             title: AppLocalizations.of(context)!.backup_screen_title,
-            context: context
-        ),
+            context: context),
         _buildSettingsItem(
           context: context,
           icon: Icons.file_upload_outlined,
           iconColor: AppColors.purple7D,
           title: AppLocalizations.of(context)!.export_button_inscription,
-          onTapAction: () {},
+          onTapAction: () {
+            bloc.add(BackupDbEvent(context));
+          },
         ),
         _buildSettingsItem(
           context: context,
           icon: Icons.file_download_outlined,
           iconColor: AppColors.pinkAF,
           title: AppLocalizations.of(context)!.import_button_inscription,
-          onTapAction: () {},
+          onTapAction: () {
+            bloc.add(RestoreDbEvent(context));
+          },
         ),
         _buildSettingsSectionTitle(
-           title: AppLocalizations.of(context)!.about_us_screen_title,
-            context: context
-        ),
+            title: AppLocalizations.of(context)!.about_us_screen_title,
+            context: context),
         _buildSettingsItem(
           context: context,
           icon: Icons.share,
@@ -120,10 +131,8 @@ _buildSettingsItemList(BuildContext context) {
   );
 }
 
-_buildSettingsSectionTitle({
-  required String title,
-  required BuildContext context
-}) {
+_buildSettingsSectionTitle(
+    {required String title, required BuildContext context}) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
     child: Text(

@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:home_info/data/data_sources/shared_storage.service.dart';
 import 'package:home_info/data/repository/home_services_db_repository_impl.dart';
+import 'package:home_info/presentation/bloc/backup_restore_db/backup_restore_db_bloc.dart';
 import 'package:home_info/presentation/bloc/chart/chart_bloc.dart';
 import 'package:home_info/presentation/bloc/home_service/home_services/home_services_bloc.dart';
 import 'package:home_info/presentation/bloc/home_service/new_home_service/new_home_service_bloc.dart';
@@ -13,21 +14,25 @@ import 'package:home_info/presentation/bloc/theme/theme_bloc.dart';
 
 import 'core/router/router.dart';
 import 'data/data_sources/sqflite_db.dart';
+import 'data/repository/backup_restore_db_repository_impl.dart';
 import 'data/repository/local_notification_repository_imp.dart';
 import 'data/repository/reading_db_repository.impl.dart';
 import 'data/repository/reminder_db_repository.impl.dart';
 import 'data/repository/storage_repository_impl.dart';
 import 'data/services/local_notification_services.dart';
+import 'domain/repository/backup_restore_db_repository.dart';
 import 'domain/repository/home_services_db_repository.dart';
 import 'domain/repository/local_notification_repository.dart';
 import 'domain/repository/reading_db_repository.dart';
 import 'domain/repository/reminder_db_repository.dart';
 import 'domain/repository/storage_repository.dart';
+import 'domain/usecase/backup_db_usercase.dart';
 import 'domain/usecase/delete_home_service_usercase.dart';
 import 'domain/usecase/delete_local_notification_usecase.dart';
 import 'domain/usecase/delete_reading_usercase.dart';
 import 'domain/usecase/fetch_home_service_usercase.dart';
 import 'domain/usecase/fetch_readings_usercase.dart';
+import 'domain/usecase/restore_db_usercase.dart';
 import 'domain/usecase/save_home_service_usercase.dart';
 import 'domain/usecase/save_reading_usercase.dart';
 import 'domain/usecase/set_local_notification_usecase.dart';
@@ -35,6 +40,7 @@ import 'domain/usecase/save_reminder_usecase.dart';
 import 'domain/usecase/delete_reminder_usecase.dart';
 import 'domain/usecase/fetch_reminders_usecase.dart';
 import 'domain/usecase/update_reading_usercase.dart';
+
 
 final getIt = GetIt.instance;
 
@@ -48,12 +54,13 @@ Future<void> setupGetIt() async {
   ///Services
   getIt.registerSingleton<LocalNotificationService>(LocalNotificationService());
 
- /// Repository
+  /// Repository
   getIt.registerSingleton<StorageRepository>(StorageRepositoryImpl(getIt()));
   getIt.registerSingleton<ReminderDBRepository>(ReminderDBRepositoryImpl(getIt()));
   getIt.registerSingleton<LocalNotificationRepository>(LocalNotificationRepositoryImpl(getIt()));
   getIt.registerSingleton<HomeServicesDBRepository>(HomeServicesDBRepositoryImpl(getIt()));
   getIt.registerSingleton<ReadingDBRepository>(ReadingDBRepositoryImpl(getIt()));
+  getIt.registerSingleton<BackupRestoreDBRepository>(BackupRestoreDBRepositoryImpl());
 
   /// UseCase
   getIt.registerSingleton<FetchRemindersUseCase>(FetchRemindersUseCase(getIt()));
@@ -68,6 +75,8 @@ Future<void> setupGetIt() async {
   getIt.registerSingleton<UpdateReadingUseCase>(UpdateReadingUseCase(getIt()));
   getIt.registerSingleton<FetchReadingsUseCase>(FetchReadingsUseCase(getIt()));
   getIt.registerSingleton<DeleteReadingUseCase>(DeleteReadingUseCase(getIt()));
+  getIt.registerSingleton<RestoreDbUserCase>(RestoreDbUserCase(getIt()));
+  getIt.registerSingleton<BackupDBUseCase>(BackupDBUseCase(getIt()));
 
   ///BLOC
   getIt.registerFactory<ThemeBloc>(() => ThemeBloc(getIt()));
@@ -79,4 +88,5 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<NewReadingBloc>(() => NewReadingBloc(getIt(), getIt(), getIt()));
   getIt.registerFactory<ReadingsBloc>(() => ReadingsBloc(getIt(),getIt()));
   getIt.registerFactory<ChartBloc>(() => ChartBloc(getIt(), getIt()));
+  getIt.registerFactory<BackupRestoreDbBloc>(() => BackupRestoreDbBloc(getIt(), getIt()));
 }

@@ -92,7 +92,10 @@
 
   "current_indicators_day_share" : "Current readings (day)",
   "current_indicators_half_pick_share" : "Current readings (half peak)",
-  "current_indicators_night_share" : "Current readings (night)"
+  "current_indicators_night_share" : "Current readings (night)",
 
-
+  "selected_file_is_not_database" : "The selected file is not a database",
+  "db_has_been_restored" : "The database has been restored",
+  "error_try_again_later" : "An error occurred. Try again later",
+  "db_saved" : "Database saved"
 }
