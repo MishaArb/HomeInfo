@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.easyspaceg.homeinfo.home_info"
-    compileSdkVersion 33
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     defaultConfig {

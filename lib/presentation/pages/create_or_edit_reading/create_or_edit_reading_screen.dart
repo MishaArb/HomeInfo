@@ -14,8 +14,8 @@ import '../../../core/router/router.dart';
 import '../../../data/model/reading_model.dart';
 import '../../bloc/reading/readings/readings_bloc.dart';
 import '../../bloc/theme/theme_bloc.dart';
+import '../../widgets/buttons/buttons_with_icon.dart';
 import '../../widgets/buttons/elevated_button.dart';
-import '../../widgets/buttons/share_and_delete_button.dart';
 import '../../widgets/text/result_inscription.dart';
 import '../../widgets/text_field/description_text_form.dart';
 import '../../widgets/text_field/simple_text_field.dart';
@@ -118,27 +118,28 @@ _buildAppBar(BuildContext context) {
 _buildContentScreen() {
   return BlocBuilder<NewReadingBloc, NewReadingCreateState>(
     builder: (context, state) {
+      final items = state.readingItems;
       return Column(
         children: [
           _buildServicesList(),
-          state.readingItems.isEmpty
+          items.isEmpty
               ? const SizedBox()
               : _buildTypeAndUnitPicker(),
-          state.readingItems.isNotEmpty
+          items.isNotEmpty
               ? Expanded(
             child: SingleChildScrollView(
               child: Column(children: [
-                state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.undetectableType
+                items[state.indexService].typeMeasure == ReadingTypeMeasure.undetectableType
                     ? const SizedBox()
-                    : state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.areaType
-                    ? AreaType(reading:state.readingItems[state.indexService])
-                    : state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.fixedType
-                    ? FixedType(reading: state.readingItems[state.indexService])
-                    : state.readingItems[state.indexService].typeMeasure ==ReadingTypeMeasure.singleZoneMeterType
-                    ? SingleZoneMeterType(reading: state.readingItems[state.indexService])
-                    : state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.twoZoneMeterType
-                    ? TwoZoneMeterType(reading: state.readingItems[state.indexService])
-                    : state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.threeZoneMeterType
+                    : items[state.indexService].typeMeasure == ReadingTypeMeasure.areaType
+                    ? AreaType(reading: items[state.indexService])
+                    : items[state.indexService].typeMeasure == ReadingTypeMeasure.fixedType
+                    ? FixedType(reading: items[state.indexService])
+                    : items[state.indexService].typeMeasure ==ReadingTypeMeasure.singleZoneMeterType
+                    ? SingleZoneMeterType(reading: items[state.indexService])
+                    : items[state.indexService].typeMeasure == ReadingTypeMeasure.twoZoneMeterType
+                    ? TwoZoneMeterType(reading: items[state.indexService])
+                    : items[state.indexService].typeMeasure == ReadingTypeMeasure.threeZoneMeterType
                     ? ThreeZoneMeterType(reading: state.readingItems[state.indexService])
                     : const SizedBox(),
                 const SizedBox(height: 100)
@@ -397,14 +398,28 @@ _buildDropdownItem({
 
 _buildSaveButton(BuildContext context) {
   return BlocBuilder<ThemeBloc, ThemeState>(
-    builder: (context, state) {
-      final bgrColor = state.currentTheme == ThemeMode.light
+    builder: (context, themeState) {
+      final bgrColor = themeState.currentTheme == ThemeMode.light
           ? AppColors.whiteFF
           : AppColors.darkBlue2A;
-      final shadow = state.currentTheme == ThemeMode.light
+      final shadow = themeState.currentTheme == ThemeMode.light
           ? AppColors.greyD9
           : AppColors.black00.withOpacity(0.3);
-      return Container(
+      return BlocBuilder<NewReadingBloc, NewReadingCreateState>(
+        builder: (context, newReadingState) {
+          final items = newReadingState.readingItems;
+         String getCurrentUnitMeasure(){
+           final unitMeasure =
+           items[newReadingState.indexService ].unitMeasure == ReadingUnitsMeasure.undetectableUnits
+               ? ''
+               : getMeasureDisplayName(items[newReadingState.indexService].unitMeasure, context);
+           return unitMeasure;
+          }
+
+          final locale = AppLocalizations.of(context)!;
+
+
+    return Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
           color: bgrColor,
@@ -418,22 +433,85 @@ _buildSaveButton(BuildContext context) {
           ],
         ),
         height: 80,
-        child: buildElevationButton(
-          buttonText: AppLocalizations.of(context)!.save_button_inscription,
-          buttonAction: () {
-            if (textFieldKey.currentState == null) {
-              print("formKey.currentState is null!");
-            } else if (textFieldKey.currentState!.validate()) {
-              BlocProvider.of<NewReadingBloc>(context).add(
-                NewReadingSaveEvent(context),
-              );
-            }
-          },
+        child: Row(
+          children: [
+            items.isNotEmpty
+                ? buildButtonsWithIcon(
+              reading: items[newReadingState.indexService],
+              icon: Icons.delete_outline_outlined,
+              iconBgrColor: AppColors.red02,
+              onFunc: () => BlocProvider.of<NewReadingBloc>(context).add(
+                NewReadingDeleteServiceEvent(),
+              ),
+
+            )
+                : const SizedBox(),
+            const SizedBox(width: 5,),
+            Expanded(
+              child: buildElevationButton(
+                buttonText: AppLocalizations.of(context)!.save_button_inscription,
+                buttonAction: () {
+                  if (textFieldKey.currentState == null) {
+                    print("formKey.currentState is null!");
+                  } else if (textFieldKey.currentState!.validate()) {
+                    BlocProvider.of<NewReadingBloc>(context).add(
+                      NewReadingSaveEvent(context),
+                    );
+                  }
+                },
+              ),
+            ),
+            const SizedBox(width: 5,),
+            items.isNotEmpty
+            ? buildButtonsWithIcon(
+                        reading: items[newReadingState.indexService],
+                        icon: Icons.share,
+                        iconBgrColor: AppColors.blueD7,
+                        onFunc: () {
+                          items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.undetectableType
+                              ? Share.share('')
+                              : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.areaType
+                              ? Share.share(
+                              '${items[newReadingState.indexService].title}\n'
+                                  '${locale.sum_inscription} ${newReadingState.readingItems[newReadingState.indexService].sum.toStringAsFixed(2)}')
+                              : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.fixedType
+                              ? Share.share(
+                              '${items[newReadingState.indexService].title}\n'
+                                  '${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)}')
+                              : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.singleZoneMeterType
+                              ? Share.share('${items[newReadingState.indexService].title}\n'
+                              '${locale.current_readings_unit_hint_text}: ${items[newReadingState.indexService].currentReading}\n'
+                              '${locale.used_inscription} ${items[newReadingState.indexService].used} ${getCurrentUnitMeasure()}'
+                              '\n${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)}')
+                              : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.twoZoneMeterType
+                              ?  Share.share('${items[newReadingState.indexService].title}\n'
+                                 '${locale.current_indicators_day_share}: ${items[newReadingState.indexService].currentReadingDay}\n'
+                                 '${locale.current_indicators_night_share}: ${items[newReadingState.indexService].currentReadingNight}\n'
+                                 '${locale.used_day_inscription} ${items[newReadingState.indexService].usedDay} ${getCurrentUnitMeasure()}\n'
+                                 '${locale.used_night_inscription} ${items[newReadingState.indexService].usedNight} ${getCurrentUnitMeasure()}\n'
+                                 '${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)}')
+                              : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.threeZoneMeterType
+                              ? Share.share('${items[newReadingState.indexService].title}\n'
+                              '${locale.current_indicators_day_share}: ${items[newReadingState.indexService].currentReadingDay}\n'
+                              '${locale.current_indicators_half_pick_share}: ${items[newReadingState.indexService].currentReadingHalfPeak}\n'
+                              '${locale.current_indicators_night_share}: ${items[newReadingState.indexService].currentReadingNight}\n'
+                              '${locale.used_day_inscription} ${items[newReadingState.indexService].usedDay} ${getCurrentUnitMeasure()}\n'
+                              '${locale.used_half_peak_inscription} ${items[newReadingState.indexService].usedHalfPeak} ${getCurrentUnitMeasure()}\n'
+                              '${locale.used_night_inscription} ${items[newReadingState.indexService].usedNight} ${getCurrentUnitMeasure()}\n'
+                              '${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)}')
+                               : Share.share('');
+                          },
+                      )
+            : const SizedBox()
+              ],
         ),
       );
+  },
+);
     },
   );
 }
+
 
 getMeasureDisplayName(String value, BuildContext ctx) {
   switch (value) {

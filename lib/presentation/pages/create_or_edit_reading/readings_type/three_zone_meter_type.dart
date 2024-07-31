@@ -417,21 +417,6 @@ class _ThreeZoneMeterTypeState extends State<ThreeZoneMeterType> {
                   title: AppLocalizations.of(context)!.sum_inscription,
                   result: '${widget.reading.sum.toStringAsFixed(2)}  грн',
                 ),
-                buildShareAndDeleteButton(
-                  onShare: () {
-                    Share.share('${widget.reading.title}\n'
-                        '${AppLocalizations.of(context)!.current_indicators_day_share}: ${widget.reading.currentReadingDay}\n'
-                        '${AppLocalizations.of(context)!.current_indicators_half_pick_share}: ${widget.reading.currentReadingHalfPeak}\n'
-                        '${AppLocalizations.of(context)!.current_indicators_night_share}: ${widget.reading.currentReadingNight}\n'
-                        '${AppLocalizations.of(context)!.used_day_inscription} ${widget.reading.usedDay} $unitMeasure\n'
-                        '${AppLocalizations.of(context)!.used_half_peak_inscription} ${widget.reading.usedHalfPeak} $unitMeasure\n'
-                        '${AppLocalizations.of(context)!.used_night_inscription} ${widget.reading.usedNight} $unitMeasure\n'
-                        '${AppLocalizations.of(context)!.sum_inscription} ${widget.reading.sum.toStringAsFixed(2)}');
-                  },
-                  onDelete: () => BlocProvider.of<NewReadingBloc>(context).add(
-                    NewReadingDeleteServiceEvent(),
-                  ),
-                ),
               ],
             ),
           ),

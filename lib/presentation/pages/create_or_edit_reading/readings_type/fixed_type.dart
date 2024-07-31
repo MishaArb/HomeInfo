@@ -88,15 +88,6 @@ class _FixedTypeState extends State<FixedType> {
                   title: AppLocalizations.of(context)!.sum_inscription,
                   result: '${widget.reading.sum.toStringAsFixed(2)} грн',
                 ),
-                buildShareAndDeleteButton(
-                  onShare: () {
-                    Share.share('${widget.reading.title}\n'
-                        '${AppLocalizations.of(context)!.sum_inscription} ${widget.reading.sum.toStringAsFixed(2)}');
-                  },
-                  onDelete: () => BlocProvider.of<NewReadingBloc>(context).add(
-                    NewReadingDeleteServiceEvent(),
-                  ),
-                ),
               ],
             ),
           ),
