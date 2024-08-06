@@ -12,6 +12,7 @@ import '../../../core/constants/reading.dart';
 import '../../../core/enum/reading_enum.dart';
 import '../../../core/router/router.dart';
 import '../../../data/model/reading_model.dart';
+import '../../bloc/currency/currency_bloc.dart';
 import '../../bloc/reading/readings/readings_bloc.dart';
 import '../../bloc/theme/theme_bloc.dart';
 import '../../widgets/buttons/buttons_with_icon.dart';
@@ -463,7 +464,9 @@ _buildSaveButton(BuildContext context) {
             ),
             const SizedBox(width: 5,),
             items.isNotEmpty
-            ? buildButtonsWithIcon(
+            ? BlocBuilder<CurrencyBloc, CurrencyState>(
+              builder: (context, state) {
+              return buildButtonsWithIcon(
                         reading: items[newReadingState.indexService],
                         icon: Icons.share,
                         iconBgrColor: AppColors.blueD7,
@@ -473,23 +476,23 @@ _buildSaveButton(BuildContext context) {
                               : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.areaType
                               ? Share.share(
                               '${items[newReadingState.indexService].title}\n'
-                                  '${locale.sum_inscription} ${newReadingState.readingItems[newReadingState.indexService].sum.toStringAsFixed(2)}')
+                                  '${locale.sum_inscription} ${newReadingState.readingItems[newReadingState.indexService].sum.toStringAsFixed(2)} ${state.currency}')
                               : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.fixedType
                               ? Share.share(
                               '${items[newReadingState.indexService].title}\n'
-                                  '${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)}')
+                                  '${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)} ${state.currency}')
                               : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.singleZoneMeterType
                               ? Share.share('${items[newReadingState.indexService].title}\n'
                               '${locale.current_readings_unit_hint_text}: ${items[newReadingState.indexService].currentReading}\n'
                               '${locale.used_inscription} ${items[newReadingState.indexService].used} ${getCurrentUnitMeasure()}'
-                              '\n${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)}')
+                              '\n${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)} ${state.currency}')
                               : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.twoZoneMeterType
                               ?  Share.share('${items[newReadingState.indexService].title}\n'
                                  '${locale.current_indicators_day_share}: ${items[newReadingState.indexService].currentReadingDay}\n'
                                  '${locale.current_indicators_night_share}: ${items[newReadingState.indexService].currentReadingNight}\n'
                                  '${locale.used_day_inscription} ${items[newReadingState.indexService].usedDay} ${getCurrentUnitMeasure()}\n'
                                  '${locale.used_night_inscription} ${items[newReadingState.indexService].usedNight} ${getCurrentUnitMeasure()}\n'
-                                 '${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)}')
+                                 '${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)} ${state.currency}')
                               : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.threeZoneMeterType
                               ? Share.share('${items[newReadingState.indexService].title}\n'
                               '${locale.current_indicators_day_share}: ${items[newReadingState.indexService].currentReadingDay}\n'
@@ -498,10 +501,12 @@ _buildSaveButton(BuildContext context) {
                               '${locale.used_day_inscription} ${items[newReadingState.indexService].usedDay} ${getCurrentUnitMeasure()}\n'
                               '${locale.used_half_peak_inscription} ${items[newReadingState.indexService].usedHalfPeak} ${getCurrentUnitMeasure()}\n'
                               '${locale.used_night_inscription} ${items[newReadingState.indexService].usedNight} ${getCurrentUnitMeasure()}\n'
-                              '${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)}')
+                              '${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)} ${state.currency}')
                                : Share.share('');
                           },
-                      )
+                      );
+  },
+)
             : const SizedBox()
               ],
         ),

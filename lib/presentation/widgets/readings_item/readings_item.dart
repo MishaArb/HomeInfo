@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../bloc/currency/currency_bloc.dart';
 import '../../bloc/theme/theme_bloc.dart';
 
 SizedBox buildReadingsItem({
@@ -15,9 +16,11 @@ SizedBox buildReadingsItem({
   required Function(BuildContext) onPressed,
 }) {
   return SizedBox(
-    child: BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (context, state) {
-        final borderColor = state.currentTheme == ThemeMode.light
+    child: Builder(
+      builder: (context) {
+        final themeState = context.select((ThemeBloc bloc) => bloc.state);
+        final currencyState = context.select((CurrencyBloc bloc) => bloc.state);
+        final borderColor = themeState.currentTheme == ThemeMode.light
             ? AppColors.greyD9
             : AppColors.darkBlue2A;
         return Slidable(
@@ -74,7 +77,7 @@ SizedBox buildReadingsItem({
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               subtitle: Text(
-                '$totalSum грн',
+                '$totalSum ${currencyState.currency}',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               trailing: Column(
@@ -111,7 +114,7 @@ SizedBox buildReadingsItem({
                     ),
                   ),
                   Text(
-                    '${sumDifference > 0 ? '+' : sumDifference == 0 ? '' : ''}$sumDifference грн',
+                    '${sumDifference > 0 ? '+' : sumDifference == 0 ? '' : ''}$sumDifference ${currencyState.currency}',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],

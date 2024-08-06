@@ -3,6 +3,7 @@ import 'package:home_info/data/data_sources/shared_storage.service.dart';
 import 'package:home_info/data/repository/home_services_db_repository_impl.dart';
 import 'package:home_info/presentation/bloc/backup_restore_db/backup_restore_db_bloc.dart';
 import 'package:home_info/presentation/bloc/chart/chart_bloc.dart';
+import 'package:home_info/presentation/bloc/currency/currency_bloc.dart';
 import 'package:home_info/presentation/bloc/home_service/home_services/home_services_bloc.dart';
 import 'package:home_info/presentation/bloc/home_service/new_home_service/new_home_service_bloc.dart';
 import 'package:home_info/presentation/bloc/locale/locale_bloc.dart';
@@ -89,4 +90,5 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<ReadingsBloc>(() => ReadingsBloc(getIt(),getIt()));
   getIt.registerFactory<ChartBloc>(() => ChartBloc(getIt(), getIt()));
   getIt.registerFactory<BackupRestoreDbBloc>(() => BackupRestoreDbBloc(getIt(), getIt()));
+  getIt.registerFactory<CurrencyBloc>(() => CurrencyBloc(getIt()));
 }

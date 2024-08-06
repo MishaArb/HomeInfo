@@ -74,6 +74,13 @@ _buildSettingsItemList(BuildContext context, var bloc) {
           title: AppLocalizations.of(context)!.language_app_bar_title,
           onTapAction: () => context.router.pushNamed('/languageScreen'),
         ),
+        _buildSettingsItem(
+          context: context,
+          icon: Icons.currency_exchange_sharp,
+          iconColor: AppColors.green07,
+          title: AppLocalizations.of(context)!.currency_button_inscription,
+          onTapAction: () => context.router.pushNamed('/currencyScreen'),
+        ),
         _buildSettingsSectionTitle(
             title: AppLocalizations.of(context)!.backup_screen_title,
             context: context),

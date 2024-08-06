@@ -231,7 +231,8 @@ _buildLatestReminders(BuildContext context) {
                       context: context,
                     ),
                   );
-                }),
+                },
+                ),
               ),
           ],
         );

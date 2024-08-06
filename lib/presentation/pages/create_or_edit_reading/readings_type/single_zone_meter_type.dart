@@ -26,9 +26,11 @@ class _SingleZoneMeterTypeState extends State<SingleZoneMeterType> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (context, state) {
-        final bgrColor = state.currentTheme == ThemeMode.light
+    return Builder(
+      builder: (context) {
+        final themeState = context.select((ThemeBloc bloc) => bloc.state);
+        final currencyState = context.select((CurrencyBloc bloc) => bloc.state);
+        final bgrColor = themeState.currentTheme == ThemeMode.light
             ? AppColors.whiteFF
             : AppColors.darkBlue2A;
         final unitMeasure =
@@ -153,7 +155,7 @@ class _SingleZoneMeterTypeState extends State<SingleZoneMeterType> {
                 buildResultInscription(
                   context: context,
                   title: AppLocalizations.of(context)!.sum_inscription,
-                  result: '${widget.reading.sum.toStringAsFixed(2)}  грн',
+                  result: '${widget.reading.sum.toStringAsFixed(2)} ${currencyState.currency}',
                 ),
               ],
             ),
