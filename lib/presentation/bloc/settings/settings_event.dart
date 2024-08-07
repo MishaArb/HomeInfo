@@ -25,3 +25,7 @@ class SettingsGoToLanguageScreenEvent extends SettingsEvent {
 class SettingsGoToCurrencyScreenEvent extends SettingsEvent {
   SettingsGoToCurrencyScreenEvent(super.context);
 }
+
+class SettingsFeedbackEvent extends SettingsEvent {
+  SettingsFeedbackEvent(super.context);
+}

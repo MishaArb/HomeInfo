@@ -3,7 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 part 'settings_event.dart';
 
 part 'settings_state.dart';
@@ -15,6 +15,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsGoToThemeScreenEvent>(_onGoToThemeScreen);
     on<SettingsGoToLanguageScreenEvent>(_onGoToLanguageScreen);
     on<SettingsGoToCurrencyScreenEvent>(_onGoToCurrencyScreen);
+    on<SettingsFeedbackEvent>(_onFeedback);
   }
 
   _onInit(SettingsInitEvent event, Emitter<SettingsState> emit) async {
@@ -42,4 +43,17 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       SettingsGoToCurrencyScreenEvent event, Emitter<SettingsState> emit) {
     event.context.router.pushNamed('/currencyScreen');
   }
+
+  _onFeedback(
+      SettingsFeedbackEvent event, Emitter<SettingsState> emit) async{
+    final Email email = Email(
+      body: '',
+      subject: 'HomeInfo',
+      recipients: ['easyspaceg@gmail.com'],
+      isHTML: false,
+    );
+
+    await FlutterEmailSender.send(email);
+  }
 }
+

@@ -133,11 +133,9 @@ _buildSettingsItemList(BuildContext context, var backUpBloc) {
           icon: Icons.email_outlined,
           iconColor: AppColors.blueD7,
           title: AppLocalizations.of(context)!.feedback_button_inscription,
-          onTapAction: () {
-            print('Зворотній звязок');
-          },
+          onTapAction: () => settingsBloc.add(SettingsFeedbackEvent(context)),
         ),
-        _buildAppVersion(context: context, version: '0')
+        _buildAppVersion(context: context)
       ],
     ),
   );
@@ -178,9 +176,7 @@ _buildSettingsItem({
 }
 
 _buildAppVersion({
-  required BuildContext context,
-  required String version,
-}) {
+  required BuildContext context}) {
   return BlocBuilder<SettingsBloc, SettingsState>(
   builder: (context, state) {
     return Center(
