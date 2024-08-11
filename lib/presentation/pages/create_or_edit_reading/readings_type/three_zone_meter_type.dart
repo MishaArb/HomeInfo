@@ -50,7 +50,7 @@ class _ThreeZoneMeterTypeState extends State<ThreeZoneMeterType> {
         final unitMeasure =
             widget.reading.unitMeasure == ReadingUnitsMeasure.undetectableUnits
                 ? ''
-                : getMeasureDisplayName(widget.reading.unitMeasure, context);
+                : getDropDownMeasureLabel(widget.reading.unitMeasure, context);
         _priceController.value = TextEditingValue(
           text: widget.reading.price,
           selection:

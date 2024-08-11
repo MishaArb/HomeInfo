@@ -3,8 +3,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/constants/reading.dart';
 import '../../../../core/enum/reading_enum.dart';
 import '../../../../core/request_result/request_result.dart';
@@ -12,6 +13,7 @@ import '../../../../data/model/reading_model.dart';
 import '../../../../domain/usecase/fetch_readings_usercase.dart';
 import '../../../../domain/usecase/save_reading_usercase.dart';
 import '../../../../domain/usecase/update_reading_usercase.dart';
+import '../../../../utils/drop_down_measure_lable.dart';
 import '../../../widgets/date_time/date_picker.dart';
 
 part 'new_reading_event.dart';
@@ -39,6 +41,7 @@ class NewReadingBloc extends Bloc<NewReadingEvent, NewReadingCreateState> {
     on<NewReadingChangeServiceEvent>(_onChangeService);
     on<NewReadingDeleteServiceEvent>(_onDeleteService);
     on<NewReadingSaveEvent>(_onSaveReading);
+    on<NewReadingShareEvent>(_onShareData);
   }
 
   final FetchReadingsUseCase fetchReadingsUseCase;
@@ -47,10 +50,11 @@ class NewReadingBloc extends Bloc<NewReadingEvent, NewReadingCreateState> {
 
   List<ReadingItem> readingItems = [];
   List<ReadingModel> allReadings = [];
-
+  late final BuildContext ctx;
   _onInitReading(
       NewReadingInitEvent event, Emitter<NewReadingCreateState> emit) async {
     readingItems.clear();
+    ctx = event.context;
     event.context.router.pushNamed('/createOrEditReadingsScreen');
     final requestResult = await fetchReadingsUseCase();
     if (requestResult is RequestSuccess) {
@@ -381,4 +385,50 @@ class NewReadingBloc extends Bloc<NewReadingEvent, NewReadingCreateState> {
       }
     }
   }
+  _onShareData(NewReadingShareEvent event, Emitter<NewReadingCreateState> emit){
+    final List<ReadingItem> shareData = state.readingItems;
+    final locale = AppLocalizations.of(event.context)!;
+    shareData[state.indexService].typeMeasure == ReadingTypeMeasure.undetectableType
+        ? Share.share('')
+        : shareData[state.indexService].typeMeasure == ReadingTypeMeasure.areaType
+        ? Share.share(
+        '${shareData[state.indexService].title}\n'
+            '${locale.sum_inscription} ${shareData[state.indexService].sum.toStringAsFixed(2)} ${event.currency}')
+        : shareData[state.indexService].typeMeasure == ReadingTypeMeasure.fixedType
+        ? Share.share(
+        '${shareData[state.indexService].title}\n'
+            '${locale.sum_inscription} ${shareData[state.indexService].sum.toStringAsFixed(2)} ${event.currency}')
+        : shareData[state.indexService].typeMeasure == ReadingTypeMeasure.singleZoneMeterType
+        ? Share.share('${shareData[state.indexService].title}\n'
+        '${locale.current_readings_unit_hint_text}: ${shareData[state.indexService].currentReading}\n'
+        '${locale.used_inscription} ${shareData[state.indexService].used} ${getCurrentUnitMeasure()}'
+        '\n${locale.sum_inscription} ${shareData[state.indexService].sum.toStringAsFixed(2)} ${event.currency}')
+        : shareData[state.indexService].typeMeasure == ReadingTypeMeasure.twoZoneMeterType
+        ?  Share.share('${shareData[state.indexService].title}\n'
+           '${locale.current_indicators_day_share}: ${shareData[state.indexService].currentReadingDay} ${getCurrentUnitMeasure()}\n'
+           '${locale.current_indicators_night_share}: ${shareData[state.indexService].currentReadingNight} ${getCurrentUnitMeasure()}\n'
+           '${locale.used_day_inscription} ${shareData[state.indexService].usedDay} ${getCurrentUnitMeasure()}\n'
+           '${locale.used_night_inscription} ${shareData[state.indexService].usedNight} ${getCurrentUnitMeasure()}\n'
+           '${locale.sum_inscription} ${shareData[state.indexService].sum.toStringAsFixed(2)} ${event.currency}')
+        : shareData[state.indexService].typeMeasure == ReadingTypeMeasure.threeZoneMeterType
+        ? Share.share('${shareData[state.indexService].title}\n'
+        '${locale.current_indicators_day_share}: ${shareData[state.indexService].currentReadingDay} ${getCurrentUnitMeasure()}\n'
+        '${locale.current_indicators_half_pick_share}: ${shareData[state.indexService].currentReadingHalfPeak} ${getCurrentUnitMeasure()}\n'
+        '${locale.current_indicators_night_share}: ${shareData[state.indexService].currentReadingNight} ${getCurrentUnitMeasure()}\n'
+        '${locale.used_day_inscription} ${shareData[state.indexService].usedDay}  ${getCurrentUnitMeasure()} ${getCurrentUnitMeasure()}\n'
+        '${locale.used_half_peak_inscription} ${shareData[state.indexService].usedHalfPeak} ${getCurrentUnitMeasure()}\n'
+        '${locale.used_night_inscription} ${shareData[state.indexService].usedNight} ${getCurrentUnitMeasure()}\n'
+        '${locale.sum_inscription} ${shareData[state.indexService].sum.toStringAsFixed(2)} ${event.currency}')
+         : Share.share('');
+  }
+
+  String getCurrentUnitMeasure(){
+    final unitMeasure =
+    state.readingItems[state.indexService].unitMeasure == ReadingUnitsMeasure.undetectableUnits
+        ? ''
+        : getDropDownMeasureLabel(state.readingItems[state.indexService].unitMeasure, ctx);
+    return unitMeasure;
+  }
+
+
 }

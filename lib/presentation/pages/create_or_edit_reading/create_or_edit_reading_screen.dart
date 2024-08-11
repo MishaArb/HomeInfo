@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +14,7 @@ import '../../../core/constants/reading.dart';
 import '../../../core/enum/reading_enum.dart';
 import '../../../core/router/router.dart';
 import '../../../data/model/reading_model.dart';
+import '../../../utils/drop_down_measure_lable.dart';
 import '../../bloc/currency/currency_bloc.dart';
 import '../../bloc/reading/readings/readings_bloc.dart';
 import '../../bloc/theme/theme_bloc.dart';
@@ -20,7 +23,6 @@ import '../../widgets/buttons/elevated_button.dart';
 import '../../widgets/text/result_inscription.dart';
 import '../../widgets/text_field/description_text_form.dart';
 import '../../widgets/text_field/simple_text_field.dart';
-import 'package:share_plus/share_plus.dart';
 part 'readings_type/single_zone_meter_type.dart';
 
 part 'readings_type/fixed_type.dart';
@@ -383,7 +385,7 @@ _buildDropdownItem({
                     (String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(getMeasureDisplayName(value, context)),
+                        child: Text(getDropDownMeasureLabel(value, context)),
                       );
                     },
                   ).toList(),
@@ -413,11 +415,9 @@ _buildSaveButton(BuildContext context) {
            final unitMeasure =
            items[newReadingState.indexService ].unitMeasure == ReadingUnitsMeasure.undetectableUnits
                ? ''
-               : getMeasureDisplayName(items[newReadingState.indexService].unitMeasure, context);
+               : getDropDownMeasureLabel(items[newReadingState.indexService].unitMeasure, context);
            return unitMeasure;
           }
-
-          final locale = AppLocalizations.of(context)!;
 
 
     return Container(
@@ -453,7 +453,7 @@ _buildSaveButton(BuildContext context) {
                 buttonText: AppLocalizations.of(context)!.save_button_inscription,
                 buttonAction: () {
                   if (textFieldKey.currentState == null) {
-                    print("formKey.currentState is null!");
+                    log("formKey.currentState is null!");
                   } else if (textFieldKey.currentState!.validate()) {
                     BlocProvider.of<NewReadingBloc>(context).add(
                       NewReadingSaveEvent(context),
@@ -464,50 +464,21 @@ _buildSaveButton(BuildContext context) {
             ),
             const SizedBox(width: 5,),
             items.isNotEmpty
-            ? BlocBuilder<CurrencyBloc, CurrencyState>(
-              builder: (context, state) {
-              return buildButtonsWithIcon(
-                        reading: items[newReadingState.indexService],
-                        icon: Icons.share,
-                        iconBgrColor: AppColors.blueD7,
-                        onFunc: () {
-                          items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.undetectableType
-                              ? Share.share('')
-                              : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.areaType
-                              ? Share.share(
-                              '${items[newReadingState.indexService].title}\n'
-                                  '${locale.sum_inscription} ${newReadingState.readingItems[newReadingState.indexService].sum.toStringAsFixed(2)} ${state.currency}')
-                              : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.fixedType
-                              ? Share.share(
-                              '${items[newReadingState.indexService].title}\n'
-                                  '${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)} ${state.currency}')
-                              : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.singleZoneMeterType
-                              ? Share.share('${items[newReadingState.indexService].title}\n'
-                              '${locale.current_readings_unit_hint_text}: ${items[newReadingState.indexService].currentReading}\n'
-                              '${locale.used_inscription} ${items[newReadingState.indexService].used} ${getCurrentUnitMeasure()}'
-                              '\n${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)} ${state.currency}')
-                              : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.twoZoneMeterType
-                              ?  Share.share('${items[newReadingState.indexService].title}\n'
-                                 '${locale.current_indicators_day_share}: ${items[newReadingState.indexService].currentReadingDay}\n'
-                                 '${locale.current_indicators_night_share}: ${items[newReadingState.indexService].currentReadingNight}\n'
-                                 '${locale.used_day_inscription} ${items[newReadingState.indexService].usedDay} ${getCurrentUnitMeasure()}\n'
-                                 '${locale.used_night_inscription} ${items[newReadingState.indexService].usedNight} ${getCurrentUnitMeasure()}\n'
-                                 '${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)} ${state.currency}')
-                              : items[newReadingState.indexService].typeMeasure == ReadingTypeMeasure.threeZoneMeterType
-                              ? Share.share('${items[newReadingState.indexService].title}\n'
-                              '${locale.current_indicators_day_share}: ${items[newReadingState.indexService].currentReadingDay}\n'
-                              '${locale.current_indicators_half_pick_share}: ${items[newReadingState.indexService].currentReadingHalfPeak}\n'
-                              '${locale.current_indicators_night_share}: ${items[newReadingState.indexService].currentReadingNight}\n'
-                              '${locale.used_day_inscription} ${items[newReadingState.indexService].usedDay} ${getCurrentUnitMeasure()}\n'
-                              '${locale.used_half_peak_inscription} ${items[newReadingState.indexService].usedHalfPeak} ${getCurrentUnitMeasure()}\n'
-                              '${locale.used_night_inscription} ${items[newReadingState.indexService].usedNight} ${getCurrentUnitMeasure()}\n'
-                              '${locale.sum_inscription} ${items[newReadingState.indexService].sum.toStringAsFixed(2)} ${state.currency}')
-                               : Share.share('');
-                          },
-                      );
-  },
-)
-            : const SizedBox()
+                    ? BlocBuilder<CurrencyBloc, CurrencyState>(
+                        builder: (context, state) {
+                          return buildButtonsWithIcon(
+                            reading: items[newReadingState.indexService],
+                            icon: Icons.share,
+                            iconBgrColor: AppColors.blueD7,
+                            onFunc: () {
+                              BlocProvider.of<NewReadingBloc>(context).add(
+                                NewReadingShareEvent(context, state.currency),
+                              );
+                            },
+                          );
+                        },
+                      )
+                    : const SizedBox()
               ],
         ),
       );
@@ -515,35 +486,4 @@ _buildSaveButton(BuildContext context) {
 );
     },
   );
-}
-
-
-getMeasureDisplayName(String value, BuildContext ctx) {
-  switch (value) {
-    case ReadingTypeMeasure.undetectableType:
-      return AppLocalizations.of(ctx)!.select_measurement_type_dropdown;
-    case ReadingTypeMeasure.areaType:
-      return AppLocalizations.of(ctx)!.by_area_dropdown;
-    case ReadingTypeMeasure.fixedType:
-      return AppLocalizations.of(ctx)!.fixed_dropdown;
-    case ReadingTypeMeasure.singleZoneMeterType:
-      return AppLocalizations.of(ctx)!.single_zone_meter_dropdown;
-    case ReadingTypeMeasure.twoZoneMeterType:
-      return AppLocalizations.of(ctx)!.two_zone_meter_dropdown;
-    case ReadingTypeMeasure.threeZoneMeterType:
-      return AppLocalizations.of(ctx)!.three_zone_meter_dropdown;
-
-    case ReadingUnitsMeasure.undetectableUnits:
-      return AppLocalizations.of(ctx)!.select_measurement_unit_dropdown;
-    case ReadingUnitsMeasure.kWUnit:
-      return AppLocalizations.of(ctx)!.kW_dropdown;
-    case ReadingUnitsMeasure.m2Unit:
-      return AppLocalizations.of(ctx)!.m2_dropdown;
-    case ReadingUnitsMeasure.m3Unit:
-      return AppLocalizations.of(ctx)!.m3_dropdown;
-    case ReadingUnitsMeasure.gCalUnit:
-      return AppLocalizations.of(ctx)!.gcal_dropdown;
-    default:
-      return '';
-  }
 }

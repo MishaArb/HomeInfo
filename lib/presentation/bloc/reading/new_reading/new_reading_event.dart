@@ -288,3 +288,13 @@ class NewReadingSaveEvent extends NewReadingEvent {
   @override
   List<Object?> get props => [];
 }
+
+class NewReadingShareEvent extends NewReadingEvent {
+  NewReadingShareEvent(this.context, this.currency);
+
+  final BuildContext context;
+  final String currency;
+
+  @override
+  List<Object?> get props => [];
+}

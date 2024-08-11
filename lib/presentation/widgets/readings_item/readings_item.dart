@@ -13,7 +13,8 @@ SizedBox buildReadingsItem({
   required double percentDifference,
   required double sumDifference,
   required void Function() onTap,
-  required Function(BuildContext) onPressed,
+  required Function(BuildContext) onDelete,
+  required Function(BuildContext) onShare,
 }) {
   return SizedBox(
     child: Builder(
@@ -25,16 +26,24 @@ SizedBox buildReadingsItem({
             : AppColors.darkBlue2A;
         return Slidable(
           startActionPane: ActionPane(
-            extentRatio: 0.3,
+            extentRatio: 0.6,
             motion: const ScrollMotion(),
             children: [
               SlidableAction(
-                onPressed: onPressed,
+                onPressed: onDelete,
                 backgroundColor: AppColors.red02,
                 foregroundColor: AppColors.whiteFF,
                 icon: Icons.delete,
                 label: AppLocalizations.of(context)!
                     .delete_button_inscription,
+              ),
+              SlidableAction(
+                onPressed:  onShare,
+                backgroundColor: AppColors.blueD7,
+                foregroundColor: AppColors.whiteFF,
+                icon: Icons.share,
+                label: AppLocalizations.of(context)!
+                    .share_button_inscription,
               ),
             ],
           ),

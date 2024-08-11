@@ -13,8 +13,27 @@ class ReadingsDeleteEvent extends ReadingsEvent {
     required this.id,
     required this.context,
   });
+
   final String id;
   final BuildContext context;
+
   @override
   List<Object?> get props => [id, context];
+}
+
+class ReadingsShareAllDataEvent extends ReadingsEvent {
+  ReadingsShareAllDataEvent(
+      {required this.context,
+      required this.reading,
+      required this.currency,
+
+
+      });
+
+  final BuildContext context;
+  final ReadingModel reading;
+  final String currency;
+
+  @override
+  List<Object?> get props => [context, reading, currency];
 }
