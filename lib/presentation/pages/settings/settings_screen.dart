@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_info/core/constants/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:home_info/presentation/bloc/settings/settings_bloc.dart';
 
 import '../../bloc/backup_restore_db/backup_restore_db_bloc.dart';
 @RoutePage()
@@ -36,16 +37,20 @@ class _SettingsItemsListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BackupRestoreDbBloc, BackupRestoreDbState>(
-      builder: (context, state) {
-        final backupRestoreBloc = BlocProvider.of<BackupRestoreDbBloc>(context);
-        return _buildSettingsItemList(context, backupRestoreBloc);
-      },
+    return BlocProvider(
+      create: (context) => SettingsBloc()..add(SettingsInitEvent(context)),
+      child: Builder(
+        builder: (context) {
+          final backupRestoreBloc = BlocProvider.of<BackupRestoreDbBloc>(context);
+          return _buildSettingsItemList(context, backupRestoreBloc);
+        },
+      ),
     );
   }
 }
 
-_buildSettingsItemList(BuildContext context, var bloc) {
+_buildSettingsItemList(BuildContext context, var backUpBloc) {
+  final  settingsBloc = BlocProvider.of<SettingsBloc>(context);
   return SingleChildScrollView(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,21 +63,28 @@ _buildSettingsItemList(BuildContext context, var bloc) {
           icon: Icons.notifications_active_outlined,
           iconColor: AppColors.orange1E,
           title: AppLocalizations.of(context)!.reminders_app_bar_title,
-          onTapAction: () => context.router.pushNamed('/remindersScreen'),
+          onTapAction: () => settingsBloc.add(SettingsGoToReminderScreenEvent(context)),
         ),
         _buildSettingsItem(
           context: context,
           icon: Icons.dark_mode_outlined,
           iconColor: AppColors.blueF6,
           title: AppLocalizations.of(context)!.theme_app_bar_title,
-          onTapAction: () => context.router.pushNamed('/themeScreen'),
+          onTapAction: () => settingsBloc.add(SettingsGoToThemeScreenEvent(context)),
         ),
         _buildSettingsItem(
           context: context,
           icon: Icons.language,
           iconColor: AppColors.brown31,
           title: AppLocalizations.of(context)!.language_app_bar_title,
-          onTapAction: () => context.router.pushNamed('/languageScreen'),
+          onTapAction: () => settingsBloc.add(SettingsGoToLanguageScreenEvent(context)),
+        ),
+        _buildSettingsItem(
+          context: context,
+          icon: Icons.currency_exchange_sharp,
+          iconColor: AppColors.green07,
+          title: AppLocalizations.of(context)!.currency_button_inscription,
+          onTapAction: () => settingsBloc.add(SettingsGoToCurrencyScreenEvent(context)),
         ),
         _buildSettingsSectionTitle(
             title: AppLocalizations.of(context)!.backup_screen_title,
@@ -83,7 +95,7 @@ _buildSettingsItemList(BuildContext context, var bloc) {
           iconColor: AppColors.purple7D,
           title: AppLocalizations.of(context)!.export_button_inscription,
           onTapAction: () {
-            bloc.add(BackupDbEvent(context));
+            backUpBloc.add(BackupDbEvent(context));
           },
         ),
         _buildSettingsItem(
@@ -92,7 +104,7 @@ _buildSettingsItemList(BuildContext context, var bloc) {
           iconColor: AppColors.pinkAF,
           title: AppLocalizations.of(context)!.import_button_inscription,
           onTapAction: () {
-            bloc.add(RestoreDbEvent(context));
+            backUpBloc.add(RestoreDbEvent(context));
           },
         ),
         _buildSettingsSectionTitle(
@@ -121,11 +133,9 @@ _buildSettingsItemList(BuildContext context, var bloc) {
           icon: Icons.email_outlined,
           iconColor: AppColors.blueD7,
           title: AppLocalizations.of(context)!.feedback_button_inscription,
-          onTapAction: () {
-            print('Зворотній звязок');
-          },
+          onTapAction: () => settingsBloc.add(SettingsFeedbackEvent(context)),
         ),
-        _buildAppVersion(context: context, version: '1.0.0')
+        _buildAppVersion(context: context)
       ],
     ),
   );
@@ -166,16 +176,18 @@ _buildSettingsItem({
 }
 
 _buildAppVersion({
-  required BuildContext context,
-  required String version,
-}) {
-  return Center(
+  required BuildContext context}) {
+  return BlocBuilder<SettingsBloc, SettingsState>(
+  builder: (context, state) {
+    return Center(
     child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: Text(
-          "${AppLocalizations.of(context)!.app_version_screen_inscription}: $version",
+          "${AppLocalizations.of(context)!.app_version_screen_inscription}: ${state.appVersion}",
           style: Theme.of(context).textTheme.bodySmall,
           textAlign: TextAlign.center,
         )),
   );
+  },
+);
 }

@@ -13,6 +13,7 @@ import '../../../core/enum/reading_enum.dart';
 import '../../../injection_container.dart';
 import '../../bloc/backup_restore_db/backup_restore_db_bloc.dart';
 import '../../bloc/chart/chart_bloc.dart';
+import '../../bloc/currency/currency_bloc.dart';
 import '../../bloc/reading/readings/readings_bloc.dart';
 import '../../bloc/reminder/reminders/reminders_bloc.dart';
 import '../../bloc/theme/theme_bloc.dart';
@@ -138,10 +139,12 @@ _buildPeriodSwitcher(BuildContext context) {
 }
 
 _buildLatestReadingsList(BuildContext context) {
-  return BlocBuilder<ReadingsBloc, ReadingsState>(
-    builder: (context, state) {
-      if (state is ReadingsSuccessState) {
-        return state.readings.isEmpty
+  return Builder(
+    builder: (context) {
+     final  readingsState = context.select((ReadingsBloc bloc) => bloc.state);
+     final  currencyState = context.select((CurrencyBloc bloc) => bloc.state);
+      if (readingsState is ReadingsSuccessState) {
+        return readingsState.readings.isEmpty
             ? const Padding(
           padding: EdgeInsets.all(20.0),
           child: Image(
@@ -152,24 +155,24 @@ _buildLatestReadingsList(BuildContext context) {
         )
             : Column(
           children: [
-            for (var i = 0; i < state.readings.length && i < 2; i++)
+            for (var i = 0; i < readingsState.readings.length && i < 2; i++)
               buildReadingsItem(
-                date: state.readings[i].date,
+                date: readingsState.readings[i].date,
                 totalSum: double.parse(
-                  state.readings[i].totalSum.toStringAsFixed(2),
+                  readingsState.readings[i].totalSum.toStringAsFixed(2),
                 ),
-                percentDifference: i == state.readings.length - 1
+                percentDifference: i == readingsState.readings.length - 1
                     ? 0.0
-                    : double.parse((((state.readings[i].totalSum -
-                    state.readings[i + 1].totalSum) /
-                    state.readings[i + 1].totalSum) *
+                    : double.parse((((readingsState.readings[i].totalSum -
+                    readingsState.readings[i + 1].totalSum) /
+                    readingsState.readings[i + 1].totalSum) *
                     100)
                     .toStringAsFixed(2)),
-                sumDifference: i == state.readings.length - 1
+                sumDifference: i == readingsState.readings.length - 1
                     ? 0
                     : double.parse(
-                  (state.readings[i].totalSum -
-                      state.readings[i + 1].totalSum)
+                  (readingsState.readings[i].totalSum -
+                      readingsState.readings[i + 1].totalSum)
                       .toStringAsFixed(2),
                 ),
                 onTap: () => BlocProvider.of<NewReadingBloc>(context).add(
@@ -179,17 +182,27 @@ _buildLatestReadingsList(BuildContext context) {
                     readingIndex: i,
                   ),
                 ),
-                onPressed: (cxt) => buildDeleteAlertDialog(
-                  context,
-                      () {
-                    BlocProvider.of<ReadingsBloc>(context).add(
-                      ReadingsDeleteEvent(
-                        id: state.readings[i].id,
-                        context: context,
-                      ),
-                    );
-                  },
-                ),
+                onDelete: (cxt) => buildDeleteAlertDialog(
+                    context,
+                        () {
+                      BlocProvider.of<ReadingsBloc>(context).add(
+                        ReadingsDeleteEvent(
+                          id: readingsState.readings[i].id,
+                          context: context,
+                        ),
+                      );
+                    },
+                  ),
+                onShare: (ctx) {
+                        BlocProvider.of<ReadingsBloc>(context).add(
+                          ReadingsShareAllDataEvent(
+                              context: ctx,
+                            reading: readingsState.readings[i],
+                              currency: currencyState.currency,
+                          ),
+                        );
+                },
+
               ),
           ],
         );
@@ -231,7 +244,8 @@ _buildLatestReminders(BuildContext context) {
                       context: context,
                     ),
                   );
-                }),
+                },
+                ),
               ),
           ],
         );

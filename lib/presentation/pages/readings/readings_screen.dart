@@ -8,9 +8,11 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_property.dart';
 import '../../../core/constants/asset_image.dart';
 import '../../../core/enum/reading_enum.dart';
+import '../../bloc/currency/currency_bloc.dart';
 import '../../bloc/reading/new_reading/new_reading_bloc.dart';
 import '../../bloc/reading/readings/readings_bloc.dart';
 import '../../widgets/alert_dialog/delete_alert_dialog.dart';
+
 
 @RoutePage()
 class ReadingsScreen extends StatelessWidget {
@@ -61,10 +63,13 @@ class ReadingsScreen extends StatelessWidget {
 }
 
 _buildReadingItemListView() {
-  return BlocBuilder<ReadingsBloc, ReadingsState>(
-    builder: (context, state) {
-      if (state is ReadingsSuccessState) {
-        return state.readings.isEmpty
+  return Builder(
+    builder: (context) {
+      final  readingsState = context.select((ReadingsBloc bloc) => bloc.state);
+      final  currencyState = context.select((CurrencyBloc bloc) => bloc.state);
+      final locale = AppLocalizations.of(context)!;
+      if (readingsState is ReadingsSuccessState) {
+        return readingsState.readings.isEmpty
             ? const Expanded(
               child: Center(
                 child: Image(
@@ -76,25 +81,25 @@ _buildReadingItemListView() {
             )
             : Expanded(
                 child: ListView.builder(
-                  itemCount: state.readings.length,
+                  itemCount: readingsState.readings.length,
                   itemBuilder: (BuildContext context, int index) {
                     return buildReadingsItem(
-                      date: state.readings[index].date,
+                      date: readingsState.readings[index].date,
                       totalSum: double.parse(
-                        state.readings[index].totalSum.toStringAsFixed(2),
+                        readingsState.readings[index].totalSum.toStringAsFixed(2),
                       ),
-                      percentDifference: index == state.readings.length - 1
+                      percentDifference: index == readingsState.readings.length - 1
                           ? 0.0
-                          : double.parse((((state.readings[index].totalSum -
-                                          state.readings[index + 1].totalSum) /
-                                      state.readings[index + 1].totalSum) *
+                          : double.parse((((readingsState.readings[index].totalSum -
+                          readingsState.readings[index + 1].totalSum) /
+                          readingsState.readings[index + 1].totalSum) *
                                   100)
                               .toStringAsFixed(2)),
-                      sumDifference: index == state.readings.length - 1
+                      sumDifference: index == readingsState.readings.length - 1
                           ? 0
                           : double.parse(
-                              (state.readings[index].totalSum -
-                                      state.readings[index + 1].totalSum)
+                              (readingsState.readings[index].totalSum -
+                                  readingsState.readings[index + 1].totalSum)
                                   .toStringAsFixed(2),
                             ),
                       onTap: () => BlocProvider.of<NewReadingBloc>(context).add(
@@ -104,17 +109,26 @@ _buildReadingItemListView() {
                           readingIndex: index,
                         ),
                       ),
-                      onPressed: (cxt) => buildDeleteAlertDialog(
+                      onDelete: (cxt) => buildDeleteAlertDialog(
                         context,
                             () {
                           BlocProvider.of<ReadingsBloc>(context).add(
                             ReadingsDeleteEvent(
-                              id: state.readings[index].id,
+                              id: readingsState.readings[index].id,
                               context: context,
                             ),
                           );
                         },
                       ),
+                      onShare: (ctx) {
+                        BlocProvider.of<ReadingsBloc>(context).add(
+                          ReadingsShareAllDataEvent(
+                            context: ctx,
+                            reading:readingsState.readings[index],
+                            currency: currencyState.currency,
+                          ),
+                        );
+                      },
                     );
                   },
                 ),

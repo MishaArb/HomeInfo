@@ -26,15 +26,17 @@ class _SingleZoneMeterTypeState extends State<SingleZoneMeterType> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (context, state) {
-        final bgrColor = state.currentTheme == ThemeMode.light
+    return Builder(
+      builder: (context) {
+        final themeState = context.select((ThemeBloc bloc) => bloc.state);
+        final currencyState = context.select((CurrencyBloc bloc) => bloc.state);
+        final bgrColor = themeState.currentTheme == ThemeMode.light
             ? AppColors.whiteFF
             : AppColors.darkBlue2A;
         final unitMeasure =
             widget.reading.unitMeasure == ReadingUnitsMeasure.undetectableUnits
                 ? ''
-                : getMeasureDisplayName(widget.reading.unitMeasure, context);
+                : getDropDownMeasureLabel(widget.reading.unitMeasure, context);
         _priceController.value = TextEditingValue(
           text: widget.reading.price,
           selection:
@@ -153,18 +155,7 @@ class _SingleZoneMeterTypeState extends State<SingleZoneMeterType> {
                 buildResultInscription(
                   context: context,
                   title: AppLocalizations.of(context)!.sum_inscription,
-                  result: '${widget.reading.sum.toStringAsFixed(2)}  грн',
-                ),
-                buildShareAndDeleteButton(
-                  onShare: () {
-                    Share.share('${widget.reading.title}\n'
-                        '${AppLocalizations.of(context)!.current_readings_unit_hint_text}: ${widget.reading.currentReading}\n'
-                        '${AppLocalizations.of(context)!.used_inscription} ${widget.reading.used} $unitMeasure'
-                        '\n${AppLocalizations.of(context)!.sum_inscription} ${widget.reading.sum.toStringAsFixed(2)}');
-                  },
-                  onDelete: () => BlocProvider.of<NewReadingBloc>(context).add(
-                    NewReadingDeleteServiceEvent(),
-                  ),
+                  result: '${widget.reading.sum.toStringAsFixed(2)} ${currencyState.currency}',
                 ),
               ],
             ),

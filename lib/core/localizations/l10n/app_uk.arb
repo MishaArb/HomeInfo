@@ -40,6 +40,7 @@
   "delete_button_inscription" : "Видалити",
   "yes_button_inscription" : "Так",
   "no_button_inscription" : "Ні",
+  "currency_button_inscription" : "Валюта",
 
   "app_version_screen_inscription" : "Версія додатку",
   "pick_date_screen_inscription" : "Виберіть дату",
@@ -71,6 +72,7 @@
   "area_hint_text" : "Площа",
   "price_hint_text" : "Ціна",
   "zonal_coefficient_hint_text" : "Зонний коефіцієнт",
+  "currency_example_hint_text" : "Валюта (наприклад: грн)",
 
   "field_cant_be_empty_error_text" : "Поле не може бути пустим",
 

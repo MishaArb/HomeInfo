@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/services.dart';
@@ -12,14 +14,15 @@ import '../../../core/constants/reading.dart';
 import '../../../core/enum/reading_enum.dart';
 import '../../../core/router/router.dart';
 import '../../../data/model/reading_model.dart';
+import '../../../utils/drop_down_measure_lable.dart';
+import '../../bloc/currency/currency_bloc.dart';
 import '../../bloc/reading/readings/readings_bloc.dart';
 import '../../bloc/theme/theme_bloc.dart';
+import '../../widgets/buttons/buttons_with_icon.dart';
 import '../../widgets/buttons/elevated_button.dart';
-import '../../widgets/buttons/share_and_delete_button.dart';
 import '../../widgets/text/result_inscription.dart';
 import '../../widgets/text_field/description_text_form.dart';
 import '../../widgets/text_field/simple_text_field.dart';
-import 'package:share_plus/share_plus.dart';
 part 'readings_type/single_zone_meter_type.dart';
 
 part 'readings_type/fixed_type.dart';
@@ -118,27 +121,28 @@ _buildAppBar(BuildContext context) {
 _buildContentScreen() {
   return BlocBuilder<NewReadingBloc, NewReadingCreateState>(
     builder: (context, state) {
+      final items = state.readingItems;
       return Column(
         children: [
           _buildServicesList(),
-          state.readingItems.isEmpty
+          items.isEmpty
               ? const SizedBox()
               : _buildTypeAndUnitPicker(),
-          state.readingItems.isNotEmpty
+          items.isNotEmpty
               ? Expanded(
             child: SingleChildScrollView(
               child: Column(children: [
-                state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.undetectableType
+                items[state.indexService].typeMeasure == ReadingTypeMeasure.undetectableType
                     ? const SizedBox()
-                    : state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.areaType
-                    ? AreaType(reading:state.readingItems[state.indexService])
-                    : state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.fixedType
-                    ? FixedType(reading: state.readingItems[state.indexService])
-                    : state.readingItems[state.indexService].typeMeasure ==ReadingTypeMeasure.singleZoneMeterType
-                    ? SingleZoneMeterType(reading: state.readingItems[state.indexService])
-                    : state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.twoZoneMeterType
-                    ? TwoZoneMeterType(reading: state.readingItems[state.indexService])
-                    : state.readingItems[state.indexService].typeMeasure == ReadingTypeMeasure.threeZoneMeterType
+                    : items[state.indexService].typeMeasure == ReadingTypeMeasure.areaType
+                    ? AreaType(reading: items[state.indexService])
+                    : items[state.indexService].typeMeasure == ReadingTypeMeasure.fixedType
+                    ? FixedType(reading: items[state.indexService])
+                    : items[state.indexService].typeMeasure ==ReadingTypeMeasure.singleZoneMeterType
+                    ? SingleZoneMeterType(reading: items[state.indexService])
+                    : items[state.indexService].typeMeasure == ReadingTypeMeasure.twoZoneMeterType
+                    ? TwoZoneMeterType(reading: items[state.indexService])
+                    : items[state.indexService].typeMeasure == ReadingTypeMeasure.threeZoneMeterType
                     ? ThreeZoneMeterType(reading: state.readingItems[state.indexService])
                     : const SizedBox(),
                 const SizedBox(height: 100)
@@ -381,7 +385,7 @@ _buildDropdownItem({
                     (String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(getMeasureDisplayName(value, context)),
+                        child: Text(getDropDownMeasureLabel(value, context)),
                       );
                     },
                   ).toList(),
@@ -397,14 +401,26 @@ _buildDropdownItem({
 
 _buildSaveButton(BuildContext context) {
   return BlocBuilder<ThemeBloc, ThemeState>(
-    builder: (context, state) {
-      final bgrColor = state.currentTheme == ThemeMode.light
+    builder: (context, themeState) {
+      final bgrColor = themeState.currentTheme == ThemeMode.light
           ? AppColors.whiteFF
           : AppColors.darkBlue2A;
-      final shadow = state.currentTheme == ThemeMode.light
+      final shadow = themeState.currentTheme == ThemeMode.light
           ? AppColors.greyD9
           : AppColors.black00.withOpacity(0.3);
-      return Container(
+      return BlocBuilder<NewReadingBloc, NewReadingCreateState>(
+        builder: (context, newReadingState) {
+          final items = newReadingState.readingItems;
+         String getCurrentUnitMeasure(){
+           final unitMeasure =
+           items[newReadingState.indexService ].unitMeasure == ReadingUnitsMeasure.undetectableUnits
+               ? ''
+               : getDropDownMeasureLabel(items[newReadingState.indexService].unitMeasure, context);
+           return unitMeasure;
+          }
+
+
+    return Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
           color: bgrColor,
@@ -418,49 +434,56 @@ _buildSaveButton(BuildContext context) {
           ],
         ),
         height: 80,
-        child: buildElevationButton(
-          buttonText: AppLocalizations.of(context)!.save_button_inscription,
-          buttonAction: () {
-            if (textFieldKey.currentState == null) {
-              print("formKey.currentState is null!");
-            } else if (textFieldKey.currentState!.validate()) {
-              BlocProvider.of<NewReadingBloc>(context).add(
-                NewReadingSaveEvent(context),
-              );
-            }
-          },
+        child: Row(
+          children: [
+            items.isNotEmpty
+                ? buildButtonsWithIcon(
+              reading: items[newReadingState.indexService],
+              icon: Icons.delete_outline_outlined,
+              iconBgrColor: AppColors.red02,
+              onFunc: () => BlocProvider.of<NewReadingBloc>(context).add(
+                NewReadingDeleteServiceEvent(),
+              ),
+
+            )
+                : const SizedBox(),
+            const SizedBox(width: 5,),
+            Expanded(
+              child: buildElevationButton(
+                buttonText: AppLocalizations.of(context)!.save_button_inscription,
+                buttonAction: () {
+                  if (textFieldKey.currentState == null) {
+                    log("formKey.currentState is null!");
+                  } else if (textFieldKey.currentState!.validate()) {
+                    BlocProvider.of<NewReadingBloc>(context).add(
+                      NewReadingSaveEvent(context),
+                    );
+                  }
+                },
+              ),
+            ),
+            const SizedBox(width: 5,),
+            items.isNotEmpty
+                    ? BlocBuilder<CurrencyBloc, CurrencyState>(
+                        builder: (context, state) {
+                          return buildButtonsWithIcon(
+                            reading: items[newReadingState.indexService],
+                            icon: Icons.share,
+                            iconBgrColor: AppColors.blueD7,
+                            onFunc: () {
+                              BlocProvider.of<NewReadingBloc>(context).add(
+                                NewReadingShareEvent(context, state.currency),
+                              );
+                            },
+                          );
+                        },
+                      )
+                    : const SizedBox()
+              ],
         ),
       );
+  },
+);
     },
   );
-}
-
-getMeasureDisplayName(String value, BuildContext ctx) {
-  switch (value) {
-    case ReadingTypeMeasure.undetectableType:
-      return AppLocalizations.of(ctx)!.select_measurement_type_dropdown;
-    case ReadingTypeMeasure.areaType:
-      return AppLocalizations.of(ctx)!.by_area_dropdown;
-    case ReadingTypeMeasure.fixedType:
-      return AppLocalizations.of(ctx)!.fixed_dropdown;
-    case ReadingTypeMeasure.singleZoneMeterType:
-      return AppLocalizations.of(ctx)!.single_zone_meter_dropdown;
-    case ReadingTypeMeasure.twoZoneMeterType:
-      return AppLocalizations.of(ctx)!.two_zone_meter_dropdown;
-    case ReadingTypeMeasure.threeZoneMeterType:
-      return AppLocalizations.of(ctx)!.three_zone_meter_dropdown;
-
-    case ReadingUnitsMeasure.undetectableUnits:
-      return AppLocalizations.of(ctx)!.select_measurement_unit_dropdown;
-    case ReadingUnitsMeasure.kWUnit:
-      return AppLocalizations.of(ctx)!.kW_dropdown;
-    case ReadingUnitsMeasure.m2Unit:
-      return AppLocalizations.of(ctx)!.m2_dropdown;
-    case ReadingUnitsMeasure.m3Unit:
-      return AppLocalizations.of(ctx)!.m3_dropdown;
-    case ReadingUnitsMeasure.gCalUnit:
-      return AppLocalizations.of(ctx)!.gcal_dropdown;
-    default:
-      return '';
-  }
 }

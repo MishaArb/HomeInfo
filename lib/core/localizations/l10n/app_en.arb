@@ -40,6 +40,8 @@
   "delete_button_inscription" : "Delete",
   "yes_button_inscription" : "Yes",
   "no_button_inscription" : "No",
+  "currency_button_inscription" : "Currency",
+
 
   "app_version_screen_inscription" : "App version",
   "pick_date_screen_inscription" : "Pick a date",
@@ -71,6 +73,7 @@
   "area_hint_text" : "Area",
   "price_hint_text" : "Price",
   "zonal_coefficient_hint_text" : "Zonal coefficient",
+  "currency_example_hint_text" : "Currency (example: usd)",
 
   "field_cant_be_empty_error_text" : "The field cannot be empty",
 

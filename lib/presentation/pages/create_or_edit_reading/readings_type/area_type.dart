@@ -24,9 +24,11 @@ class _AreaTypeState extends State<AreaType> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (context, state) {
-        final bgrColor = state.currentTheme == ThemeMode.light
+    return Builder(
+      builder: (context) {
+        final themeState = context.select((ThemeBloc bloc) => bloc.state);
+        final currencyState = context.select((CurrencyBloc bloc) => bloc.state);
+        final bgrColor = themeState.currentTheme == ThemeMode.light
             ? AppColors.whiteFF
             : AppColors.darkBlue2A;
         _priceController.value = TextEditingValue(
@@ -77,7 +79,8 @@ class _AreaTypeState extends State<AreaType> {
                       } else {
                         return null;
                       }
-                    }),
+                    },
+                ),
                 buildSimpleTextForm(
                   context: context,
                   hintText: AppLocalizations.of(context)!.area_hint_text,
@@ -109,16 +112,7 @@ class _AreaTypeState extends State<AreaType> {
                 buildResultInscription(
                   context: context,
                   title: AppLocalizations.of(context)!.sum_inscription,
-                  result: '${widget.reading.sum.toStringAsFixed(2)} грн',
-                ),
-                buildShareAndDeleteButton(
-                  onShare: () {
-                    Share.share('${widget.reading.title}\n'
-                        '${AppLocalizations.of(context)!.sum_inscription} ${widget.reading.sum.toStringAsFixed(2)}');
-                  },
-                  onDelete: () => BlocProvider.of<NewReadingBloc>(context).add(
-                    NewReadingDeleteServiceEvent(),
-                  ),
+                  result: '${widget.reading.sum.toStringAsFixed(2)} ${currencyState.currency}',
                 ),
               ],
             ),
