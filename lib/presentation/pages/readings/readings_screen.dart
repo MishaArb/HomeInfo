@@ -67,7 +67,6 @@ _buildReadingItemListView() {
     builder: (context) {
       final  readingsState = context.select((ReadingsBloc bloc) => bloc.state);
       final  currencyState = context.select((CurrencyBloc bloc) => bloc.state);
-      final locale = AppLocalizations.of(context)!;
       if (readingsState is ReadingsSuccessState) {
         return readingsState.readings.isEmpty
             ? const Expanded(

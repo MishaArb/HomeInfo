@@ -411,14 +411,6 @@ _buildSaveButton(BuildContext context) {
       return BlocBuilder<NewReadingBloc, NewReadingCreateState>(
         builder: (context, newReadingState) {
           final items = newReadingState.readingItems;
-         String getCurrentUnitMeasure(){
-           final unitMeasure =
-           items[newReadingState.indexService ].unitMeasure == ReadingUnitsMeasure.undetectableUnits
-               ? ''
-               : getDropDownMeasureLabel(items[newReadingState.indexService].unitMeasure, context);
-           return unitMeasure;
-          }
-
 
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
