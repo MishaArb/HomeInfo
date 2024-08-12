@@ -95,6 +95,6 @@ class ReadingsBloc extends Bloc<ReadingsEvent, ReadingsState> {
 
     }
 
-    Share.share('$shareData\n${locale.total_sum_inscription}: ${event.reading.totalSum}');
+    Share.share('$shareData\n${locale.total_sum_inscription}: ${event.reading.totalSum} ${event.currency}');
   }
 }

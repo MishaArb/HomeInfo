@@ -50,11 +50,9 @@ class NewReadingBloc extends Bloc<NewReadingEvent, NewReadingCreateState> {
 
   List<ReadingItem> readingItems = [];
   List<ReadingModel> allReadings = [];
-  late final BuildContext ctx;
   _onInitReading(
       NewReadingInitEvent event, Emitter<NewReadingCreateState> emit) async {
     readingItems.clear();
-    ctx = event.context;
     event.context.router.pushNamed('/createOrEditReadingsScreen');
     final requestResult = await fetchReadingsUseCase();
     if (requestResult is RequestSuccess) {
@@ -401,28 +399,28 @@ class NewReadingBloc extends Bloc<NewReadingEvent, NewReadingCreateState> {
         : shareData[state.indexService].typeMeasure == ReadingTypeMeasure.singleZoneMeterType
         ? Share.share('${shareData[state.indexService].title}\n'
         '${locale.current_readings_unit_hint_text}: ${shareData[state.indexService].currentReading}\n'
-        '${locale.used_inscription} ${shareData[state.indexService].used} ${getCurrentUnitMeasure()}'
+        '${locale.used_inscription} ${shareData[state.indexService].used} ${getCurrentUnitMeasure(event.context)}'
         '\n${locale.sum_inscription} ${shareData[state.indexService].sum.toStringAsFixed(2)} ${event.currency}')
         : shareData[state.indexService].typeMeasure == ReadingTypeMeasure.twoZoneMeterType
         ?  Share.share('${shareData[state.indexService].title}\n'
-           '${locale.current_indicators_day_share}: ${shareData[state.indexService].currentReadingDay} ${getCurrentUnitMeasure()}\n'
-           '${locale.current_indicators_night_share}: ${shareData[state.indexService].currentReadingNight} ${getCurrentUnitMeasure()}\n'
-           '${locale.used_day_inscription} ${shareData[state.indexService].usedDay} ${getCurrentUnitMeasure()}\n'
-           '${locale.used_night_inscription} ${shareData[state.indexService].usedNight} ${getCurrentUnitMeasure()}\n'
+           '${locale.current_indicators_day_share}: ${shareData[state.indexService].currentReadingDay}\n'
+           '${locale.current_indicators_night_share}: ${shareData[state.indexService].currentReadingNight} ${getCurrentUnitMeasure(event.context)}\n'
+           '${locale.used_day_inscription} ${shareData[state.indexService].usedDay} ${getCurrentUnitMeasure(event.context)}\n'
+           '${locale.used_night_inscription} ${shareData[state.indexService].usedNight} ${getCurrentUnitMeasure(event.context)}\n'
            '${locale.sum_inscription} ${shareData[state.indexService].sum.toStringAsFixed(2)} ${event.currency}')
         : shareData[state.indexService].typeMeasure == ReadingTypeMeasure.threeZoneMeterType
         ? Share.share('${shareData[state.indexService].title}\n'
-        '${locale.current_indicators_day_share}: ${shareData[state.indexService].currentReadingDay} ${getCurrentUnitMeasure()}\n'
-        '${locale.current_indicators_half_pick_share}: ${shareData[state.indexService].currentReadingHalfPeak} ${getCurrentUnitMeasure()}\n'
-        '${locale.current_indicators_night_share}: ${shareData[state.indexService].currentReadingNight} ${getCurrentUnitMeasure()}\n'
-        '${locale.used_day_inscription} ${shareData[state.indexService].usedDay}  ${getCurrentUnitMeasure()} ${getCurrentUnitMeasure()}\n'
-        '${locale.used_half_peak_inscription} ${shareData[state.indexService].usedHalfPeak} ${getCurrentUnitMeasure()}\n'
-        '${locale.used_night_inscription} ${shareData[state.indexService].usedNight} ${getCurrentUnitMeasure()}\n'
+        '${locale.current_indicators_day_share}: ${shareData[state.indexService].currentReadingDay} ${getCurrentUnitMeasure(event.context)}\n'
+        '${locale.current_indicators_half_pick_share}: ${shareData[state.indexService].currentReadingHalfPeak} ${getCurrentUnitMeasure(event.context)}\n'
+        '${locale.current_indicators_night_share}: ${shareData[state.indexService].currentReadingNight} ${getCurrentUnitMeasure(event.context)}\n'
+        '${locale.used_day_inscription} ${shareData[state.indexService].usedDay}  ${getCurrentUnitMeasure(event.context)} ${getCurrentUnitMeasure(event.context)}\n'
+        '${locale.used_half_peak_inscription} ${shareData[state.indexService].usedHalfPeak} ${getCurrentUnitMeasure(event.context)}\n'
+        '${locale.used_night_inscription} ${shareData[state.indexService].usedNight} ${getCurrentUnitMeasure(event.context)}\n'
         '${locale.sum_inscription} ${shareData[state.indexService].sum.toStringAsFixed(2)} ${event.currency}')
          : Share.share('');
   }
 
-  String getCurrentUnitMeasure(){
+  String getCurrentUnitMeasure(BuildContext ctx){
     final unitMeasure =
     state.readingItems[state.indexService].unitMeasure == ReadingUnitsMeasure.undetectableUnits
         ? ''
