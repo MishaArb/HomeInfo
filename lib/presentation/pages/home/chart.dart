@@ -92,7 +92,6 @@ class Chart extends StatelessWidget {
   buildLeftTitlesSum(ChartState chartState, BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 55, bottom: 20),
-      // color: Colors.blue,
       width: 70,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -158,10 +157,10 @@ class Chart extends StatelessWidget {
                     x: i,
                     barRods: [
                       BarChartRodData(
-                        toY: chartState.chartColumn.values.toList()[i],
+                        toY: chartState.chartColumn.values.toList()[i]..toStringAsFixed(1),
                         width: 35,
                         color: AppColors.yellow46,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(7),
                       ),
                     ],
                   ),
