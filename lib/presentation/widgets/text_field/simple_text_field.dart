@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 buildSimpleTextForm({
   required BuildContext context,
@@ -12,6 +13,9 @@ buildSimpleTextForm({
     padding: const EdgeInsets.all(10.0),
     child: TextFormField(
       keyboardType: typeKeyboard,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+      ],
       textCapitalization: TextCapitalization.words,
       maxLines: 1,
       controller: controller,
