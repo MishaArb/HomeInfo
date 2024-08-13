@@ -115,9 +115,7 @@ _buildSettingsItemList(BuildContext context, var backUpBloc) {
           icon: Icons.share,
           iconColor: AppColors.green07,
           title: AppLocalizations.of(context)!.share_button_inscription,
-          onTapAction: () {
-            print('Поділитись');
-          },
+          onTapAction: () => settingsBloc.add(SettingsShareAppEvent(context))
         ),
         _buildSettingsItem(
           context: context,

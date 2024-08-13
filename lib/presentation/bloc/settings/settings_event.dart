@@ -29,3 +29,7 @@ class SettingsGoToCurrencyScreenEvent extends SettingsEvent {
 class SettingsFeedbackEvent extends SettingsEvent {
   SettingsFeedbackEvent(super.context);
 }
+
+class SettingsShareAppEvent extends SettingsEvent {
+  SettingsShareAppEvent(super.context);
+}

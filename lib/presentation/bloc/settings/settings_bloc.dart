@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:share_plus/share_plus.dart';
 part 'settings_event.dart';
 
 part 'settings_state.dart';
@@ -16,6 +17,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsGoToLanguageScreenEvent>(_onGoToLanguageScreen);
     on<SettingsGoToCurrencyScreenEvent>(_onGoToCurrencyScreen);
     on<SettingsFeedbackEvent>(_onFeedback);
+    on<SettingsShareAppEvent>(_onShareApp);
   }
 
   _onInit(SettingsInitEvent event, Emitter<SettingsState> emit) async {
@@ -54,6 +56,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     );
 
     await FlutterEmailSender.send(email);
+  }
+  _onShareApp(SettingsShareAppEvent event, Emitter<SettingsState> emit){
+    Share.share('https://play.google.com/store/apps/details?id=com.easyspaceg.homeinfo.home_info');
   }
 }
 
