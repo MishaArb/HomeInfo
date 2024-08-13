@@ -122,16 +122,14 @@ _buildSettingsItemList(BuildContext context, var backUpBloc) {
           icon: Icons.star_border,
           iconColor: AppColors.yellow46,
           title: AppLocalizations.of(context)!.rate_us_button_inscription,
-          onTapAction: () {
-            print('Оцініть нас');
-          },
+          onTapAction: () => settingsBloc.add(SettingsShareAppEvent(context))
         ),
         _buildSettingsItem(
           context: context,
           icon: Icons.email_outlined,
           iconColor: AppColors.blueD7,
           title: AppLocalizations.of(context)!.feedback_button_inscription,
-          onTapAction: () => settingsBloc.add(SettingsFeedbackEvent(context)),
+          onTapAction: () => settingsBloc.add(SettingsRateAppEvent(context)),
         ),
         _buildAppVersion(context: context)
       ],

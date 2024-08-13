@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:meta/meta.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:share_plus/share_plus.dart';
+
 part 'settings_event.dart';
 
 part 'settings_state.dart';
@@ -18,11 +20,12 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsGoToCurrencyScreenEvent>(_onGoToCurrencyScreen);
     on<SettingsFeedbackEvent>(_onFeedback);
     on<SettingsShareAppEvent>(_onShareApp);
+    on<SettingsRateAppEvent>(_onRateApp);
   }
 
   _onInit(SettingsInitEvent event, Emitter<SettingsState> emit) async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    emit(state.copyWith(appVersion: packageInfo.version ));
+    emit(state.copyWith(appVersion: packageInfo.version));
   }
 
   _onGoToRemindersScreen(
@@ -40,14 +43,12 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     event.context.router.pushNamed('/languageScreen');
   }
 
-
   _onGoToCurrencyScreen(
       SettingsGoToCurrencyScreenEvent event, Emitter<SettingsState> emit) {
     event.context.router.pushNamed('/currencyScreen');
   }
 
-  _onFeedback(
-      SettingsFeedbackEvent event, Emitter<SettingsState> emit) async{
+  _onFeedback(SettingsFeedbackEvent event, Emitter<SettingsState> emit) async {
     final Email email = Email(
       body: '',
       subject: 'HomeInfo',
@@ -57,8 +58,17 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
     await FlutterEmailSender.send(email);
   }
-  _onShareApp(SettingsShareAppEvent event, Emitter<SettingsState> emit){
-    Share.share('https://play.google.com/store/apps/details?id=com.easyspaceg.homeinfo.home_info');
+
+  _onShareApp(SettingsShareAppEvent event, Emitter<SettingsState> emit) {
+    Share.share(
+        'https://play.google.com/store/apps/details?id=com.easyspaceg.homeinfo.home_info');
+  }
+
+  _onRateApp(SettingsRateAppEvent event, Emitter<SettingsState> emit) async {
+    final InAppReview inAppReview = InAppReview.instance;
+
+    if (await inAppReview.isAvailable()) {
+      inAppReview.requestReview();
+    }
   }
 }
-

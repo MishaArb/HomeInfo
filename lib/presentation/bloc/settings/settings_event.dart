@@ -33,3 +33,7 @@ class SettingsFeedbackEvent extends SettingsEvent {
 class SettingsShareAppEvent extends SettingsEvent {
   SettingsShareAppEvent(super.context);
 }
+
+class SettingsRateAppEvent extends SettingsEvent {
+  SettingsRateAppEvent(super.context);
+}
