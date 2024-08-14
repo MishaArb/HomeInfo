@@ -66,7 +66,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   _onRateApp(SettingsRateAppEvent event, Emitter<SettingsState> emit) async {
     final InAppReview inAppReview = InAppReview.instance;
-
+       print('JJJJJJJJJJJJJJJJJJJJ');
     if (await inAppReview.isAvailable()) {
       inAppReview.requestReview();
     }
