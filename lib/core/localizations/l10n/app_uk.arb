@@ -98,6 +98,7 @@
 
   "selected_file_is_not_database" : "Вибраний файл не є базою даних",
   "db_has_been_restored" : "Базу даних відновлено",
-  "error_try_again_later" : "Сталась помилка. Спробуйте пізніше",
+  "db_not_saved" : "Базу даних не збережено",
+  "db_not_restored" : "Базу даних не відновлено",
   "db_saved" : "Базу даних збережено"
 }

@@ -29,9 +29,9 @@ class BackupRestoreDbBloc
       emit(BackupDbSuccessState(AppLocalizations.of(event.cxt)!.db_saved));
     } else if (requestResult is RequestError  && event.cxt.mounted) {
       emit(
-        RestoreDbErrorState(
+        BackupDbErrorState(
           requestResult.errorMessage! == AppMessage.errorTryLater
-              ? AppLocalizations.of(event.cxt)!.error_try_again_later
+              ? AppLocalizations.of(event.cxt)!.db_not_saved
               : requestResult.errorMessage!,
         ),
       );
@@ -49,7 +49,8 @@ class BackupRestoreDbBloc
         RestoreDbErrorState(
             requestResult.errorMessage! == AppMessage.fileIsNotDB
                 ? AppLocalizations.of(event.cxt)!.selected_file_is_not_database
-                : AppLocalizations.of(event.cxt)!.error_try_again_later),
+                : AppLocalizations.of(event.cxt)!.db_not_restored,
+        ),
       );
     }
   }
