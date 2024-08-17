@@ -99,6 +99,7 @@
 
   "selected_file_is_not_database" : "The selected file is not a database",
   "db_has_been_restored" : "The database has been restored",
-  "error_try_again_later" : "An error occurred. Try again later",
+  "db_not_saved" : "Database not saved",
+  "db_not_restored" : "The database has not been restored",
   "db_saved" : "Database saved"
 }
