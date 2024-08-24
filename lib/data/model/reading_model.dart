@@ -6,11 +6,15 @@ import '../../domain/entities/ReadingEntity.dart';
 
 class ReadingModel extends ReadingEntity {
   const ReadingModel({
-   required String id,
+    required String id,
     required String date,
     required double totalSum,
-    required  List<ReadingItem> readingsItems,
-  }) : super(id: id, date: date, totalSum: totalSum, readingsItems: readingsItems);
+    required List<ReadingItem> readingsItems,
+  }) : super(
+            id: id,
+            date: date,
+            totalSum: totalSum,
+            readingsItems: readingsItems);
 
   ReadingModel copyWith({
     String? id,
@@ -58,7 +62,12 @@ class ReadingItem extends Equatable {
     this.iconColor = 0,
     this.title = '',
     this.unitMeasure = '',
+    this.threshold = false,
     this.price = '',
+    this.priceThresholdBefore = '',
+    this.priceThresholdAfter = '',
+    this.thresholdBefore = '',
+    this.thresholdAfter = '',
     this.area = '',
     this.previousReading = '',
     this.currentReading = '',
@@ -84,7 +93,12 @@ class ReadingItem extends Equatable {
   final String title;
   final String typeMeasure;
   final String unitMeasure;
+  final bool threshold;
   final String price;
+  final String priceThresholdBefore;
+  final String priceThresholdAfter;
+  final String thresholdBefore;
+  final String thresholdAfter;
   final String area;
   final String previousReading;
   final String currentReading;
@@ -110,7 +124,12 @@ class ReadingItem extends Equatable {
         'title': title,
         'typeMeasure': typeMeasure,
         'unitMeasure': unitMeasure,
+        'threshold': threshold,
         'price': price,
+        'priceThresholdBefore': priceThresholdBefore,
+        'priceThresholdAfter': priceThresholdAfter,
+        'thresholdBefore': thresholdBefore,
+        'thresholdAfter': thresholdAfter,
         'area': area,
         'previousReading': previousReading,
         'currentReading': currentReading,
@@ -137,7 +156,12 @@ class ReadingItem extends Equatable {
         title: map['title'],
         typeMeasure: map['typeMeasure'],
         unitMeasure: map['unitMeasure'],
+        threshold: map['threshold'],
         price: map['price'],
+        priceThresholdBefore: map['priceThresholdBefore'],
+        priceThresholdAfter: map['priceThresholdAfter'],
+        thresholdBefore: map['thresholdBefore'],
+        thresholdAfter: map['thresholdAfter'],
         area: map['area'],
         previousReading: map['previousReading'],
         currentReading: map['currentReading'],
@@ -164,7 +188,12 @@ class ReadingItem extends Equatable {
     String? title,
     String? typeMeasure,
     String? unitMeasure,
+    bool? threshold,
     String? price,
+    String? priceThresholdBefore,
+    String? priceThresholdAfter,
+    String? thresholdBefore,
+    String? thresholdAfter,
     String? area,
     String? previousReading,
     String? currentReading,
@@ -190,7 +219,12 @@ class ReadingItem extends Equatable {
       title: title ?? this.title,
       typeMeasure: typeMeasure ?? this.typeMeasure,
       unitMeasure: unitMeasure ?? this.unitMeasure,
+      threshold: threshold ?? this.threshold,
       price: price ?? this.price,
+      priceThresholdBefore: priceThresholdBefore ?? this.priceThresholdBefore,
+      priceThresholdAfter: priceThresholdAfter ?? this.priceThresholdAfter,
+      thresholdBefore: thresholdBefore ?? this.thresholdBefore,
+      thresholdAfter: thresholdAfter ?? this.thresholdAfter,
       area: area ?? this.area,
       previousReading: previousReading ?? this.previousReading,
       currentReading: currentReading ?? this.currentReading,
@@ -221,7 +255,12 @@ class ReadingItem extends Equatable {
         typeMeasure,
         title,
         unitMeasure,
+        threshold,
         price,
+        priceThresholdBefore,
+        priceThresholdAfter,
+        thresholdBefore,
+        thresholdAfter,
         area,
         previousReading,
         currentReading,
@@ -244,5 +283,5 @@ class ReadingItem extends Equatable {
 
   @override
   String toString() =>
-      '\nReadingItem{\nicon: $icon\niconColor: $iconColor\ntitle: $title\ntypeMeasure: $typeMeasure\nunitMeasure: $unitMeasure\nprice: $price\narea: $area\npreviousReadings: $previousReading\ncurrentReadings: $currentReading\npreviousReadingDay: $previousReadingDay\npreviousReadingNight: $previousReadingNight\npreviousReadingHalfPeak: $previousReadingHalfPeak\ncurrentReadingHalfPeak: $currentReadingHalfPeak\ncurrentReadingDay: $currentReadingDay\ncurrentReadingNight: $currentReadingNight\ndayZoneCoeff: $dayZoneCoeff\nnightZoneCoeff: $nightZoneCoeff\nhalfPeakZoneCoeff: $halfPeakZoneCoeff\ncomment: $comment\nsum: $sum\nused: $used\nusedDay: $usedDay\nusedNight: $usedNight\nusedHalfPeak: $usedHalfPeak\n}\n';
+      '\nReadingItem{\nicon: $icon\niconColor: $iconColor\ntitle: $title\ntypeMeasure: $typeMeasure\nunitMeasure: $unitMeasure\nthreshold: $threshold\nprice: $price\npriceThresholdBefore: $priceThresholdBefore\npriceThresholdAfter: $priceThresholdAfter\nthresholdBefore: $thresholdBefore\nthresholdAfter: $thresholdAfter\narea: $area\npreviousReadings: $previousReading\ncurrentReadings: $currentReading\npreviousReadingDay: $previousReadingDay\npreviousReadingNight: $previousReadingNight\npreviousReadingHalfPeak: $previousReadingHalfPeak\ncurrentReadingHalfPeak: $currentReadingHalfPeak\ncurrentReadingDay: $currentReadingDay\ncurrentReadingNight: $currentReadingNight\ndayZoneCoeff: $dayZoneCoeff\nnightZoneCoeff: $nightZoneCoeff\nhalfPeakZoneCoeff: $halfPeakZoneCoeff\ncomment: $comment\nsum: $sum\nused: $used\nusedDay: $usedDay\nusedNight: $usedNight\nusedHalfPeak: $usedHalfPeak\n}\n';
 }

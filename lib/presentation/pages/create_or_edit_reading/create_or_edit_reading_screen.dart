@@ -23,6 +23,7 @@ import '../../widgets/buttons/elevated_button.dart';
 import '../../widgets/text/result_inscription.dart';
 import '../../widgets/text_field/description_text_form.dart';
 import '../../widgets/text_field/simple_text_field.dart';
+import '../../widgets/threshold/threshold.dart';
 part 'readings_type/single_zone_meter_type.dart';
 
 part 'readings_type/fixed_type.dart';

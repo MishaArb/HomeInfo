@@ -61,12 +61,15 @@
   "select_icon_inscription" : "Select icon",
   "select_color_inscription" : "Select color",
   "you_want_delete_inscription" : "Are you sure you want to delete?",
+  "threshold_inscription" : "Threshold",
 
   "title_hint_text" : "Title",
   "description_hint_text" : "Description",
   "search_for_example_hint_text" : "Search (for example: 08.2024)",
   "search_hint_text" : "Search",
   "price_per_unit_hint_text" : "Price per unit",
+  "price_before_hint_text" : "Price before",
+  "price_after_hint_text" : "Price after",
   "previous_readings_unit_hint_text" : "Previous",
   "current_readings_unit_hint_text" : "Current",
   "comment_unit_hint_text" : "Comment",
@@ -74,6 +77,8 @@
   "price_hint_text" : "Price",
   "zonal_coefficient_hint_text" : "Zonal coefficient",
   "currency_example_hint_text" : "Currency (example: usd)",
+  "threshold_before_hint_text" : "Threshold before",
+  "threshold_after_hint_text" : "Threshold after",
 
   "field_cant_be_empty_error_text" : "The field cannot be empty",
 

@@ -71,6 +71,15 @@ class NewReadingChangeServiceEvent extends NewReadingEvent {
   List<Object?> get props => [indexService];
 }
 
+class NewReadingChangeThresholdEvent extends NewReadingEvent {
+  NewReadingChangeThresholdEvent(this.threshold);
+
+  final bool threshold;
+
+  @override
+  List<Object?> get props => [threshold];
+}
+
 class NewReadingCalculateAreaEvent extends NewReadingEvent {
   NewReadingCalculateAreaEvent({
     required this.price,
@@ -120,25 +129,45 @@ class NewReadingCalculateFixedEvent extends NewReadingEvent {
 
 class NewReadingCalculateSingleZoneMeterEvent extends NewReadingEvent {
   NewReadingCalculateSingleZoneMeterEvent({
+    required this.threshold,
     required this.price,
+    required this.priceThresholdBefore,
+    required this.priceThresholdAfter,
+    required this.thresholdBefore,
+    required this.thresholdAfter,
     required this.previousReading,
     required this.currentReading,
     required this.comment,
   });
 
+  final bool threshold;
   final String price;
+  final String priceThresholdBefore;
+  final String priceThresholdAfter;
+  final String thresholdBefore;
+  final String thresholdAfter;
   final String previousReading;
   final String currentReading;
   final String comment;
 
   NewReadingCalculateSingleZoneMeterEvent copyWith({
+    bool? threshold,
     String? price,
+    String? priceThresholdBefore,
+    String? priceThresholdAfter,
+    String? thresholdBefore,
+    String? thresholdAfter,
     String? previousReading,
     String? currentReading,
     String? comment,
   }) {
     return NewReadingCalculateSingleZoneMeterEvent(
+      threshold: threshold ?? this.threshold,
       price: price ?? this.price,
+      priceThresholdBefore: priceThresholdBefore ?? this.priceThresholdBefore,
+      priceThresholdAfter: priceThresholdAfter ?? this.priceThresholdAfter,
+      thresholdBefore: thresholdBefore ?? this.thresholdBefore,
+      thresholdAfter: thresholdAfter ?? this.thresholdAfter,
       previousReading: previousReading ?? this.previousReading,
       currentReading: currentReading ?? this.currentReading,
       comment: comment ?? this.comment,
@@ -146,12 +175,27 @@ class NewReadingCalculateSingleZoneMeterEvent extends NewReadingEvent {
   }
 
   @override
-  List<Object?> get props => [price, previousReading, currentReading, comment];
+  List<Object?> get props => [
+        threshold,
+        price,
+        priceThresholdBefore,
+        priceThresholdAfter,
+        thresholdBefore,
+        thresholdAfter,
+        previousReading,
+        currentReading,
+        comment
+      ];
 }
 
 class NewReadingCalculateTwoZoneMeterEvent extends NewReadingEvent {
   NewReadingCalculateTwoZoneMeterEvent({
+    required this.threshold,
     required this.price,
+    required this.priceThresholdBefore,
+    required this.priceThresholdAfter,
+    required this.thresholdBefore,
+    required this.thresholdAfter,
     required this.previousReadingDay,
     required this.previousReadingNight,
     required this.currentReadingDay,
@@ -161,7 +205,12 @@ class NewReadingCalculateTwoZoneMeterEvent extends NewReadingEvent {
     required this.comment,
   });
 
+  final bool threshold;
   final String price;
+  final String priceThresholdBefore;
+  final String priceThresholdAfter;
+  final String thresholdBefore;
+  final String thresholdAfter;
   final String previousReadingDay;
   final String previousReadingNight;
   final String currentReadingDay;
@@ -171,7 +220,12 @@ class NewReadingCalculateTwoZoneMeterEvent extends NewReadingEvent {
   final String comment;
 
   NewReadingCalculateTwoZoneMeterEvent copyWith({
+    bool? threshold,
     String? price,
+    String? priceThresholdBefore,
+    String? priceThresholdAfter,
+    String? thresholdBefore,
+    String? thresholdAfter,
     String? previousReadingDay,
     String? previousReadingNight,
     String? currentReadingDay,
@@ -181,7 +235,12 @@ class NewReadingCalculateTwoZoneMeterEvent extends NewReadingEvent {
     String? comment,
   }) {
     return NewReadingCalculateTwoZoneMeterEvent(
+      threshold: threshold ?? this.threshold,
       price: price ?? this.price,
+      priceThresholdBefore: priceThresholdBefore ?? this.priceThresholdBefore,
+      priceThresholdAfter: priceThresholdAfter ?? this.priceThresholdAfter,
+      thresholdBefore: thresholdBefore ?? this.thresholdBefore,
+      thresholdAfter: thresholdAfter ?? this.thresholdAfter,
       previousReadingDay: previousReadingDay ?? this.previousReadingDay,
       previousReadingNight: previousReadingNight ?? this.previousReadingNight,
       currentReadingDay: currentReadingDay ?? this.currentReadingDay,
@@ -194,7 +253,12 @@ class NewReadingCalculateTwoZoneMeterEvent extends NewReadingEvent {
 
   @override
   List<Object?> get props => [
+        threshold,
         price,
+        priceThresholdBefore,
+        priceThresholdAfter,
+        thresholdBefore,
+        thresholdAfter,
         previousReadingDay,
         previousReadingNight,
         currentReadingDay,
@@ -207,7 +271,12 @@ class NewReadingCalculateTwoZoneMeterEvent extends NewReadingEvent {
 
 class NewReadingCalculateThreeZoneMeterEvent extends NewReadingEvent {
   NewReadingCalculateThreeZoneMeterEvent({
+    required this.threshold,
     required this.price,
+    required this.priceThresholdBefore,
+    required this.priceThresholdAfter,
+    required this.thresholdBefore,
+    required this.thresholdAfter,
     required this.previousReadingDay,
     required this.previousReadingNight,
     required this.previousReadingHalfPeak,
@@ -220,7 +289,12 @@ class NewReadingCalculateThreeZoneMeterEvent extends NewReadingEvent {
     required this.comment,
   });
 
+  final bool threshold;
   final String price;
+  final String priceThresholdBefore;
+  final String priceThresholdAfter;
+  final String thresholdBefore;
+  final String thresholdAfter;
   final String previousReadingDay;
   final String previousReadingNight;
   final String previousReadingHalfPeak;
@@ -233,7 +307,12 @@ class NewReadingCalculateThreeZoneMeterEvent extends NewReadingEvent {
   final String comment;
 
   NewReadingCalculateThreeZoneMeterEvent copyWith({
+    bool? threshold,
     String? price,
+    String? priceThresholdBefore,
+    String? priceThresholdAfter,
+    String? thresholdBefore,
+    String? thresholdAfter,
     String? previousReadingDay,
     String? previousReadingNight,
     String? previousReadingHalfPeak,
@@ -246,7 +325,12 @@ class NewReadingCalculateThreeZoneMeterEvent extends NewReadingEvent {
     String? comment,
   }) {
     return NewReadingCalculateThreeZoneMeterEvent(
+      threshold: threshold ?? this.threshold,
       price: price ?? this.price,
+      priceThresholdBefore: priceThresholdBefore ?? this.priceThresholdBefore,
+      priceThresholdAfter: priceThresholdAfter ?? this.priceThresholdAfter,
+      thresholdBefore: thresholdBefore ?? this.thresholdBefore,
+      thresholdAfter: thresholdAfter ?? this.thresholdAfter,
       previousReadingDay: previousReadingDay ?? this.previousReadingDay,
       previousReadingNight: previousReadingNight ?? this.previousReadingNight,
       previousReadingHalfPeak:
@@ -264,7 +348,12 @@ class NewReadingCalculateThreeZoneMeterEvent extends NewReadingEvent {
 
   @override
   List<Object?> get props => [
+        threshold,
         price,
+        priceThresholdBefore,
+        priceThresholdAfter,
+        thresholdBefore,
+        thresholdAfter,
         previousReadingDay,
         previousReadingNight,
         currentReadingDay,

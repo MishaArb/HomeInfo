@@ -33,6 +33,7 @@ class NewReadingBloc extends Bloc<NewReadingEvent, NewReadingCreateState> {
     on<NewReadingPickDateEvent>(_onPickDate);
     on<NewReadingPickTypeMeasureEvent>(_onPickTypeMeasure);
     on<NewReadingPickUnitMeasureEvent>(_onPickUnitMeasure);
+    on<NewReadingChangeThresholdEvent>(_onChangeThreshold);
     on<NewReadingCalculateAreaEvent>(_onCalculateArea);
     on<NewReadingCalculateFixedEvent>(_onCalculateFixed);
     on<NewReadingCalculateSingleZoneMeterEvent>(_onCalculateSingleZoneMeter);
@@ -97,7 +98,12 @@ class NewReadingBloc extends Bloc<NewReadingEvent, NewReadingCreateState> {
               title: event.title,
               typeMeasure: item.typeMeasure,
               unitMeasure: item.unitMeasure,
+              threshold: item.threshold,
               price: item.price,
+              priceThresholdBefore: item.priceThresholdBefore,
+              priceThresholdAfter: item.priceThresholdAfter,
+              thresholdBefore: item.thresholdBefore,
+              thresholdAfter: item.thresholdAfter,
               area: item.area,
               previousReading: item.currentReading,
               previousReadingDay: item.currentReadingDay,
@@ -150,6 +156,11 @@ class NewReadingBloc extends Bloc<NewReadingEvent, NewReadingCreateState> {
       typeMeasure: event.typeMeasure,
       unitMeasure: ReadingUnitsMeasure.dropdownUnitsMeasure[0],
       price: '',
+      threshold: false,
+      priceThresholdBefore: '',
+      priceThresholdAfter: '',
+      thresholdBefore: '',
+      thresholdAfter: '',
       area: '',
       previousReading: '',
       currentReading: '',
@@ -180,6 +191,39 @@ class NewReadingBloc extends Bloc<NewReadingEvent, NewReadingCreateState> {
     emit(state.copyWith(readingItems: updatedReadings));
   }
 
+  _onChangeThreshold(
+      NewReadingChangeThresholdEvent event, Emitter<NewReadingCreateState> emit) {
+
+    final List<ReadingItem> updatedReadings = state.readingItems;
+    updatedReadings[state.indexService] =
+        updatedReadings[state.indexService].copyWith(
+          unitMeasure: ReadingUnitsMeasure.dropdownUnitsMeasure[0],
+          threshold: event.threshold,
+          price: '',
+          priceThresholdBefore: '',
+          priceThresholdAfter: '',
+          thresholdBefore: '',
+          thresholdAfter: '',
+          previousReading: '',
+          currentReading: '',
+          previousReadingDay: '',
+          previousReadingNight: '',
+          previousReadingHalfPeak: '',
+          currentReadingHalfPeak: '',
+          currentReadingDay: '',
+          currentReadingNight: '',
+          dayZoneCoeff: '',
+          nightZoneCoeff: '',
+          halfPeakZoneCoeff: '',
+          comment: '',
+          sum: 0,
+          used: 0,
+          usedDay: 0,
+          usedNight: 0,
+          usedHalfPeak: 0,
+        );
+    emit(state.copyWith(readingItems: updatedReadings));
+  }
   _onChangeService(
       NewReadingChangeServiceEvent event, Emitter<NewReadingCreateState> emit) {
     emit(state.copyWith(indexService: event.indexService));
@@ -214,110 +258,191 @@ class NewReadingBloc extends Bloc<NewReadingEvent, NewReadingCreateState> {
     );
     emit(state.copyWith(readingItems: updatedReading));
   }
+  double _parseDouble(String value) {
+    return value.isEmpty ? 0.0 : double.parse(value);
+  }
 
-  _onCalculateSingleZoneMeter(NewReadingCalculateSingleZoneMeterEvent event,
+  void _onCalculateSingleZoneMeter(NewReadingCalculateSingleZoneMeterEvent event,
       Emitter<NewReadingCreateState> emit) {
-    final List<ReadingItem> updatedReading = state.readingItems;
-    final double price = event.price.isEmpty ? 0.0 : double.parse(event.price);
-    final double previousReading = event.previousReading.isEmpty
-        ? 0.0
-        : double.parse(event.previousReading);
-    final double currentReading =
-        event.currentReading.isEmpty ? 0.0 : double.parse(event.currentReading);
+    final updatedReading = List<ReadingItem>.from(state.readingItems);
+
+    final double price = _parseDouble(event.price);
+    final double priceThresholdBefore = _parseDouble(event.priceThresholdBefore);
+    final double priceThresholdAfter = _parseDouble(event.priceThresholdAfter);
+    final double previousReading = _parseDouble(event.previousReading);
+    final double currentReading = _parseDouble(event.currentReading);
+    final double thresholdBefore = _parseDouble(event.thresholdBefore);
+
     final double totalUsed = currentReading - previousReading;
-    final double totalSum = price * totalUsed;
+
+    final double totalSum;
+    if (!event.threshold) {
+      // If the threshold is not used, simply multiply the price by the used amount
+      totalSum = price * totalUsed;
+    } else if (totalUsed > thresholdBefore) {
+      // If usage exceeds the threshold, calculate in two parts
+      final double amountUpBeforeThreshold = thresholdBefore * priceThresholdBefore;
+      final double amountAfterThreshold =  (totalUsed - thresholdBefore) * priceThresholdAfter;
+      totalSum = amountUpBeforeThreshold + amountAfterThreshold;
+      } else {
+      final double amountUpBeforeThreshold = totalUsed * priceThresholdBefore;
+      totalSum = amountUpBeforeThreshold;
+    }
     updatedReading[state.indexService] =
         updatedReading[state.indexService].copyWith(
-      price: event.price,
-      previousReading: event.previousReading,
-      currentReading: event.currentReading,
-      used: totalUsed,
-      sum: totalSum,
-      comment: event.comment,
-    );
+          price: event.price,
+          priceThresholdBefore: event.priceThresholdBefore,
+          priceThresholdAfter: event.priceThresholdAfter,
+          thresholdBefore: event.thresholdBefore,
+          thresholdAfter: event.thresholdAfter,
+          previousReading: event.previousReading,
+          currentReading: event.currentReading,
+          used: totalUsed,
+          sum: totalSum,
+          comment: event.comment,
+        );
+
     emit(state.copyWith(readingItems: updatedReading));
   }
 
   _onCalculateTwoZoneMeter(NewReadingCalculateTwoZoneMeterEvent event,
       Emitter<NewReadingCreateState> emit) {
     final List<ReadingItem> updatedReading = state.readingItems;
-    final double price = event.price.isEmpty ? 0.0 : double.parse(event.price);
-    final double previousReadingDay = event.previousReadingDay.isEmpty
-        ? 0.0
-        : double.parse(event.previousReadingDay);
-    final double previousReadingNight = event.previousReadingNight.isEmpty
-        ? 0.0
-        : double.parse(event.previousReadingNight);
-    final double currentReadingDay = event.currentReadingDay.isEmpty
-        ? 0.0
-        : double.parse(event.currentReadingDay);
-    final double currentReadingNight = event.currentReadingNight.isEmpty
-        ? 0.0
-        : double.parse(event.currentReadingNight);
-    final double dayZoneCoeff =
-        event.dayZoneCoeff.isEmpty ? 0.0 : double.parse(event.dayZoneCoeff);
-    final double nightZoneCoeff =
-        event.nightZoneCoeff.isEmpty ? 0.0 : double.parse(event.nightZoneCoeff);
+    final double price = _parseDouble(event.price);
+    final double priceThresholdBefore = _parseDouble(event.priceThresholdBefore);
+    final double priceThresholdAfter = _parseDouble(event.priceThresholdAfter);
+    final double previousReadingDay = _parseDouble(event.previousReadingDay);
+    final double thresholdBefore = _parseDouble(event.thresholdBefore);
+    final double currentReadingDay = _parseDouble(event.currentReadingDay);
+    final double dayZoneCoeff = _parseDouble(event.dayZoneCoeff);
+    final double nightZoneCoeff = _parseDouble(event.nightZoneCoeff);
+    final double currentReadingNight = _parseDouble(event.currentReadingNight);
+    final double previousReadingNight = _parseDouble(event.previousReadingNight);
+
+
     final double totalUsedDay = currentReadingDay - previousReadingDay;
     final double totalUsedNight = currentReadingNight - previousReadingNight;
-    final double totalSum = (totalUsedDay * price * dayZoneCoeff) +
-        (totalUsedNight * price * nightZoneCoeff);
+    final double totalUsed = totalUsedDay + totalUsedNight;
+
+    // Determination of percentage distribution
+    final double dayPercentage = totalUsedDay / totalUsed;
+    final double nightPercentage = totalUsedNight / totalUsed;
+
+    double totalSum;
+
+    if (!event.threshold) {
+      // If the threshold is not used, simply multiply the price by the used amount
+          totalSum = (totalUsedDay * price * dayZoneCoeff) +
+                   (totalUsedNight * price * nightZoneCoeff);
+    } else if (totalUsed <= thresholdBefore) {
+      // If the consumption does not exceed the threshold
+      totalSum = (totalUsedDay * priceThresholdBefore * dayZoneCoeff) +
+          (totalUsedNight * priceThresholdBefore * nightZoneCoeff);
+    } else {
+      // If the threshold is exceeded, we calculate separately for before and after the threshold
+      final double usedUpToThresholdDay = thresholdBefore * dayPercentage;
+      final double usedUpToThresholdNight = thresholdBefore * nightPercentage;
+
+      final double usedAfterThresholdDay = totalUsedDay - usedUpToThresholdDay;
+      final double usedAfterThresholdNight = totalUsedNight - usedUpToThresholdNight;
+
+      final double dayBeforeThreshold = usedUpToThresholdDay * priceThresholdBefore * dayZoneCoeff;
+      final double nightBeforeThreshold = usedUpToThresholdNight * priceThresholdBefore * nightZoneCoeff;
+
+      final double dayAfterThreshold = usedAfterThresholdDay * priceThresholdAfter * dayZoneCoeff;
+      final double nightAfterThreshold = usedAfterThresholdNight * priceThresholdAfter * nightZoneCoeff;
+
+      totalSum = dayBeforeThreshold + nightBeforeThreshold + dayAfterThreshold + nightAfterThreshold;
+    }
+
     updatedReading[state.indexService] =
         updatedReading[state.indexService].copyWith(
-      price: event.price,
-      previousReadingDay: event.previousReadingDay,
-      previousReadingNight: event.previousReadingNight,
-      currentReadingDay: event.currentReadingDay,
-      currentReadingNight: event.currentReadingNight,
-      dayZoneCoeff: event.dayZoneCoeff,
-      nightZoneCoeff: event.nightZoneCoeff,
-      usedDay: totalUsedDay,
-      usedNight: totalUsedNight,
-      sum: totalSum,
-      comment: event.comment,
-    );
+          price: event.price,
+          priceThresholdBefore: event.priceThresholdBefore,
+          priceThresholdAfter: event.priceThresholdAfter,
+          thresholdBefore: event.thresholdBefore,
+          thresholdAfter: event.thresholdAfter,
+          previousReadingDay: event.previousReadingDay,
+          previousReadingNight: event.previousReadingNight,
+          currentReadingDay: event.currentReadingDay,
+          currentReadingNight: event.currentReadingNight,
+          dayZoneCoeff: event.dayZoneCoeff,
+          nightZoneCoeff: event.nightZoneCoeff,
+          usedDay: totalUsedDay,
+          usedNight: totalUsedNight,
+          sum: totalSum,
+          comment: event.comment,
+        );
     emit(state.copyWith(readingItems: updatedReading));
   }
 
   _onCalculateThreeZoneMeter(NewReadingCalculateThreeZoneMeterEvent event,
       Emitter<NewReadingCreateState> emit) {
     final List<ReadingItem> updatedReading = state.readingItems;
-    final double price = event.price.isEmpty ? 0.0 : double.parse(event.price);
-    final double previousReadingDay = event.previousReadingDay.isEmpty
-        ? 0.0
-        : double.parse(event.previousReadingDay);
-    final double previousReadingHalfPeak = event.previousReadingHalfPeak.isEmpty
-        ? 0.0
-        : double.parse(event.previousReadingHalfPeak);
-    final double previousReadingNight = event.previousReadingNight.isEmpty
-        ? 0.0
-        : double.parse(event.previousReadingNight);
-    final double currentReadingDay = event.currentReadingDay.isEmpty
-        ? 0.0
-        : double.parse(event.currentReadingDay);
-    final double currentReadingHalfPeak = event.currentReadingHalfPeak.isEmpty
-        ? 0.0
-        : double.parse(event.currentReadingHalfPeak);
-    final double currentReadingNight = event.currentReadingNight.isEmpty
-        ? 0.0
-        : double.parse(event.currentReadingNight);
-    final double dayZoneCoeff =
-        event.dayZoneCoeff.isEmpty ? 0.0 : double.parse(event.dayZoneCoeff);
-    final double halfPeakZoneCoeff = event.halfPeakZoneCoeff.isEmpty
-        ? 0.0
-        : double.parse(event.halfPeakZoneCoeff);
-    final double nightZoneCoeff =
-        event.nightZoneCoeff.isEmpty ? 0.0 : double.parse(event.nightZoneCoeff);
+    final double price = _parseDouble(event.price);
+    final double priceThresholdBefore = _parseDouble(event.priceThresholdBefore);
+    final double priceThresholdAfter = _parseDouble(event.priceThresholdAfter);
+    final double thresholdBefore = _parseDouble(event.thresholdBefore);
+    final double previousReadingDay = _parseDouble(event.previousReadingDay);
+    final double previousReadingHalfPeak = _parseDouble(event.previousReadingHalfPeak);
+    final double previousReadingNight = _parseDouble(event.previousReadingNight);
+    final double currentReadingDay = _parseDouble(event.currentReadingDay);
+    final double currentReadingHalfPeak = _parseDouble(event.currentReadingHalfPeak);
+    final double currentReadingNight = _parseDouble(event.currentReadingNight);
+    final double dayZoneCoeff = _parseDouble(event.dayZoneCoeff);
+    final double halfPeakZoneCoeff = _parseDouble(event.halfPeakZoneCoeff);
+    final double nightZoneCoeff = _parseDouble(event.nightZoneCoeff);
+
     final double totalUsedDay = currentReadingDay - previousReadingDay;
-    final double totalUsedHalfPeak =
-        currentReadingHalfPeak - previousReadingHalfPeak;
     final double totalUsedNight = currentReadingNight - previousReadingNight;
-    final double totalSum = (totalUsedDay * price * dayZoneCoeff) +
-        (totalUsedNight * price * nightZoneCoeff) +
-        (totalUsedHalfPeak * price * halfPeakZoneCoeff);
-    updatedReading[state.indexService] =
-        updatedReading[state.indexService].copyWith(
+    final double totalUsedHalfPeak = currentReadingHalfPeak - previousReadingHalfPeak;
+    final double totalUsed = totalUsedDay + totalUsedNight + totalUsedHalfPeak;
+
+    // Determination of percentage distribution
+    final double dayPercentage = totalUsedDay / totalUsed;
+    final double nightPercentage = totalUsedNight / totalUsed;
+    final double halfPeakPercentage = totalUsedHalfPeak / totalUsed;
+
+    double totalSum;
+
+    if (!event.threshold) {
+      // If the threshold is not used, simply multiply the price by the used amount
+      totalSum = (totalUsedDay * price * dayZoneCoeff) +
+          (totalUsedHalfPeak * price * halfPeakZoneCoeff) +
+          (totalUsedNight * price * nightZoneCoeff);
+    } else if (totalUsed <= thresholdBefore) {
+      // If the consumption does not exceed the threshold
+      totalSum = (totalUsedDay * priceThresholdBefore * dayZoneCoeff) +
+          (totalUsedHalfPeak * priceThresholdBefore * halfPeakZoneCoeff) +
+          (totalUsedNight * priceThresholdBefore * nightZoneCoeff);
+    } else {
+      // If the threshold is exceeded, we calculate separately for before and after the threshold
+      final double usedUpToThresholdDay = thresholdBefore * dayPercentage;
+      final double usedUpToThresholdHalfPeak = thresholdBefore * halfPeakPercentage;
+      final double usedUpToThresholdNight = thresholdBefore * nightPercentage;
+
+      final double usedAfterThresholdDay = totalUsedDay - usedUpToThresholdDay;
+      final double usedAfterThresholdHalfPeak = totalUsedHalfPeak - usedUpToThresholdHalfPeak;
+      final double usedAfterThresholdNight = totalUsedNight - usedUpToThresholdNight;
+
+      final double dayBeforeThreshold = usedUpToThresholdDay * priceThresholdBefore * dayZoneCoeff;
+      final double halfPeakBeforeThreshold = usedUpToThresholdHalfPeak * priceThresholdBefore * halfPeakZoneCoeff;
+      final double nightBeforeThreshold = usedUpToThresholdNight * priceThresholdBefore * nightZoneCoeff;
+
+      final double dayAfterThreshold = usedAfterThresholdDay * priceThresholdAfter * dayZoneCoeff;
+      final double halfPeakAfterThreshold = usedAfterThresholdHalfPeak * priceThresholdAfter * halfPeakZoneCoeff;
+      final double nightAfterThreshold = usedAfterThresholdNight * priceThresholdAfter * nightZoneCoeff;
+
+      totalSum = dayBeforeThreshold + halfPeakBeforeThreshold + nightBeforeThreshold +
+          dayAfterThreshold + halfPeakAfterThreshold + nightAfterThreshold;
+    }
+
+    updatedReading[state.indexService] = updatedReading[state.indexService].copyWith(
       price: event.price,
+      priceThresholdBefore: event.priceThresholdBefore,
+      priceThresholdAfter: event.priceThresholdAfter,
+      thresholdBefore: event.thresholdBefore,
+      thresholdAfter: event.thresholdAfter,
       previousReadingDay: event.previousReadingDay,
       previousReadingNight: event.previousReadingNight,
       previousReadingHalfPeak: event.previousReadingHalfPeak,
@@ -335,6 +460,7 @@ class NewReadingBloc extends Bloc<NewReadingEvent, NewReadingCreateState> {
     );
     emit(state.copyWith(readingItems: updatedReading));
   }
+
 
   _onDeleteService(
       NewReadingDeleteServiceEvent event, Emitter<NewReadingCreateState> emit) {
